@@ -19,6 +19,6 @@ object Func {
 // TEST REST API
 // RETROFIT
 interface TestService {
-    @POST("/ticket/insertTicket")
+    @POST("/ticket/addTicket")
     fun resultRepos(@Body insertTicketData: Prop.InsertTicketData) : Single<Prop.TestData>
 }
