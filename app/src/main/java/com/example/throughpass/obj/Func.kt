@@ -10,4 +10,8 @@ object Func {
         // Prop.user_nfc = "asdfasdasdf"
         return true
     }
+
+    // TEST REST API
+    // RETROFIT
+
 }
