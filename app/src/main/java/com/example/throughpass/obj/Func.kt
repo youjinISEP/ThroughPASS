@@ -1,5 +1,9 @@
 package com.example.throughpass.obj
 
+import io.reactivex.Single
+import retrofit2.http.Body
+import retrofit2.http.POST
+
 /*
 * 공통 함수
 * */
@@ -15,3 +19,9 @@ object Func {
     // RETROFIT
 
 }
+
+interface TestService {
+    @POST("/ticket/insertTicket")
+    fun resultRepos(@Body params : HashMap<String, String>) : Single<TestData>
+}
+data class TestData(var result : String)
