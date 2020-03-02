@@ -51,6 +51,7 @@ public class TestActivity extends AppCompatActivity {
                             Log.e("TEST", "" + e);
                         });
 
+        // temp
 //        Prop.RegistTicketData registTicketData = new Prop.RegistTicketData("1111-abcd-2222-efgh", "1q2w3e4r5t");
 //        testService.resultRepos(registTicketData)
 //                .subscribeOn(Schedulers.io())   // 데이터를 보내는 쓰레드 및 함수
