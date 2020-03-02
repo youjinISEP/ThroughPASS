@@ -16,23 +16,15 @@ import com.example.throughpass.R;
 
 public class SelectionFragment extends Fragment {
 
-    private SelectionViewModel selectionViewModel;
+
+   private View view;
 
     /*
      *
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        selectionViewModel =
-                ViewModelProviders.of(this).get(SelectionViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_selection, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
-        selectionViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
+        view = inflater.inflate(R.layout.fragment_selection, container, false);
+        return view;
     }
 }
