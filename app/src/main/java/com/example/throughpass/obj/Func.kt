@@ -14,14 +14,11 @@ object Func {
         // Prop.user_nfc = "asdfasdasdf"
         return true
     }
-
-    // TEST REST API
-    // RETROFIT
-
 }
 
+// TEST REST API
+// RETROFIT
 interface TestService {
     @POST("/ticket/insertTicket")
-    fun resultRepos(@Body params : HashMap<String, String>) : Single<TestData>
+    fun resultRepos(@Body insertTicketData: Prop.InsertTicketData) : Single<Prop.TestData>
 }
-data class TestData(var result : String)
