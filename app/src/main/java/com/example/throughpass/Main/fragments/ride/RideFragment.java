@@ -14,10 +14,10 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.throughpass.R;
 
+
 public class RideFragment extends Fragment {
 
-    private RideViewModel rideViewModel;
-
+    private View view;
     /*
     * recyclerview생성하기
     * item 선택되면 새로운 Activity 생성하기
@@ -26,16 +26,8 @@ public class RideFragment extends Fragment {
     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        rideViewModel =
-                ViewModelProviders.of(this).get(RideViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_ride, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        rideViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
+
+        view = inflater.inflate(R.layout.fragment_ride, container, false);
+        return view;
     }
 }
