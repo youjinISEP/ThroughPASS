@@ -1,6 +1,7 @@
 package com.example.throughpass.Main;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -9,6 +10,7 @@ import com.example.throughpass.Main.fragments.selection.SelectionFragment;
 import com.example.throughpass.Main.fragments.ticket.TicketFragment;
 import com.example.throughpass.R;
 //import com.example.throughpass.obj.Func;
+import com.example.throughpass.obj.Prop;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,7 +29,6 @@ public class MainActivity extends AppCompatActivity  {
     private SelectionFragment selectionFragment = new SelectionFragment();
     private FragmentTransaction transaction;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity  {
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.nav_host_fragment, ticketFragment).commitAllowingStateLoss();
 
+        Prop.INSTANCE.setUser_nfc(Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));    // 안드로이드 ID 넣기
     }
 
     //BottomNavigation Bar Control
