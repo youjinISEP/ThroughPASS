@@ -11,8 +11,8 @@ import java.math.BigInteger
 * 공통 변수/상수
 * */
 object Prop {
-
     var user_nfc : String? = null
+    var ticketCode : String? = null
     val serverUrl : String = "http://15.165.28.140:8000"
 
     // Retrofit 객체 생성
@@ -24,7 +24,10 @@ object Prop {
     .build()
 
     // TEST API
-    data class InsertTicketData(val ticketCode : String, var nfcUid : String?, val issueDate : BigInteger)
-    data class RegistTicketData(val ticketCode : String, val nfcUid : String)
+    data class AddTicketData(val ticketCode : String, var nfcUid : String?)
     data class TestData(var result : String)
+
+    // 티켓 등록
+    data class RegistTicketData(val ticketCode : String, val nfcUid : String)
+    data class ResultData(var result : String)
 }
