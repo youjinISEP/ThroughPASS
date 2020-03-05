@@ -1,9 +1,15 @@
 package com.example.throughpass.obj
 
+import android.text.TextUtils
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.example.throughpass.obj.Prop.registDateStr
+import com.example.throughpass.obj.Prop.ticketCode
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.POST
-import java.security.MessageDigest
+import java.util.*
 
 /*
 * 공통 함수
@@ -16,20 +22,23 @@ object Func {
         return true
     }
 
-//    fun md5(msg : String) : String {
-//        var md : MessageDigest = MessageDigest.getInstance("MD5")
-//        md.update(msg.toByte())
-//        return
-//    }
-//    public static String md5(String msg) throws NoSuchAlgorithmException {
-//
-//        MessageDigest md = MessageDigest.getInstance("MD5");
-//
-//        md.update(msg.getBytes());
-//
-//        return CryptoUtil.byteToHexString(md.digest());
-//
-//    }
+    // Fragment 새로고침
+    fun refreshFragment(fragment: Fragment, fragmentManager: FragmentManager) {
+        var ft: FragmentTransaction = fragmentManager.beginTransaction()
+        ft.detach(fragment).attach(fragment).commit()
+    }
+
+    // 티켓 등록 상태 체크
+    // @return : true(티켓 등록), false(티켓 미등록)
+    fun checkRegistTicket() : Boolean {
+        return !(TextUtils.isEmpty(ticketCode) || TextUtils.isEmpty(registDateStr));
+    }
+
+    // 날짜 변환
+    fun formatDateKST(date: Date) : String {
+        Prop.dateFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        return Prop.dateFormat.format(date)
+    }
 }
 
 // TEST REST API

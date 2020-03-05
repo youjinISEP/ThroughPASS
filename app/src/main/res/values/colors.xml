@@ -6,4 +6,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorLotteLogo">#DA291C</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorFalseTicketInfoBox">#EF5350</color>
+    <color name="colorTrueTicketInfoBox">#00FF66</color>
+
 </resources>
