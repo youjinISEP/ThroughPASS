@@ -16,4 +16,15 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
 
+    <ImageView
+        android:id="@+id/img_rDetail"
+        android:layout_width="match_parent"
+        android:layout_height="305dp"
+        tools:srcCompat="@tools:sample/backgrounds/scenic[4]" />
+
+    <TextView
+        android:id="@+id/txt_rInfo"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
+
 </LinearLayout>
