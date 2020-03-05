@@ -4,4 +4,6 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="falseTicketInfoBoxTxt">현재 티켓이 등록되어있지 않습니다.</string>
+    <string name="trueTicketInfoBoxTxt">현재 티켓을 사용중입니다.</string>
 </resources>

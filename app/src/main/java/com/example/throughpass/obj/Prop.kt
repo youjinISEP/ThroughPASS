@@ -6,6 +6,9 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.math.BigInteger
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 /*
 * 공통 변수/상수
@@ -13,6 +16,8 @@ import java.math.BigInteger
 object Prop {
     var user_nfc : String? = null
     var ticketCode : String? = null
+    var registDate : BigInteger? = null
+    var registDateStr : String? = null
     val serverUrl : String = "http://15.165.28.140:8000"
 
     // Retrofit 객체 생성
@@ -23,11 +28,14 @@ object Prop {
     .client(OkHttpClient())
     .build()
 
+    // 날짜 출력 Format
+    var dateFormat : DateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREAN)
+
     // TEST API
     data class AddTicketData(val ticketCode : String, var nfcUid : String?)
     data class TestData(var result : String)
 
     // 티켓 등록
     data class RegistTicketData(val ticketCode : String, val nfcUid : String)
-    data class ResultData(var result : String)
+    data class ResultData(var result : String, var registDate : BigInteger)
 }
