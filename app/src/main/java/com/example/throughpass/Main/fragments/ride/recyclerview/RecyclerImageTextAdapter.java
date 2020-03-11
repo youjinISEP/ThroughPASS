@@ -1,8 +1,6 @@
 package com.example.throughpass.Main.fragments.ride.recyclerview;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.throughpass.Main.fragments.ride.RideFragment;
 import com.example.throughpass.R;
 
 import java.util.ArrayList;
@@ -40,8 +37,7 @@ public class RecyclerImageTextAdapter extends  RecyclerView.Adapter<RecyclerImag
             super(itemView);
             rideImage = itemView.findViewById(R.id.img_rImage);
             rideName = itemView.findViewById(R.id.txt_rName);
-            rideRestTime = itemView.findViewById(R.id.txt_rRestTime);
-            rideLocation = itemView.findViewById(R.id.txt_rLocation);
+            rideRestTime = itemView.findViewById(R.id.txt_rrestTime);
 
             //recyclerview item 클릭 이벤트 정의
             itemView.setOnClickListener(new View.OnClickListener(){
@@ -61,7 +57,7 @@ public class RecyclerImageTextAdapter extends  RecyclerView.Adapter<RecyclerImag
     public RecyclerImageTextAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         Context context = parent.getContext() ;
 
-        View view = LayoutInflater.from(context).inflate(R.layout.ridelist_format, parent, false) ;
+        View view = LayoutInflater.from(context).inflate(R.layout.select_item, parent, false) ;
         RecyclerImageTextAdapter.ViewHolder vh = new RecyclerImageTextAdapter.ViewHolder(view) ;
         return vh;
     }

@@ -13,11 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Main.fragments.ride.RideDetailActivity"></activity>
-        <activity android:name=".Main.popup.WriteTicketCodePopup"
-            android:theme="@style/PopupTheme">
-
-        </activity>
+        <activity android:name=".Main.NFC.nfcActivity"></activity>
+        <activity android:name=".Main.fragments.ride.RideDetailActivity" />
+        <activity
+            android:name=".Main.popup.WriteTicketCodePopup"
+            android:theme="@style/PopupTheme"></activity>
         <activity android:name=".Main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main.TestActivity"></activity>
+        <activity android:name=".Main.TestActivity" />
     </application>
 
 </manifest>

@@ -47,7 +47,6 @@ interface TestService {
     @POST("/ticket/addTicket")
     fun resultRepos(@Body insertTicketData: Prop.AddTicketData) : Single<Prop.TestData>
 }
-
 // TEST REST API
 // RETROFIT
 interface RegistTicketService {

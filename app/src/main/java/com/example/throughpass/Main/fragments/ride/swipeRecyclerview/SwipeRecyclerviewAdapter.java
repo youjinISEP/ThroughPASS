@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.throughpass.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecyclerviewAdapter.MyViewHolder> {

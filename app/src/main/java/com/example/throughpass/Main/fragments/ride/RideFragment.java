@@ -1,29 +1,19 @@
 package com.example.throughpass.Main.fragments.ride;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.throughpass.Main.fragments.ride.recyclerview.RecyclerImageTextAdapter;
-import com.example.throughpass.Main.fragments.ride.recyclerview.RecyclerItem;
-import com.example.throughpass.Main.fragments.ride.recyclerview.RecyclerOnItemClick;
 import com.example.throughpass.Main.fragments.ride.swipeRecyclerview.SwipeRecyclerTouchListener;
 import com.example.throughpass.Main.fragments.ride.swipeRecyclerview.SwipeRecyclerviewAdapter;
 import com.example.throughpass.Main.fragments.ride.swipeRecyclerview.ViewItem;
@@ -32,12 +22,6 @@ import com.example.throughpass.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * recyclerview생성하기 //0303
- * item 선택되면 새로운 Activity 생성하기//0303
- * 페이지가 loading 될 때마다, json으로 DB에서 데이터 받아오기
- *
- */
 
 public class RideFragment extends Fragment  {
 
@@ -45,7 +29,6 @@ public class RideFragment extends Fragment  {
     private SwipeRecyclerviewAdapter recyclerviewAdapter;
     private SwipeRecyclerTouchListener touchListener;
     private View view;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -74,6 +57,10 @@ public class RideFragment extends Fragment  {
                     @Override
                     public void onRowClicked(int position) {
                         Log.d("@@@@@@@@", "click");
+                        Intent intent = new Intent(view.getContext(), RideDetailActivity.class);
+                        intent.putExtra("select",viewItem.getRide_Name());
+                        view.getContext().startActivity(intent);
+
                         //recyclerview item 클릭시!
                         //Toast.makeText(getApplicationContext(),taskList.get(position).getName(), Toast.LENGTH_SHORT).show();
                     }
@@ -83,12 +70,12 @@ public class RideFragment extends Fragment  {
 
                     }
                 })
-                .setSwipeOptionViews(R.id.first_task,R.id.second_task)
+                .setSwipeOptionViews(R.id.delete_task,R.id.second_task)
                 .setSwipeable(R.id.rowFG, R.id.rowBG, new SwipeRecyclerTouchListener.OnSwipeOptionsClickListener() {
                     @Override
                     public void onSwipeOptionClicked(int viewID, int position) {
                         switch (viewID){
-                            case R.id.first_task:
+                            case R.id.delete_task:
                                 //taskList.remove(position);
                                 //recyclerviewAdapter.setTaskList(taskList);
                                 break;
