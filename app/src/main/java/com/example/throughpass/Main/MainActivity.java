@@ -1,15 +1,16 @@
 package com.example.throughpass.Main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.throughpass.Main.NFC.nfcActivity;
 import com.example.throughpass.Main.fragments.ride.RideFragment;
 import com.example.throughpass.Main.fragments.selection.SelectionFragment;
 import com.example.throughpass.Main.fragments.ticket.TicketFragment;
 import com.example.throughpass.R;
-//import com.example.throughpass.obj.Func;
 import com.example.throughpass.obj.Prop;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -43,6 +44,15 @@ public class MainActivity extends AppCompatActivity  {
         transaction.replace(R.id.nav_host_fragment, ticketFragment).commitAllowingStateLoss();
 
         Prop.INSTANCE.setUser_nfc(Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));    // 안드로이드 ID 넣기
+
+        fab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, nfcActivity.class);
+                //intent.putExtra("select",rideName);
+                startActivity(intent);
+            }
+        });
     }
 
     //BottomNavigation Bar Control

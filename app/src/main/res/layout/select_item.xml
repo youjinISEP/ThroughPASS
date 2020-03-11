@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/rowBG"
@@ -35,33 +34,7 @@
                     android:id="@+id/txt_rfirstButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="대기"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/second_task"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txt_rsecondButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="예약"
+                    android:text="취소"
                     android:textColor="@color/colorWhite"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -81,13 +54,6 @@
         android:orientation="horizontal"
         android:visibility="visible"
         android:weightSum="13">
-
-        <ImageView
-            android:id="@+id/img_rcolorStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:srcCompat="@color/colorLotteLogo" />
 
         <ImageView
             android:id="@+id/img_rImage"
@@ -130,6 +96,9 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
+
+
+
 
 
 </RelativeLayout>
