@@ -19,6 +19,9 @@ object Prop {
     var registDate : BigInteger? = null
     var registDateStr : String? = null
     val serverUrl : String = "http://15.165.28.140:8000"
+    val FCM_MSG_CODE : Int = 111
+    val TAG : String = "GHOST"
+    var fcmTokenId : String? = null
 
     // Retrofit 객체 생성
     val retrofit: Retrofit = Retrofit.Builder()
@@ -36,6 +39,6 @@ object Prop {
     data class TestData(var result : String)
 
     // 티켓 등록
-    data class RegistTicketData(val ticketCode : String, val nfcUid : String)
+    data class RegistTicketData(val ticketCode : String, val nfcUid : String, val tokenId : String)
     data class ResultData(var result : String, var registDate : BigInteger)
 }

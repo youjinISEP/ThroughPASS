@@ -38,6 +38,10 @@ public class TicketFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
               /*
          * 티켓 정보 등록
+         *
+         *
+         *
+         *
          * 티켓 등록 상태 표시!
          *
          *

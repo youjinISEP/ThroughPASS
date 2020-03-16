@@ -6,4 +6,6 @@
     <string name="title_notifications">Notifications</string>
     <string name="falseTicketInfoBoxTxt">현재 티켓이 등록되어있지 않습니다.</string>
     <string name="trueTicketInfoBoxTxt">현재 티켓을 사용중입니다.</string>
+    <string name="defaultNotiChannelID" translatable="true">기본 노티 채널 ID 입니다.</string>
+    <string name="defaultNotifiChannelName" translatable="true">기본 노티 채널 이름입니다.</string>
 </resources>

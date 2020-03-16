@@ -1,15 +1,19 @@
 package com.example.throughpass.obj
 
 import android.text.TextUtils
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.throughpass.obj.Prop.registDateStr
 import com.example.throughpass.obj.Prop.ticketCode
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.POST
 import java.util.*
+
 
 /*
 * 공통 함수
@@ -40,6 +44,7 @@ object Func {
         return Prop.dateFormat.format(date)
     }
 }
+
 
 // TEST REST API
 // RETROFIT
