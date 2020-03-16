@@ -56,6 +56,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.2.3'
     implementation 'com.google.firebase:firebase-analytics:17.2.3'
 
+    // QR코드
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 }
 repositories {
     mavenCentral()

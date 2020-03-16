@@ -1,5 +1,6 @@
 package com.example.throughpass.Main.popup;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -17,6 +18,8 @@ import com.example.throughpass.R;
 import com.example.throughpass.obj.Func;
 import com.example.throughpass.obj.Prop;
 import com.example.throughpass.obj.RegistTicketService;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.math.BigInteger;
 import java.util.Date;
@@ -28,13 +31,15 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 티켓 등록 시 티켓 번호를 입력하는 팝업 창
  * 이해원
- * rewrite date : 2020.03.11
- * Token의 ID까지 전송해야 함
+ * rewrite date : 2020.03.16
+ * Token의 ID까지 전송해야 함 -> 완료
+ * QR코드 구현 중
  */
 public class WriteTicketCodePopup extends AppCompatActivity {
-    Button okBtn, cancelBtn;
+    Button okBtn, cancelBtn, qrScanBtn;
     EditText edTicketCode1, edTicketCode2, edTicketCode3, edTicketCode4;
     BigInteger registDate;
+    IntentIntegrator qrScan;
     Intent intent;
 
     @Override
@@ -44,13 +49,14 @@ public class WriteTicketCodePopup extends AppCompatActivity {
 
         okBtn = findViewById(R.id.okBtn);
         cancelBtn = findViewById(R.id.cancelBtn);
+        qrScanBtn = findViewById(R.id.qrScanBtn);
         edTicketCode1 = findViewById(R.id.edTicketCode1);
         edTicketCode2 = findViewById(R.id.edTicketCode2);
         edTicketCode3 = findViewById(R.id.edTicketCode3);
         edTicketCode4 = findViewById(R.id.edTicketCode4);
 
         intent = new Intent();
-
+        qrScan = new IntentIntegrator(this);
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +73,17 @@ public class WriteTicketCodePopup extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_CANCELED, intent);
                 finish();
+            }
+        });
+
+        qrScanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qrScan.setPrompt("티켓 코드 스캔 중");
+                qrScan.setOrientationLocked(true);  // 가로/세로 모드 변경 여부
+                qrScan.setBarcodeImageEnabled(true);
+                qrScan.setCaptureActivity(QRCodeScanPopup.class);
+                qrScan.initiateScan();
             }
         });
     }
@@ -117,6 +134,39 @@ public class WriteTicketCodePopup extends AppCompatActivity {
             }
             return edTicketCode1.getText().toString() + "-" + edTicketCode2.getText().toString() + "-"
                     + edTicketCode3.getText().toString() + "-" + edTicketCode4.getText().toString();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {  // qrCode가 없으면
+                Toast.makeText(this, "취소", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Log.d(Prop.INSTANCE.getTAG(), "Scanned : " + result.getContents());
+                String code = result.getContents();
+                if(code.length() != 19) {
+                    Toast.makeText(this, "유효한 티켓 QR이 아닙니다.", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    String[] codes = code.split("-");
+                    if(codes.length != 4) {
+                        Toast.makeText(this, "유효한 티켓 QR이 아닙니다.", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(this, "티켓 번호를 입력했습니다.", Toast.LENGTH_LONG).show();
+                        edTicketCode1.setText(codes[0]);
+                        edTicketCode2.setText(codes[1]);
+                        edTicketCode3.setText(codes[2]);
+                        edTicketCode4.setText(codes[3]);
+                    }
+                }
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
