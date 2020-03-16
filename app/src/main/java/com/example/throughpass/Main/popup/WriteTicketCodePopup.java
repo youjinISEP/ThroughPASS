@@ -28,7 +28,8 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 티켓 등록 시 티켓 번호를 입력하는 팝업 창
  * 이해원
- * rewrite date : 2020.03.04
+ * rewrite date : 2020.03.11
+ * Token의 ID까지 전송해야 함
  */
 public class WriteTicketCodePopup extends AppCompatActivity {
     Button okBtn, cancelBtn;
@@ -77,7 +78,7 @@ public class WriteTicketCodePopup extends AppCompatActivity {
     @SuppressLint("CheckResult")
     public void registTicket(String code) {
         RegistTicketService registTicketService = Prop.INSTANCE.getRetrofit().create(RegistTicketService.class);
-        Prop.RegistTicketData registTicketData = new Prop.RegistTicketData(code, Prop.INSTANCE.getUser_nfc());
+        Prop.RegistTicketData registTicketData = new Prop.RegistTicketData(code, Prop.INSTANCE.getUser_nfc(), Prop.INSTANCE.getFcmTokenId());
 
         //noinspection ResultOfMethodCallIgnored
         registTicketService.resultRepos(registTicketData)

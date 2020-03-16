@@ -1,6 +1,16 @@
 package com.example.throughpass;
 
 import android.app.Application;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.example.throughpass.obj.Prop;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class App extends Application {
 
@@ -19,7 +29,28 @@ public class App extends Application {
     @Override
     public void onCreate(){
         super.onCreate();
+
+        setFCMTokenID();
     }
 
+    // FCM Token ID 전역 변수에 저장
+    private void setFCMTokenID() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e(Prop.INSTANCE.getTAG(), "getInstanceId failed", task.getException());
+                            return;
+                        }
 
+                        // Get new Instance ID token
+                        Prop.INSTANCE.setFcmTokenId(task.getResult().getToken());
+
+                        // Log and toast
+                        Log.d(Prop.INSTANCE.getTAG(), Prop.INSTANCE.getFcmTokenId());
+                        Toast.makeText(getApplicationContext(), Prop.INSTANCE.getTAG(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }
