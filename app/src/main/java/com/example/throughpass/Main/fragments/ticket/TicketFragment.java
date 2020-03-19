@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.throughpass.Main.popup.NoticePopup;
 import com.example.throughpass.Main.popup.WriteTicketCodePopup;
 import com.example.throughpass.R;
 import com.example.throughpass.obj.Func;
@@ -71,6 +72,12 @@ public class TicketFragment extends Fragment {
         registBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /* notice test */
+//                Intent intent = new Intent(getActivity(), NoticePopup.class);
+//                intent.putExtra("type", "wait");
+//                startActivity(intent);
+
+
                 if(Func.INSTANCE.checkRegistTicket()) {
                     Toast.makeText(getActivity(), "현재 티켓이 등록되어 있습니다. \n 최대 등록 횟수 : 1회", Toast.LENGTH_LONG).show();
                 }

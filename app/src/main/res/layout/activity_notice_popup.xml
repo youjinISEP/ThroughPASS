@@ -37,11 +37,12 @@
 
                 <TextView
                 android:id = "@+id/txt_notice"
-                android:textSize="20dp"
-                android:gravity="center"
+                android:textSize="17dp"
+                android:lineSpacingExtra="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="400dp"
                 android:textColor="@color/colorBlack"
+                android:scrollbars="vertical"
                 />
 
             </LinearLayout>

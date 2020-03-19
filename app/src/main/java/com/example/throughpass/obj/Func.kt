@@ -51,10 +51,11 @@ object Func {
     fun readFromAssets(filename: String, context: Context): String? {
         val reader = BufferedReader(InputStreamReader(context.assets.open(filename)))
         val sb = StringBuilder()
-        var line: String = reader.readLine()
+        var line: String? = reader.readLine()
 
         while (line != null) {
             sb.append(line)
+            sb.append("\n")
             line = reader.readLine()
         }
         reader.close()
