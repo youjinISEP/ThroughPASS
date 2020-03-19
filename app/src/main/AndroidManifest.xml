@@ -6,9 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
-    <uses-permission android:name="android.permission.FLASHLIGHT"></uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <meta-data
         android:name="firebase_messaging_auto_init_enabled"
@@ -27,19 +27,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Main.popup.NoticePopup"
+            android:theme="@style/PopupTheme"></activity>
         <activity
             android:name=".Main.popup.QRCodeScanPopup"
-            android:theme="@style/PopupTheme">
-        </activity>
+            android:theme="@style/PopupTheme"></activity>
         <activity android:name=".Main.NFC.nfcActivity" />
         <activity android:name=".Main.fragments.ride.RideDetailActivity" />
         <activity
             android:name=".Main.popup.WriteTicketCodePopup"
             android:screenOrientation="fullSensor"
-            tools:replace="android:screenOrientation"
             android:stateNotNeeded="true"
-            android:theme="@style/PopupTheme" />
-
+            android:theme="@style/PopupTheme"
+            tools:replace="android:screenOrientation" />
         <activity android:name=".Main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

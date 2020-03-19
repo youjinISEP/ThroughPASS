@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +21,12 @@ import com.example.throughpass.Main.popup.WriteTicketCodePopup;
 import com.example.throughpass.R;
 import com.example.throughpass.obj.Func;
 import com.example.throughpass.obj.Prop;
+import com.example.throughpass.obj.RegisteredTodayTicketService;
 
-import java.math.BigInteger;
 import java.util.Date;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class TicketFragment extends Fragment {
     final static int TICKET_POPUP_CODE = 111;
@@ -36,16 +38,7 @@ public class TicketFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-              /*
-         * 티켓 정보 등록
-         *
-         *
-         *
-         *
-         * 티켓 등록 상태 표시!
-         *
-         *
-         */
+
 
         view = inflater.inflate(R.layout.fragment_ticket, container, false);
         registBtn = (ImageButton) view.findViewById(R.id.btn_tRegist);
@@ -59,19 +52,20 @@ public class TicketFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // 티켓 정보 바 변경
-        if(Func.INSTANCE.checkRegistTicket()) {  // 티켓 정보가 등록되어있다면
-            ticketStatus.setBackgroundResource(R.color.colorTrueTicketInfoBox);
-            ticketStatus.setText(R.string.trueTicketInfoBoxTxt);
-            name.setText(Prop.INSTANCE.getTicketCode());
-            registTime.setText(Prop.INSTANCE.getRegistDateStr());
+        /*
+        이전에 티켓 등록 했는지
+        찾아보기
+        */
+        Log.d(Prop.INSTANCE.getTAG(), " ㄹ??");
+        if(Func.INSTANCE.checkRegistTicket()) {
+            setTicketInfo();
         }
-        else {  // 티켓 정보가 등록되어있지 않다면
-            ticketStatus.setBackgroundResource(R.color.colorFalseTicketInfoBox);
-            ticketStatus.setText(R.string.falseTicketInfoBoxTxt);
-            name.setText(" - ");
-            registTime.setText(" - ");
+        else {
+            checkTodayRegisteredTicket();
         }
+
+
+
 
         // 티켓 등록 버튼 클릭 이벤트
         registBtn.setOnClickListener(new Button.OnClickListener() {
@@ -87,6 +81,46 @@ public class TicketFragment extends Fragment {
 
             }
         });
+    }
+
+    // 티켓 정보 바 변경
+    private void setTicketInfo() {
+        if(Func.INSTANCE.checkRegistTicket()) {  // 티켓 정보가 등록되어있다면
+            ticketStatus.setBackgroundResource(R.color.colorTrueTicketInfoBox);
+            ticketStatus.setText(R.string.trueTicketInfoBoxTxt);
+            name.setText(Prop.INSTANCE.getTicketCode());
+            registTime.setText(Prop.INSTANCE.getRegistDateStr());
+        }
+        else {  // 티켓 정보가 등록되어있지 않다면
+            ticketStatus.setBackgroundResource(R.color.colorFalseTicketInfoBox);
+            ticketStatus.setText(R.string.falseTicketInfoBoxTxt);
+            name.setText(" - ");
+            registTime.setText(" - ");
+        }
+    }
+    // 티켓 오늘 등록했었는지 확인, 값 저장하는 함수
+    @SuppressLint("CheckResult")
+    private void checkTodayRegisteredTicket() {
+        RegisteredTodayTicketService registeredTodayTicketService = Prop.INSTANCE.getRetrofit().create(RegisteredTodayTicketService.class);
+        Prop.RegisteredTodayTicketData registeredTodayTicketData = new Prop.RegisteredTodayTicketData(Prop.INSTANCE.getUser_nfc());
+
+        //noinspection ResultOfMethodCallIgnored
+        registeredTodayTicketService.resultRepos(registeredTodayTicketData)
+                .subscribeOn(Schedulers.io())   // 데이터를 보내는 쓰레드 및 함수
+                .observeOn(AndroidSchedulers.mainThread())  // 데이터를 받아서 사용하는 쓰레드 및 함수
+                .subscribe(item -> { // 통신 결과로 받은 Object
+                            Prop.INSTANCE.setTicketCode(item.getTicket_code());
+                            Prop.INSTANCE.setRegistDate(item.getReg_date());
+
+                            Date date = new Date(Prop.INSTANCE.getRegistDate().longValue());
+                            String strDate = Func.INSTANCE.formatDateKST(date);
+                            Prop.INSTANCE.setRegistDateStr(strDate);
+                            Log.d(Prop.INSTANCE.getTAG(), " ㅁㄴㅇ");
+                            setTicketInfo();
+                        }
+                        , e -> {
+                            Toast.makeText(getActivity(), "기존 티켓 등록 찾기 오류가 발생했습니다. \n 잠시후 다시 시도해주세요.", Toast.LENGTH_LONG).show();
+                        });
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.example.throughpass.obj
 
+import android.app.Application
+import android.content.Context
 import com.example.throughpass.obj.Prop.serverUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -41,4 +43,12 @@ object Prop {
     // 티켓 등록
     data class RegistTicketData(val ticketCode : String, val nfcUid : String, val tokenId : String)
     data class ResultData(var result : String, var registDate : BigInteger)
+
+    // NFC 태깅
+    data class NfcTaggingData(val nfcUid : String, val attrCode : Int)
+    data class TagResultData(var result : String)
+
+    // 티켓 사전 등록 조회
+    data class RegisteredTodayTicketData(val nfcUid : String)
+    data class RegisteredResultData(var ticket_code : String, var reg_date : BigInteger)
 }

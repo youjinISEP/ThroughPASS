@@ -1,17 +1,20 @@
 package com.example.throughpass.obj
 
+import android.app.Application
+import android.content.Context
+import android.system.Os.open
 import android.text.TextUtils
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.throughpass.obj.Prop.registDateStr
 import com.example.throughpass.obj.Prop.ticketCode
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.POST
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.nio.channels.AsynchronousFileChannel.open
 import java.util.*
 
 
@@ -43,6 +46,20 @@ object Func {
         Prop.dateFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
         return Prop.dateFormat.format(date)
     }
+
+    // assets 폴더 내 파일 읽어오는 함수
+    fun readFromAssets(filename: String, context: Context): String? {
+        val reader = BufferedReader(InputStreamReader(context.assets.open(filename)))
+        val sb = StringBuilder()
+        var line: String = reader.readLine()
+
+        while (line != null) {
+            sb.append(line)
+            line = reader.readLine()
+        }
+        reader.close()
+        return sb.toString()
+    }
 }
 
 
@@ -52,9 +69,20 @@ interface TestService {
     @POST("/ticket/addTicket")
     fun resultRepos(@Body insertTicketData: Prop.AddTicketData) : Single<Prop.TestData>
 }
-// TEST REST API
-// RETROFIT
+// 티켓 등록 API
 interface RegistTicketService {
     @POST("/ticket/registTicket")
     fun resultRepos(@Body registTicketData: Prop.RegistTicketData) : Single<Prop.ResultData>
+}
+
+// NFC 태그
+interface NfcTaggingService {
+    @POST("/user/nfcTagging")
+    fun resultRepos(@Body nfcTaggingData: Prop.NfcTaggingData) : Single<Prop.TagResultData>
+}
+
+// 티켓 사전 등록 조회
+interface RegisteredTodayTicketService {
+    @POST("/ticket/getTodayRegisteredTicket")
+    fun resultRepos(@Body registeredTodayTicketData: Prop.RegisteredTodayTicketData) : Single<Prop.RegisteredResultData>
 }
