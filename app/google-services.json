@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "45026288794",
+    "firebase_url": "https://ghost-liner.firebaseio.com",
+    "project_id": "ghost-liner",
+    "storage_bucket": "ghost-liner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45026288794:android:3e99b2fe6563c6d0cf2b23",
+        "android_client_info": {
+          "package_name": "com.example.throughpass"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "45026288794-jl1s90ilnfj9h58vk830o4mja5e5d6u6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbk2Dd_7IlJ4ptjZgYpHbgRS2zpthF_zc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "45026288794-jl1s90ilnfj9h58vk830o4mja5e5d6u6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
