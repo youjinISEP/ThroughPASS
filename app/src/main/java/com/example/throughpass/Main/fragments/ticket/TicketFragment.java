@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.throughpass.Main.popup.NoticePopup;
-import com.example.throughpass.Main.popup.WriteTicketCodePopup;
 import com.example.throughpass.R;
 import com.example.throughpass.obj.Func;
 import com.example.throughpass.obj.Prop;
@@ -34,8 +31,6 @@ import java.util.TimerTask;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class TicketFragment extends Fragment {
     final static int TICKET_POPUP_CODE = 111;

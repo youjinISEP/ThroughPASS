@@ -1,4 +1,4 @@
-package com.example.throughpass.Main.popup;
+package com.example.throughpass.Main.fragments.ticket;
 
 import androidx.appcompat.app.AppCompatActivity;
 
