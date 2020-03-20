@@ -8,8 +8,10 @@ import com.example.throughpass.obj.Prop.registDateStr
 import com.example.throughpass.obj.Prop.ticketCode
 import io.reactivex.Single
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 import java.util.*
+import kotlin.collections.ArrayList
 
 /*
 * 공통 함수
@@ -31,7 +33,7 @@ object Func {
     // 티켓 등록 상태 체크
     // @return : true(티켓 등록), false(티켓 미등록)
     fun checkRegistTicket() : Boolean {
-        return !(TextUtils.isEmpty(ticketCode) || TextUtils.isEmpty(registDateStr));
+        return !(TextUtils.isEmpty(ticketCode) || TextUtils.isEmpty(registDateStr))
     }
 
     // 날짜 변환
@@ -41,15 +43,76 @@ object Func {
     }
 }
 
-// TEST REST API
-// RETROFIT
-interface TestService {
-    @POST("/ticket/addTicket")
-    fun resultRepos(@Body insertTicketData: Prop.AddTicketData) : Single<Prop.TestData>
-}
-// TEST REST API
-// RETROFIT
+// 1. RETROFIT(티켓 등록화면 : 티켓 번호 -> 서버)
 interface RegistTicketService {
     @POST("/ticket/registTicket")
     fun resultRepos(@Body registTicketData: Prop.RegistTicketData) : Single<Prop.ResultData>
 }
+
+/**RETROFIT : 놀이기구 리스트 화면*/
+
+// 2. (서버 -> 모든 놀이기구 정보)
+interface GetAllRideData {
+    @GET("/attr/getAllAttractionsWithWaitTime")
+    fun resultRepos() : Single<ArrayList<Prop.AllRideData>>
+}
+
+// 3. (nfcUid -> 서버 -> 놀이기구 고유코드)
+interface WaitAttractionService{
+    @POST("/attr/getWaitAttrCode")
+    fun resultRepos(@Body waitRideCodeData: Prop.WaitRideCodeData) : Single<Prop.WaitRideResultData>
+}
+
+// 4. (nfcUid -> 서버 -> 놀이기구 고유코드 LIST)
+interface ResvAttractionService{
+    @POST("/attr/getReservation")
+    fun resultRepos(@Body resvRideCodeData: Prop.ResvRideCodeData) : Single<ArrayList<Prop.ResvRideResultData>>
+}
+
+// 5. (대기신청 버튼: nfcUid, 놀이기구 코드 -> 서버)
+interface AddWaitCodeService{
+    @POST("/user/insertWaitAttr")
+    fun resultRepos(@Body addWaitData: Prop.AddWaitData) : Single<Prop.AddWaitResultData>
+}
+
+// 6. (예약신청 버튼: nfcUid, 놀이기구 코드 -> 서버)
+interface AddResvCodeService{
+    @POST("/reservation/addReservation")
+    fun resultRepos(@Body addResvData: Prop.AddResvData)
+}
+
+// 7. (대기삭제 버튼: nfcUid -> 서버)
+interface RemoveWaitCodeService{
+    @POST("/user/removeWaitAttr")
+    fun resultRepos(@Body remWaitData: Prop.RemWaitData)
+}
+
+
+/**RETROFIT : 현재 상황 화면**/
+// 8. (예약취소 버튼: nfcUid, 예약순서 -> 서버)
+interface RemvResvCodeService{
+    @POST("/reservation/removeReservation")
+    fun resultRepos(@Body remResvData: Prop.RemResvData)
+}
+
+// 9. (예약 신청된 놀이기구 drag & dop: nfcUid, 예약놀이기구 리스트 -> 서버)
+interface  ChangeResvCodeService{
+    @POST("/reservation/changeReservation")
+    fun resultRepos(@Body changeResvData: Prop.ChangeResvData)
+}
+
+// 10. (예약 신청된 놀이기구 추천 버튼: nfcUid ->서버 ->놀이기구 정보)
+interface RecomResvCodeService{
+    @POST("/reservation/getDataForRecommend")
+    fun resultRepos(@Body recomResvData: Prop.RecomResvData) : Single<ArrayList<Prop.RecomResvResultData>>
+}
+
+// 11. (NFC 태깅 진행: nfcUid, attrCode -> 서버)
+interface TagNFCCodeService{
+    @POST("/user/nfcTagging")
+    fun resultRepos(@Body tagNFC: Prop.TagNFC) : Single<Prop.TagNFCResultData>
+}
+
+
+
+

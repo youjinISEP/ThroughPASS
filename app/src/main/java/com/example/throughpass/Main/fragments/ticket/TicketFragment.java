@@ -1,16 +1,14 @@
 package com.example.throughpass.Main.fragments.ticket;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,38 +16,56 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.throughpass.Main.popup.WriteTicketCodePopup;
+
+import com.bumptech.glide.request.RequestOptions;
+import com.example.throughpass.Main.SSLexception.GlideApp;
 import com.example.throughpass.R;
 import com.example.throughpass.obj.Func;
 import com.example.throughpass.obj.Prop;
 
-import java.math.BigInteger;
-import java.util.Date;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class TicketFragment extends Fragment {
     final static int TICKET_POPUP_CODE = 111;
     ImageButton registBtn;
     TextView ticketStatus, name, registTime;
+    ImageView ticketImg;
     private View view;
+
+    /*
+     * 화면 UI 디테일 수정
+     * 티켓 이미지 삽입
+     * 공지사항 내용 입력
+     *
+     */
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-              /*
-         * 티켓 정보 등록
-         * 티켓 등록 상태 표시!
-         *
-         *
-         */
 
         view = inflater.inflate(R.layout.fragment_ticket, container, false);
-        registBtn = (ImageButton) view.findViewById(R.id.btn_tRegist);
+        registBtn = view.findViewById(R.id.btn_tRegist);
         ticketStatus = view.findViewById(R.id.txt_tStatus);
         name = view.findViewById(R.id.txt_rName);
         registTime = view.findViewById(R.id.txt_rRegistTime);
+        ticketImg = view.findViewById(R.id.img_rImage);
+
+        String imgURL = "http://adventure.lotteworld.com/image/2018/7/201807251058185011_1350.jpg";
+
+
+            GlideApp.with(this)
+                    .load(imgURL)
+                    .apply(new RequestOptions().override(500,500))
+                    .centerCrop()
+                    .into(this.ticketImg);
+
+
         return view;
     }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -92,6 +108,7 @@ public class TicketFragment extends Fragment {
             if(resultCode == Activity.RESULT_OK) {  // 티켓 등록 완료
                 Toast.makeText(getActivity(), "ticket : " + Prop.INSTANCE.getTicketCode() + " \n " + Prop.INSTANCE.getRegistDateStr(), Toast.LENGTH_LONG).show();
                 Func.INSTANCE.refreshFragment(this, getFragmentManager());
+
             }
         }
     }

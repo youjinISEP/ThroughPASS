@@ -1,11 +1,15 @@
 package com.example.throughpass.Main.fragments.selection;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -21,11 +25,18 @@ import com.example.throughpass.Main.fragments.selection.selectRecyclerview.Selec
 import com.example.throughpass.Main.fragments.selection.selectRecyclerview.SelectRecyclerTouchListener;
 import com.example.throughpass.Main.fragments.selection.selectRecyclerview.SelectRecyclerViewAdapter;
 import com.example.throughpass.R;
+import com.example.throughpass.obj.Prop;
+import com.example.throughpass.obj.RemvResvCodeService;
+import com.example.throughpass.obj.ResvAttractionService;
+import com.example.throughpass.obj.WaitAttractionService;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class SelectionFragment extends Fragment {
 
@@ -37,14 +48,18 @@ public class SelectionFragment extends Fragment {
    private SelectRecyclerTouchListener touchListener;
    private Toolbar toolbar;
    public List<SelectItem> selectList;
+    private List<Integer> resvList;
+   TextView rideName, rideLocation;
+   ImageView rideImage;
+   Button waitRideCancel, resRideRecommand;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_selection, container, false);
 
+        //tab 클릭 이벤트
         tabLayout = view.findViewById(R.id.tabLayout);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
-
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getPosition()==0){
@@ -70,11 +85,17 @@ public class SelectionFragment extends Fragment {
 
             }
         });
+
+        //toolbar 설정 menu
         toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitle("현재 신청 상황");
 
         //waitFrame
         waitFrame = view.findViewById(R.id.waitFrame);
+        rideName = view.findViewById(R.id.txt_sWaitRideName);
+        rideLocation = view.findViewById(R.id.txt_sWaitRideLocat);
+        rideImage = view.findViewById(R.id.img_sWaitRide);
+        waitRideCancel = view.findViewById(R.id.btn_sCancelWait);
 
         //registFrame
         registFrame = view.findViewById(R.id.registFrame);
@@ -109,7 +130,66 @@ public class SelectionFragment extends Fragment {
     public void onResume(){
         super.onResume();
         recyclerView.addOnItemTouchListener(touchListener);
+        DragAndDropList();
 
+    }
+
+    /**
+     * 대기신청 TAB
+     */
+    @SuppressLint("CheckResult")
+    public void checkStatusOfRide() {
+
+        if (Prop.INSTANCE.getUser_nfc() != null) {
+            //3. 대기 신청한 놀이기구 정보
+            WaitAttractionService waitAttractionService = Prop.INSTANCE.getRetrofit().create(WaitAttractionService.class);
+            Prop.WaitRideCodeData waitRideCodeData = new Prop.WaitRideCodeData(Prop.INSTANCE.getUser_nfc());
+
+            waitAttractionService.resultRepos(waitRideCodeData)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(item -> {
+                        if (item == null) {
+                            Log.d("@@@@@", "error! no item included");
+                        } else {
+                            Prop.INSTANCE.setWait_attr_code(item.getAttr_code());
+                            Log.d("@@@@@", "item.getAttr_code: " + item.getAttr_code());
+                        }
+
+                    });
+
+            rideName.setText(Prop.INSTANCE.getWait_attr_code()); //놀이기구 코드 받아오기
+
+            //4. 예약 신청한 놀이기구 정보
+            ResvAttractionService resvAttractionService = Prop.INSTANCE.getRetrofit().create(ResvAttractionService.class);
+            Prop.ResvRideCodeData resvRideCodeData = new Prop.ResvRideCodeData(Prop.INSTANCE.getUser_nfc());
+
+            resvAttractionService.resultRepos(resvRideCodeData)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(item -> {
+                        if (item == null) {
+                            Log.d("@@@@@", "item is null");
+                        } else {
+                            for (int i = 0; i < item.size(); i++) {
+                                resvList.add(item.get(i).getAttr_code());
+                                Log.d("@@@@@@", "att_order" + item.get(i).getReservation_order());
+                            }
+                        }
+
+                    }, e -> {
+                        Log.d("@@@@@@@@@", "error: ");
+                    });
+        }
+    }
+
+
+
+
+    /**
+     * 예약신청 TAB
+     */
+    public void DragAndDropList(){
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
@@ -118,6 +198,8 @@ public class SelectionFragment extends Fragment {
 
                 Collections.swap(selectList,position_dragged,position_target);
                 recyclerViewAdapter.notifyItemMoved(position_dragged, position_target);
+
+                //9. 예약 신청된 놀이기구 drag & drop
 
                 return false;
             }
@@ -134,21 +216,16 @@ public class SelectionFragment extends Fragment {
         touchListener = new SelectRecyclerTouchListener(this,recyclerView);
         touchListener
                 .setClickable(new SelectRecyclerTouchListener.OnRowClickListener() {
-
                     @Override
                     public void onRowClicked(int position) {
                         Log.d("@@@@@@@@", "click");
-
                         //recyclerview item 클릭시!
                         //Toast.makeText(getApplicationContext(),taskList.get(position).getName(), Toast.LENGTH_SHORT).show();
                     }
-
                     @Override
-                    public void onIndependentViewClicked(int independentViewID, int position) {
-
-                    }
+                    public void onIndependentViewClicked(int independentViewID, int position) { }
                 })
-                .setSwipeOptionViews(R.id.delete_task,R.id.second_task)
+                .setSwipeOptionViews(R.id.delete_task)
                 .setSwipeable(R.id.rowFG, R.id.rowBG, new SelectRecyclerTouchListener.OnSwipeOptionsClickListener() {
                     @Override
                     public void onSwipeOptionClicked(int viewID, int position) {
@@ -156,6 +233,10 @@ public class SelectionFragment extends Fragment {
                             case R.id.delete_task:
                                 //taskList.remove(position);
                                 //recyclerviewAdapter.setTaskList(taskList);
+                                //8. 예약 취소버튼
+                                RemvResvCodeService remvResvCodeService = Prop.INSTANCE.getRetrofit().create(RemvResvCodeService.class);
+                                Prop.RemResvData remResvData = new Prop.RemResvData(Prop.INSTANCE.getUser_nfc(), position);
+                                remvResvCodeService.resultRepos(remResvData);
                                 break;
                         }
                     }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.throughpass">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".App"
@@ -16,7 +18,7 @@
         <activity android:name=".Main.NFC.nfcActivity"></activity>
         <activity android:name=".Main.fragments.ride.RideDetailActivity" />
         <activity
-            android:name=".Main.popup.WriteTicketCodePopup"
+            android:name=".Main.fragments.ticket.WriteTicketCodePopup"
             android:theme="@style/PopupTheme"></activity>
         <activity android:name=".Main.MainActivity">
             <intent-filter>
@@ -25,7 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main.TestActivity" />
+
     </application>
+
+
+
 
 </manifest>

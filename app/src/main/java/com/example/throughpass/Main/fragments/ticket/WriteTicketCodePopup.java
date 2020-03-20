@@ -1,4 +1,4 @@
-package com.example.throughpass.Main.popup;
+package com.example.throughpass.Main.fragments.ticket;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -77,7 +77,7 @@ public class WriteTicketCodePopup extends AppCompatActivity {
     @SuppressLint("CheckResult")
     public void registTicket(String code) {
         RegistTicketService registTicketService = Prop.INSTANCE.getRetrofit().create(RegistTicketService.class);
-        Prop.RegistTicketData registTicketData = new Prop.RegistTicketData(code, Prop.INSTANCE.getUser_nfc());
+        Prop.RegistTicketData registTicketData = new Prop.RegistTicketData(code, Prop.INSTANCE.getUser_nfc()); //request하는 부분
 
         //noinspection ResultOfMethodCallIgnored
         registTicketService.resultRepos(registTicketData)
@@ -121,14 +121,19 @@ public class WriteTicketCodePopup extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //바깥레이어 클릭시 안닫히게
-        if(event.getAction()==MotionEvent.ACTION_OUTSIDE){
-            return false;
-        }
-        return true;
+        return event.getAction() != MotionEvent.ACTION_OUTSIDE;
     }
     @Override
     public void onBackPressed() {
         //안드로이드 백버튼 막기
         return;
     }
+
+    public void onStop() {
+        super.onStop();
+        AndroidSchedulers.mainThread().shutdown();
+    }
+
+    //TODO 카메라 연동해서 QR코드 인식하여 티켓 번호 자동등록
+
 }
