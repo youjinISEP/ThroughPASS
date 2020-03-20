@@ -19,8 +19,8 @@
     <ImageView
         android:id="@+id/img_rDetail"
         android:layout_width="match_parent"
-        android:layout_height="305dp"
-        tools:srcCompat="@tools:sample/backgrounds/scenic[4]" />
+        android:layout_height="wrap_content"
+        tools:srcCompat="@tools:sample/avatars[2]" />
 
     <TextView
         android:id="@+id/txt_rInfo"

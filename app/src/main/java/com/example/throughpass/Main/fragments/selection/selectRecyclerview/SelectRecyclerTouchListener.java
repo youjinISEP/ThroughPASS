@@ -1,8 +1,7 @@
-package com.example.throughpass.Main.fragments.ride.swipeRecyclerview;
+package com.example.throughpass.Main.fragments.selection.selectRecyclerview;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -24,8 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListener, OnActivityTouchListener {
-
+public class SelectRecyclerTouchListener implements RecyclerView.OnItemTouchListener, OnSelectItemTouchListener {
     private static final String TAG = "RecyclerTouchListener";
     final Handler handler = new Handler();
     Fragment act;
@@ -73,9 +71,9 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
     private int fgViewID;
     private int bgViewID, bgViewIDLeft;
     private ArrayList<Integer> fadeViews;
-    private OnRowClickListener mRowClickListener;
-    private OnRowLongClickListener mRowLongClickListener;
-    private OnSwipeOptionsClickListener mBgClickListener, mBgClickListenerLeft;
+    private SelectRecyclerTouchListener.OnRowClickListener mRowClickListener;
+    private SelectRecyclerTouchListener.OnRowLongClickListener mRowLongClickListener;
+    private SelectRecyclerTouchListener.OnSwipeOptionsClickListener mBgClickListener, mBgClickListenerLeft;
     // user choices
     private boolean clickable = false;
     private boolean longClickable = false;
@@ -100,7 +98,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
         }
     };
 
-    public SwipeRecyclerTouchListener(Fragment a, RecyclerView recyclerView) {
+    public SelectRecyclerTouchListener(Fragment a, RecyclerView recyclerView){
         this.act = a;
         ViewConfiguration vc = ViewConfiguration.get(recyclerView.getContext());
         touchSlop = vc.getScaledTouchSlop();
@@ -158,40 +156,39 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
 
     /*////////////// Clickable ////////////////////*/
 
-    public SwipeRecyclerTouchListener setClickable(OnRowClickListener listener) {
+    public SelectRecyclerTouchListener setClickable(SelectRecyclerTouchListener.OnRowClickListener listener) {
         this.clickable = true;
         this.mRowClickListener = listener;
         return this;
     }
 
-    public SwipeRecyclerTouchListener setClickable(boolean clickable) {
+    public SelectRecyclerTouchListener setClickable(boolean clickable) {
         this.clickable = clickable;
         return this;
     }
 
-    public SwipeRecyclerTouchListener setLongClickable(boolean vibrate, OnRowLongClickListener listener) {
+    public SelectRecyclerTouchListener setLongClickable(boolean vibrate, SelectRecyclerTouchListener.OnRowLongClickListener listener) {
         this.longClickable = true;
         this.mRowLongClickListener = listener;
         this.longClickVibrate = vibrate;
         return this;
     }
-
-    public SwipeRecyclerTouchListener setLongClickable(boolean longClickable) {
+    public SelectRecyclerTouchListener setLongClickable(boolean longClickable) {
         this.longClickable = longClickable;
         return this;
     }
 
-    public SwipeRecyclerTouchListener setIndependentViews(Integer... viewIds) {
+    public SelectRecyclerTouchListener setIndependentViews(Integer... viewIds) {
         this.independentViews = new ArrayList<>(Arrays.asList(viewIds));
         return this;
     }
 
-    public SwipeRecyclerTouchListener setUnClickableRows(Integer... rows) {
+    public SelectRecyclerTouchListener setUnClickableRows(Integer... rows) {
         this.unClickableRows = new ArrayList<>(Arrays.asList(rows));
         return this;
     }
 
-    public SwipeRecyclerTouchListener setIgnoredViewTypes(Integer... viewTypes) {
+    public SelectRecyclerTouchListener setIgnoredViewTypes(Integer... viewTypes) {
         ignoredViewTypes.clear();
         ignoredViewTypes.addAll(Arrays.asList(viewTypes));
         return this;
@@ -199,7 +196,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
 
     //////////////// Swipeable ////////////////////
 
-    public SwipeRecyclerTouchListener setSwipeable(int foregroundID, int backgroundID, OnSwipeOptionsClickListener listener) {
+    public SelectRecyclerTouchListener setSwipeable(int foregroundID, int backgroundID, SelectRecyclerTouchListener.OnSwipeOptionsClickListener listener) {
         this.swipeable = true;
 
         if (fgViewID != 0 && foregroundID != fgViewID)
@@ -207,9 +204,11 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
         fgViewID = foregroundID;
         bgViewID = backgroundID;
         this.mBgClickListener = listener;
+        Log.d("@@@@@", "touch listener work before");
 
-        if (act instanceof RecyclerTouchListenerHelper)
-            ((RecyclerTouchListenerHelper) act).setOnActivityTouchListener(this);
+        if (act instanceof SelectRecyclerTouchListener.RecyclerTouchListenerHelper)
+            ((SelectRecyclerTouchListener.RecyclerTouchListenerHelper) act).setOnActivityTouchListener(this);
+        Log.d("@@@@@", "touch listener work after");
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         act.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -218,19 +217,19 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
         return this;
     }
 
-    public SwipeRecyclerTouchListener setSwipeable(boolean value) {
+    public SelectRecyclerTouchListener setSwipeable(boolean value) {
         this.swipeable = value;
         if (!value)
             invalidateSwipeOptions();
         return this;
     }
 
-    public SwipeRecyclerTouchListener setSwipeOptionViews(Integer... viewIds) {
+    public SelectRecyclerTouchListener setSwipeOptionViews(Integer... viewIds) {
         this.optionViews = new ArrayList<>(Arrays.asList(viewIds));
         return this;
     }
 
-    public SwipeRecyclerTouchListener setUnSwipeableRows(Integer... rows) {
+    public SelectRecyclerTouchListener setUnSwipeableRows(Integer... rows) {
         this.unSwipeableRows = new ArrayList<>(Arrays.asList(rows));
         return this;
     }
@@ -238,13 +237,13 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
     //////////////// Fade Views ////////////////////
 
     // Set views which are faded out as fg is opened
-    public SwipeRecyclerTouchListener setViewsToFade(Integer... viewIds) {
+    public SelectRecyclerTouchListener setViewsToFade(Integer... viewIds) {
         this.fadeViews = new ArrayList<>(Arrays.asList(viewIds));
         return this;
     }
 
     // the entire foreground is faded out as it is opened
-    public SwipeRecyclerTouchListener setFgFade() {
+    public SelectRecyclerTouchListener setFgFade() {
         if (!fadeViews.contains(fgViewID))
             this.fadeViews.add(fgViewID);
         return this;
@@ -322,7 +321,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
         bgView.setMinimumHeight(fgView.getHeight());
 
         closeVisibleBG(null);
-        animateFG(touchedView, Animation.OPEN, ANIMATION_STANDARD);
+        animateFG(touchedView, SelectRecyclerTouchListener.Animation.OPEN, ANIMATION_STANDARD);
         bgVisible = true;
         bgVisibleView = fgView;
         bgVisiblePosition = touchedPosition;
@@ -345,7 +344,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
         bgVisiblePosition = -1;
     }
 
-    public void closeVisibleBG(final OnSwipeListener mSwipeCloseListener) {
+    public void closeVisibleBG(final SelectRecyclerTouchListener.OnSwipeListener mSwipeCloseListener) {
         if (bgVisibleView == null) {
             Log.e(TAG, "No rows found for which background options are visible");
             return;
@@ -391,15 +390,15 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
         }
     }
 
-    private void animateFG(View downView, Animation animateType, long duration) {
-        if (animateType == Animation.OPEN) {
+    private void animateFG(View downView, SelectRecyclerTouchListener.Animation animateType, long duration) {
+        if (animateType == SelectRecyclerTouchListener.Animation.OPEN) {
             ObjectAnimator translateAnimator = ObjectAnimator.ofFloat(
                     fgView, View.TRANSLATION_X, -bgWidth);
             translateAnimator.setDuration(duration);
             translateAnimator.setInterpolator(new DecelerateInterpolator(1.5f));
             translateAnimator.start();
             animateFadeViews(downView, 0f, duration);
-        } else if (animateType == Animation.CLOSE) {
+        } else if (animateType == SelectRecyclerTouchListener.Animation.CLOSE) {
             ObjectAnimator translateAnimator = ObjectAnimator.ofFloat(
                     fgView, View.TRANSLATION_X, 0f);
             translateAnimator.setDuration(duration);
@@ -409,10 +408,10 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
         }
     }
 
-    private void animateFG(View downView, final Animation animateType, long duration,
-                           final OnSwipeListener mSwipeCloseListener) {
+    private void animateFG(View downView, final SelectRecyclerTouchListener.Animation animateType, long duration,
+                           final SelectRecyclerTouchListener.OnSwipeListener mSwipeCloseListener) {
         final ObjectAnimator translateAnimator;
-        if (animateType == Animation.OPEN) {
+        if (animateType == SelectRecyclerTouchListener.Animation.OPEN) {
             translateAnimator = ObjectAnimator.ofFloat(fgView, View.TRANSLATION_X, -bgWidth);
             translateAnimator.setDuration(duration);
             translateAnimator.setInterpolator(new DecelerateInterpolator(1.5f));
@@ -434,9 +433,9 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (mSwipeCloseListener != null) {
-                    if (animateType == Animation.OPEN)
+                    if (animateType == SelectRecyclerTouchListener.Animation.OPEN)
                         mSwipeCloseListener.onSwipeOptionsOpened();
-                    else if (animateType == Animation.CLOSE)
+                    else if (animateType == SelectRecyclerTouchListener.Animation.CLOSE)
                         mSwipeCloseListener.onSwipeOptionsClosed();
                 }
                 translateAnimator.removeAllListeners();
@@ -558,7 +557,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
                 if (swipeable) {
                     if (touchedView != null && isFgSwiping) {
                         // cancel
-                        animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD);
+                        animateFG(touchedView, SelectRecyclerTouchListener.Animation.CLOSE, ANIMATION_STANDARD);
                     }
                     mVelocityTracker.recycle();
                     mVelocityTracker = null;
@@ -574,7 +573,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
 
             // When finger is lifted off the screen (after clicking, flinging, swiping, etc..)
             case MotionEvent.ACTION_UP: {
-
+                Log.d("@@@@@","mouse swipe");
                 handler.removeCallbacks(mLongPressed);
                 if (mLongClickPerformed)
                     break;
@@ -635,7 +634,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
                     final int downPosition = touchedPosition;
                     ++mDismissAnimationRefCount;
                     //TODO - speed
-                    animateFG(touchedView, Animation.OPEN, ANIMATION_STANDARD);
+                    animateFG(touchedView, SelectRecyclerTouchListener.Animation.OPEN, ANIMATION_STANDARD);
                     bgVisible = true;
                     bgVisibleView = fgView;
                     bgVisiblePosition = downPosition;
@@ -650,7 +649,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
 
                     ++mDismissAnimationRefCount;
                     //TODO - speed
-                    animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD);
+                    animateFG(touchedView, SelectRecyclerTouchListener.Animation.CLOSE, ANIMATION_STANDARD);
                     bgVisible = false;
                     bgVisibleView = null;
                     bgVisiblePosition = -1;
@@ -660,7 +659,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
                 else if (swipeable && swipedLeft && !bgVisible) {
                     // cancel
                     final View tempBgView = bgView;
-                    animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD, new OnSwipeListener() {
+                    animateFG(touchedView, SelectRecyclerTouchListener.Animation.CLOSE, ANIMATION_STANDARD, new SelectRecyclerTouchListener.OnSwipeListener() {
                         @Override
                         public void onSwipeOptionsClosed() {
                             if (tempBgView != null)
@@ -681,7 +680,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
                 // it's open position (spring effect)
                 else if (swipeable && swipedRight && bgVisible) {
                     // cancel
-                    animateFG(touchedView, Animation.OPEN, ANIMATION_STANDARD);
+                    animateFG(touchedView, SelectRecyclerTouchListener.Animation.OPEN, ANIMATION_STANDARD);
                     bgVisible = true;
                     bgVisibleView = fgView;
                     bgVisiblePosition = touchedPosition;
@@ -690,7 +689,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
                 // really fast and the fg is stuck open - so in that case we close the fg
                 else if (swipeable && swipedRight && !bgVisible) {
                     // cancel
-                    animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD);
+                    animateFG(touchedView, SelectRecyclerTouchListener.Animation.CLOSE, ANIMATION_STANDARD);
                     bgVisible = false;
                     bgVisibleView = null;
                     bgVisiblePosition = -1;
@@ -699,7 +698,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
                 // really fast and the fg is stuck open - so in that case we open the fg
                 else if (swipeable && swipedLeft && bgVisible) {
                     // cancel
-                    animateFG(touchedView, Animation.OPEN, ANIMATION_STANDARD);
+                    animateFG(touchedView, SelectRecyclerTouchListener.Animation.OPEN, ANIMATION_STANDARD);
                     bgVisible = true;
                     bgVisibleView = fgView;
                     bgVisiblePosition = touchedPosition;
@@ -710,7 +709,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
                     // if partial foreground view is clicked (see ACTION_DOWN) bring foreground back to original position
                     // bgVisible is true automatically since it's already checked in ACTION_DOWN block
                     if (swipeable && fgPartialViewClicked) {
-                        animateFG(touchedView, Animation.CLOSE, ANIMATION_STANDARD);
+                        animateFG(touchedView, SelectRecyclerTouchListener.Animation.CLOSE, ANIMATION_STANDARD);
                         bgVisible = false;
                         bgVisibleView = null;
                         bgVisiblePosition = -1;
@@ -720,6 +719,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
                     else if (clickable && !bgVisible && touchedPosition >= 0 && !unClickableRows.contains(touchedPosition)
                             && isIndependentViewClicked(motionEvent) && !isRViewScrolling) {
                         mRowClickListener.onRowClicked(touchedPosition);
+                        Log.d("@@@@@","an item clicked");
                     }
                     // On Click listener for independent views inside the rows
                     else if (clickable && !bgVisible && touchedPosition >= 0 && !unClickableRows.contains(touchedPosition)
@@ -732,12 +732,14 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
                     // On Click listener for background options
                     else if (swipeable && bgVisible && !fgPartialViewClicked) {
                         final int optionID = getOptionViewID(motionEvent);
+                        Log.d("@@@@@", optionID+"");
                         if (optionID >= 0 && touchedPosition >= 0) {
                             final int downPosition = touchedPosition;
-                            closeVisibleBG(new OnSwipeListener() {
+                            closeVisibleBG(new SelectRecyclerTouchListener.OnSwipeListener() {
                                 @Override
                                 public void onSwipeOptionsClosed() {
                                     mBgClickListener.onSwipeOptionClicked(optionID, downPosition);
+                                    Log.d("@@@@@","swipe to right and click hided item");
                                     //Define function at MainActivity
                                 }
 
@@ -909,7 +911,7 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
     }
 
     public interface RecyclerTouchListenerHelper {
-        void setOnActivityTouchListener(OnActivityTouchListener listener);
+        void setOnActivityTouchListener(OnSelectItemTouchListener listener);
     }
 
     public interface OnSwipeListener {
@@ -917,6 +919,4 @@ public class SwipeRecyclerTouchListener implements RecyclerView.OnItemTouchListe
 
         void onSwipeOptionsOpened();
     }
-
-
 }
