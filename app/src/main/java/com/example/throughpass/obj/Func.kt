@@ -11,6 +11,7 @@ import com.example.throughpass.obj.Prop.registDateStr
 import com.example.throughpass.obj.Prop.ticketCode
 import io.reactivex.Single
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -86,4 +87,16 @@ interface NfcTaggingService {
 interface RegisteredTodayTicketService {
     @POST("/ticket/getTodayRegisteredTicket")
     fun resultRepos(@Body registeredTodayTicketData: Prop.RegisteredTodayTicketData) : Single<Prop.RegisteredResultData>
+}
+
+// 공지사항 데이터 가져오기
+interface getAllNoticeService {
+    @GET("/notice/getAllNotice")
+    fun resultRepos(): Single<ArrayList<Prop.NoticeData>>
+}
+
+// 분실물 데이터 가져오기
+interface getAllLostsService {
+    @GET("/losts/getAllLosts")
+    fun resultRepos() : Single<ArrayList<Prop.LostsData>>
 }

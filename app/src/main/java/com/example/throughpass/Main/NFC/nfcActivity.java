@@ -66,7 +66,7 @@ public class nfcActivity extends AppCompatActivity {
                 Log.d(Prop.INSTANCE.getTAG(), "NFC 태그 전송중");
                 nfcTagging();
             }
-        }, 5000);
+        }, 5 * Prop.INSTANCE.getSECOND());
     }
 
     private void nfcTagging() {

@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity  {
         navView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
         transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.nav_host_fragment, ticketFragment).commitAllowingStateLoss();
+//        transaction.replace(R.id.nav_host_fragment, ticketFragment).commitAllowingStateLoss();
 
         Prop.INSTANCE.setUser_nfc(Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));    // 안드로이드 ID 넣기
 
@@ -70,8 +70,6 @@ public class MainActivity extends AppCompatActivity  {
                 }
             }
         });
-
-        Log.d(Prop.INSTANCE.getTAG(), " ㄴㅁㅇ");
     }
 
     //BottomNavigation Bar Control
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity  {
             public void run() {
                 backKeyPressedTwice = false;
             }
-        }, 2000);
+        }, 2 * Prop.INSTANCE.getSECOND());
     }
 
     @Override

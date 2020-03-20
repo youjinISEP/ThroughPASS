@@ -24,6 +24,7 @@ object Prop {
     val FCM_MSG_CODE : Int = 111
     val TAG : String = "GHOST"
     var fcmTokenId : String? = null
+    val SECOND : Int = 1000
 
     // Retrofit 객체 생성
     val retrofit: Retrofit = Retrofit.Builder()
@@ -51,4 +52,10 @@ object Prop {
     // 티켓 사전 등록 조회
     data class RegisteredTodayTicketData(val nfcUid : String)
     data class RegisteredResultData(var ticket_code : String, var reg_date : BigInteger)
+
+    // 공지사항 가져오기
+    data class NoticeData(val title : String, val context : String, var reg_date : BigInteger)
+
+    // 분실물 데이터 가져오기
+    data class LostsData(val classification : String, val name : String, val location : String, var get_date : BigInteger)
 }
