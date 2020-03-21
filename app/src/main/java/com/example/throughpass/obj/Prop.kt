@@ -17,8 +17,11 @@ import java.util.concurrent.TimeUnit
 * */
 object Prop {
     val serverUrl : String = "http://15.165.28.140:8000"
-    val FCM_MSG_CODE : Int = 111
-    val TAG : String = "GHOST"
+    val FCM_MSG_CODE = 112
+    const val ADD_WAIT_CODE = 1110
+    const val ADD_RESERVATION_CODE = 1111
+    const val TICKET_POPUP_CODE = 111
+    const val TAG = "GHOST"
     var fcmTokenId : String? = null
     val SECOND : Int = 1000
 
@@ -64,7 +67,7 @@ object Prop {
 
     /* 1. 티켓 등록 화면 : 티켓 번호 - > 서버 */
     data class RegistTicketData(val ticketCode : String, val nfcUid : String, var tokenId : String)   //REQ DATA
-    data class ResultData(var result : String, var registDate : BigInteger)     //RES DATA
+    data class TicketResultData(var result : String, var registDate : BigInteger)     //RES DATA
 
 
     /* 놀이기구 리스트 화면*/
@@ -96,7 +99,7 @@ object Prop {
 
     // 6. 예약 신청 요청
     data class AddResvData(val nfcUid: String, val attrCode: Int)             //REQ DATA
-
+    data class ResultData(var result: String)
 
     /* 현재상황 화면 */
     //* 7. 대기 신청된 놀이기구 삭제

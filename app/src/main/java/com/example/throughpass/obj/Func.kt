@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.throughpass.obj.Prop.registDateStr
 import com.example.throughpass.obj.Prop.ticketCode
 import io.reactivex.Single
+import io.reactivex.annotations.Nullable
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -20,13 +21,6 @@ import kotlin.collections.ArrayList
 * 공통 함수
 * */
 object Func {
-
-    fun getUserInfo() : Boolean {
-        //retrofit get
-        // Prop.user_nfc = "asdfasdasdf"
-        return true
-    }
-
     // Fragment 새로고침
     fun refreshFragment(fragment: Fragment, fragmentManager: FragmentManager) {
         var ft: FragmentTransaction = fragmentManager.beginTransaction()
@@ -64,7 +58,7 @@ object Func {
 // 1. RETROFIT(티켓 등록화면 : 티켓 번호 -> 서버)
 interface RegistTicketService {
     @POST("/ticket/registTicket")
-    fun resultRepos(@Body registTicketData: Prop.RegistTicketData) : Single<Prop.ResultData>
+    fun resultRepos(@Body registTicketData: Prop.RegistTicketData) : Single<Prop.TicketResultData>
 }
 
 /**RETROFIT : 놀이기구 리스트 화면*/
@@ -96,7 +90,7 @@ interface AddWaitCodeService{
 // 6. (예약신청 버튼: nfcUid, 놀이기구 코드 -> 서버)
 interface AddResvCodeService{
     @POST("/reservation/addReservation")
-    fun resultRepos(@Body addResvData: Prop.AddResvData)
+    fun resultRepos(@Body addResvData: Prop.AddResvData) : Single<Prop.ResultData>
 }
 
 // 7. (대기삭제 버튼: nfcUid -> 서버)

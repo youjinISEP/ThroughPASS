@@ -32,8 +32,10 @@ import java.util.TimerTask;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.example.throughpass.obj.Prop.TICKET_POPUP_CODE;
+import static com.example.throughpass.obj.Prop.TAG;
+
 public class TicketFragment extends Fragment {
-    final static int TICKET_POPUP_CODE = 111;
     ImageButton registBtn;
     TextView ticketStatus, name, registTime, worldNotice, worldLosts;
     private View view;
@@ -68,10 +70,8 @@ public class TicketFragment extends Fragment {
         이전에 티켓 등록 했는지
         찾아보기
         */
-        if(Func.INSTANCE.checkRegistTicket()) {
-            setTicketInfo();
-        }
-        else {
+        setTicketInfo();
+        if(!Func.INSTANCE.checkRegistTicket()) {
             checkTodayRegisteredTicket();
         }
 
@@ -90,11 +90,6 @@ public class TicketFragment extends Fragment {
         registBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* notice test */
-//                Intent intent = new Intent(getActivity(), NoticePopup.class);
-//                intent.putExtra("type", "wait");
-//                startActivity(intent);
-
 
                 if(Func.INSTANCE.checkRegistTicket()) {
                     Toast.makeText(getActivity(), "현재 티켓이 등록되어 있습니다. \n 최대 등록 횟수 : 1회", Toast.LENGTH_LONG).show();
@@ -160,7 +155,7 @@ public class TicketFragment extends Fragment {
                 .subscribe(item -> { // 통신 결과로 받은 Object
                             if(item != null) {
                                 noticesList = item; // 이 방법으로 가능한지?
-                                Log.d(Prop.INSTANCE.getTAG(), "--------------- getTodayAllNotice");
+//                                Log.d(TAG, "--------------- getTodayAllNotice");
                             }
                         }
                         , e -> {
@@ -180,7 +175,7 @@ public class TicketFragment extends Fragment {
                 .subscribe(item -> { // 통신 결과로 받은 Object
                             if(item != null) {
                                 lostsList = item; // 이 방법으로 가능한지
-                                Log.d(Prop.INSTANCE.getTAG(), "--------------- getTodayAllLosts");
+//                                Log.d(TAG, "--------------- getTodayAllLosts");
                             }
                         }
                         , e -> {
@@ -237,19 +232,19 @@ public class TicketFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        Log.d(Prop.INSTANCE.getTAG(), "onDestroyVIew");
+        Log.d(TAG, "onDestroyVIew");
         super.onDestroyView();
     }
 
     @Override
     public void onPause() {
-        Log.d(Prop.INSTANCE.getTAG(), "onPause");
+        Log.d(TAG, "onPause");
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        Log.d(Prop.INSTANCE.getTAG(), "onStop");
+        Log.d(TAG, "onStop");
         super.onStop();
     }
 
