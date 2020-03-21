@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import static com.example.throughpass.obj.Prop.TAG;
 public class App extends Application {
 
     /*private static App instance;
@@ -39,7 +40,7 @@ public class App extends Application {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
                         if (!task.isSuccessful()) {
-                            Log.e(Prop.INSTANCE.getTAG(), "getInstanceId failed", task.getException());
+                            Log.e(TAG, "getInstanceId failed", task.getException());
                             return;
                         }
 
@@ -47,8 +48,8 @@ public class App extends Application {
                         Prop.INSTANCE.setFcmTokenId(task.getResult().getToken());
 
                         // Log and toast
-                        Log.d(Prop.INSTANCE.getTAG(), Prop.INSTANCE.getFcmTokenId());
-                        Toast.makeText(getApplicationContext(), Prop.INSTANCE.getTAG(), Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, Prop.INSTANCE.getFcmTokenId());
+                        Toast.makeText(getApplicationContext(), TAG, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

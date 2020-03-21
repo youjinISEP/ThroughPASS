@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import static com.example.throughpass.obj.Prop.TAG;
 
 /**
  * 티켓 등록 시 티켓 번호를 입력하는 팝업 창
@@ -144,7 +145,7 @@ public class WriteTicketCodePopup extends AppCompatActivity {
                 Toast.makeText(this, "취소", Toast.LENGTH_LONG).show();
             }
             else {
-                Log.d(Prop.INSTANCE.getTAG(), "Scanned : " + result.getContents());
+                Log.d(TAG, "Scanned : " + result.getContents());
                 String code = result.getContents();
                 if(code.length() != 19) {
                     Toast.makeText(this, "유효한 티켓 QR이 아닙니다.", Toast.LENGTH_LONG).show();

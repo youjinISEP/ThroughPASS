@@ -1,4 +1,4 @@
-package com.example.throughpass.Main.fragments.selection;
+package com.example.throughpass.Main.fragments.ride;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,6 +42,8 @@ public class NoticePopup extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 동의 이벤트 진행
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 
