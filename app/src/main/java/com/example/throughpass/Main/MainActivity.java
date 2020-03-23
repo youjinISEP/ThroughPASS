@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import static com.example.throughpass.obj.Prop.TAG;
 
 import java.util.Date;
 
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity  {
 
         Prop.INSTANCE.setUser_nfc(Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));    // 안드로이드 ID 넣기
 
-        Log.d(Prop.INSTANCE.getTAG(), Prop.INSTANCE.getUser_nfc());
+        Log.d(TAG, Prop.INSTANCE.getUser_nfc());
         fab.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

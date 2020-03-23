@@ -21,6 +21,7 @@ import java.util.TimerTask;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import static com.example.throughpass.obj.Prop.TAG;
 
 public class nfcActivity extends AppCompatActivity {
     final int TIME = 40;
@@ -63,7 +64,7 @@ public class nfcActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.d(Prop.INSTANCE.getTAG(), "NFC 태그 전송중");
+                Log.d(TAG, "NFC 태그 전송중");
                 nfcTagging();
             }
         }, 5 * Prop.INSTANCE.getSECOND());

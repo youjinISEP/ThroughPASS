@@ -27,7 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Main.fragments.selection.NoticePopup"
+        <activity android:name=".Main.fragments.ride.NoticePopup"
             android:theme="@style/PopupTheme"></activity>
         <activity
             android:name=".Main.fragments.ticket.QRCodeScanPopup"
