@@ -26,8 +26,10 @@ import com.example.throughpass.Main.fragments.selection.selectRecyclerview.Selec
 import com.example.throughpass.Main.fragments.selection.selectRecyclerview.SelectRecyclerViewAdapter;
 import com.example.throughpass.R;
 import com.example.throughpass.obj.Prop;
+import com.example.throughpass.obj.RemoveWaitCodeService;
 import com.example.throughpass.obj.RemvResvCodeService;
 import com.example.throughpass.obj.ResvAttractionService;
+import com.example.throughpass.obj.WaitAttractionInfoService;
 import com.example.throughpass.obj.WaitAttractionService;
 import com.google.android.material.tabs.TabLayout;
 
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -124,6 +127,7 @@ public class SelectionFragment extends Fragment {
 
         registItemClickListener();
 
+        checkStatusOfRide();
         return view;
     }
 
@@ -134,6 +138,16 @@ public class SelectionFragment extends Fragment {
 
     }
 
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.btn_sCancelWait:
+                RemoveWaitCodeService removeWaitCodeService = Prop.INSTANCE.getRetrofit().create(RemoveWaitCodeService.class);
+                Prop.RemWaitData remWaitData = new Prop.RemWaitData(Prop.INSTANCE.getUser_nfc());
+
+                break;
+        }
+    }
+
     /**
      * 대기신청 TAB
      */
@@ -142,23 +156,20 @@ public class SelectionFragment extends Fragment {
 
         if (Prop.INSTANCE.getUser_nfc() != null) {
             //3. 대기 신청한 놀이기구 정보
-            WaitAttractionService waitAttractionService = Prop.INSTANCE.getRetrofit().create(WaitAttractionService.class);
-            Prop.WaitRideCodeData waitRideCodeData = new Prop.WaitRideCodeData(Prop.INSTANCE.getUser_nfc());
+            WaitAttractionInfoService waitAttractionInfoService = Prop.INSTANCE.getRetrofit().create(WaitAttractionInfoService.class);
+            Prop.WaitRideInfoCodeData waitRideInfoCodeData = new Prop.WaitRideInfoCodeData(Prop.INSTANCE.getUser_nfc());
 
-            waitAttractionService.resultRepos(waitRideCodeData)
+            waitAttractionInfoService.resultRepos(waitRideInfoCodeData)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(item -> {
-                        if (item == null) {
-                            Log.d("@@@@@", "error! no item included");
-                        } else {
-                            Prop.INSTANCE.setWait_attr_code(item.getAttr_code());
-                            Log.d("@@@@@", "item.getAttr_code: " + item.getAttr_code());
-                        }
+                        if(item == null){
 
+                        }else{
+                            waitRideCancel.setOnClickListener(this::onClick);
+                        }
                     });
 
-            rideName.setText(Prop.INSTANCE.getWait_attr_code()); //놀이기구 코드 받아오기
 
             //4. 예약 신청한 놀이기구 정보
             ResvAttractionService resvAttractionService = Prop.INSTANCE.getRetrofit().create(ResvAttractionService.class);
@@ -189,6 +200,10 @@ public class SelectionFragment extends Fragment {
     /**
      * 예약신청 TAB
      */
+
+    public void showResvAttraction(){
+
+    }
     public void DragAndDropList(){
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
             @Override

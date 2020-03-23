@@ -85,6 +85,14 @@ object Prop {
     data class WaitRideCodeData(val nfcUid: String)                             //REQ DATA
     data class WaitRideResultData(val attr_code : Int)                          //RES DATA
 
+    //* 3-1. 대기 신청중인 놀이기구 정보
+    data class WaitRideInfoCodeData(val nfcUid: String)
+    data class WaitRideInfoResultData(val attr_code: Int,
+                                      val name: String,
+                                      val location: String,
+                                      val img_url: String,
+                                      val wait_minute: Int)
+
     //* 4. 예약 신청중인 놀이기구
     data class ResvRideCodeData(val nfcUid: String)                             //REQ DATA
     data class ResvRideResultData(val attr_code: Int, val reservation_order: Int)                           //RES DATA

@@ -81,9 +81,15 @@ interface WaitAttractionService{
     fun resultRepos(@Body waitRideCodeData: Prop.WaitRideCodeData) : Single<Prop.WaitRideResultData>
 }
 
+// 3-1. (nfcUid -> 서버 -> 놀이기구 정보)
+interface WaitAttractionInfoService{
+    @POST("/attr/getWaitStatusInfo")
+    fun resultRepos(@Body waitRideInfoCodeData: Prop.WaitRideInfoCodeData ) : Single<Prop.WaitRideInfoResultData>
+}
+
 // 4. (nfcUid -> 서버 -> 놀이기구 고유코드 LIST)
 interface ResvAttractionService{
-    @POST("/attr/getReservation")
+    @POST("/reservation/getReservation")
     fun resultRepos(@Body resvRideCodeData: Prop.ResvRideCodeData) : Single<ArrayList<Prop.ResvRideResultData>>
 }
 

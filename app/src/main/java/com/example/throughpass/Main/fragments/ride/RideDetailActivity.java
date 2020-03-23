@@ -47,7 +47,7 @@ public class RideDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
-        String a = "http://adventure.lotteworld.com/image/2018/7/201807251058185011_1350.jpg";
+       // String a = "http://adventure.lotteworld.com/image/2018/7/201807251058185011_1350.jpg";
         GlideApp.with(this)
                 .load(imageURL)
                 .dontTransform()
