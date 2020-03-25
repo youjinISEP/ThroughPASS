@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#eeeeee"
+    android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_gravity="center">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/nicnamepopup_box"
+                android:layout_gravity="center"
+                />
+            <!-- Notice -->
+            <LinearLayout
+                android:padding="35dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    >
+
+                    <TextView
+                        android:textSize="20dp"
+                        android:gravity="center"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.85"
+                        android:text="티켓 번호를 입력하세요."
+                        android:layout_height="wrap_content"
+                        android:textColor="#818181"
+                        android:clickable="true"
+                        />
+
+                    <Button
+                        android:id="@+id/qrScanBtn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
+                        android:textColor="@color/colorLotteLogo"
+                        android:text="QR"
+                        android:textStyle="bold"
+                        android:textSize="12dp"
+                        android:background="@color/colorWhite"
+                        >
+
+                    </Button>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:weightSum="1"
+                    >
+                    <EditText
+                        android:id="@+id/edTicketCode1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.23"
+                        android:maxLength="4"
+                        android:singleLine="true"
+                        android:nextFocusDown="@id/edTicketCode2"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.02"
+                        android:textSize="14dp"
+                        android:text="-"></TextView>
+                    <EditText
+                        android:id="@+id/edTicketCode2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.23"
+                        android:maxLength="4"
+                        android:singleLine="true"
+                        android:nextFocusDown="@id/edTicketCode3"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.02"
+                        android:textSize="14dp"
+                        android:text="-"></TextView>
+                    <EditText
+                        android:id="@+id/edTicketCode3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.23"
+                        android:maxLength="4"
+                        android:singleLine="true"
+                        android:nextFocusDown="@id/edTicketCode4"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.02"
+                        android:textSize="14dp"
+                        android:text="-"></TextView>
+                    <EditText
+                        android:id="@+id/edTicketCode4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.23"
+                        android:maxLength="4"
+                        android:singleLine="true"
+                        android:imeOptions="actionDone"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- 닫기 버튼 -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/okBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="완 료"
+                android:textSize="16dp"
+                android:background="@color/colorLotteLogo"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="bottom|left"
+                />
+
+            <Button
+                android:id="@+id/cancelBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="취 소"
+                android:textSize="16dp"
+                android:background="#666666"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="bottom|right"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

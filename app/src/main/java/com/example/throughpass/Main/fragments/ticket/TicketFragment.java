@@ -79,12 +79,12 @@ public class TicketFragment extends Fragment {
         공지사항 갱신
          */
         getTodayAllNotice();
-        refreshPrintNotice();
+//        refreshPrintNotice();
         /*
         분실물 갱신
          */
         getTodayAllLosts();
-        refreshPrintLosts();
+//        refreshPrintLosts();
 
         // 티켓 등록 버튼 클릭 이벤트
         registBtn.setOnClickListener(new Button.OnClickListener() {
@@ -139,7 +139,7 @@ public class TicketFragment extends Fragment {
                             setTicketInfo();
                         }
                         , e -> {
-                            Toast.makeText(getActivity(), "기존 티켓 등록 찾기 오류가 발생했습니다. \n 잠시후 다시 시도해주세요.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "금일 등록한 티켓이 없습니다. 새로 등록해주세요.", Toast.LENGTH_LONG).show();
                         });
     }
 
@@ -156,6 +156,7 @@ public class TicketFragment extends Fragment {
                             if(item != null) {
                                 noticesList = item; // 이 방법으로 가능한지?
 //                                Log.d(TAG, "--------------- getTodayAllNotice");
+                                refreshPrintNotice();
                             }
                         }
                         , e -> {
@@ -176,6 +177,7 @@ public class TicketFragment extends Fragment {
                             if(item != null) {
                                 lostsList = item; // 이 방법으로 가능한지
 //                                Log.d(TAG, "--------------- getTodayAllLosts");
+                                refreshPrintLosts();
                             }
                         }
                         , e -> {
@@ -192,7 +194,7 @@ public class TicketFragment extends Fragment {
             public void run() {
 //                Log.d(Prop.INSTANCE.getTAG(), "index : " + index + " , lostList.size " + lostsList.size());
                 if(index >= lostsList.size()) {
-                    getTodayAllLosts();
+//                    getTodayAllLosts();
                     index = 0;
                 }
                 else {
@@ -215,7 +217,7 @@ public class TicketFragment extends Fragment {
             @Override
             public void run() {
                 if(index >= noticesList.size()) {
-                    getTodayAllNotice();
+//                    getTodayAllNotice();
                     index = 0;
                 }
                 else {
