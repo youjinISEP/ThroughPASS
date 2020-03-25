@@ -179,7 +179,7 @@ public class TicketFragment extends Fragment {
                             }
                         }
                         , e -> {
-                            Toast.makeText(getActivity(), "분실물이 없습니다.", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getActivity(), "분실물이 없습니다.", Toast.LENGTH_LONG).show();
                         });
     }
 

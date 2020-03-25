@@ -8,5 +8,8 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorFalseTicketInfoBox">#EF5350</color>
     <color name="colorTrueTicketInfoBox">#00FF66</color>
+    <color name="colorWaitAttraction">#FF5050</color>
+    <color name="colorReservedAttraction">#FF9933</color>
+    <color name="colorAvailableAttraction">#00CC00</color>
 
 </resources>

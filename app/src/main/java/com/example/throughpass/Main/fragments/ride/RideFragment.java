@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.throughpass.Main.fragments.ride.swipeRecyclerview.SwipeRecyclerTouchListener;
 import com.example.throughpass.Main.fragments.ride.swipeRecyclerview.SwipeRecyclerviewAdapter;
 import com.example.throughpass.Main.fragments.ride.swipeRecyclerview.ViewItem;
+import com.example.throughpass.Main.fragments.selection.selectRecyclerview.SelectItem;
 import com.example.throughpass.R;
 import com.example.throughpass.obj.AddResvCodeService;
 import com.example.throughpass.obj.AddWaitCodeService;
@@ -33,6 +35,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -51,10 +54,13 @@ public class RideFragment extends Fragment {
     private SwipeRecyclerTouchListener touchListener;
     private View view;
     private List<ViewItem> vList;
-    private List<Integer> resvList;
+    private List<SelectItem> resvList;
+    private SelectItem selectItem;
 
     private int rideSize;
     private ViewItem viewItem;
+    private TextView waitCnt, resvCnt, resvTotal;
+    private Integer waitSize, resvSize, Total;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -66,10 +72,15 @@ public class RideFragment extends Fragment {
         recyclerviewAdapter = new SwipeRecyclerviewAdapter(this.getContext());
         vList = new ArrayList<>();
         resvList = new ArrayList<>();
+        waitCnt = view.findViewById(R.id.txt_waitCnt);
+        resvCnt = view.findViewById(R.id.txt_resvCnt);
+        resvTotal = view.findViewById(R.id.txt_resvTotal);
 
+        waitSize = 0;
+        resvSize = 0;
+        Total = 0;
 
-        checkStatusOfRide(); //대기신청 or 예약신청 된 놀이기구의 정보를 받아오기
-        showRideList(); //전체적인 놀이기구의 종류를 받아와서 LIST로 보여주기
+        checkStatusOfRide(); // 놀이기구 대기신청, 예약신청 상태 체크 -> showRideList(전체 놀이기구 리스트 보여주기)
         recyclerviewClickeventAction(); // 놀이기구 상세페이지, 대기신청, 예약신청
         return view;
     }
@@ -87,12 +98,15 @@ public class RideFragment extends Fragment {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(item -> {
                         if (item == null) {
-                            Log.d("@@@@@", "error! no item included");
+                            Log.d("@@@@@", "RideFragment_checkStatusOfRide : no item included in waitAttraction");
+                            Prop.INSTANCE.setWaitAttractionSize(0);
                         } else {
                             Prop.INSTANCE.setWait_attr_code(item.getAttr_code());
-                            Log.d("@@@@@", "item.getAttr_code: " + item.getAttr_code());
+                            Prop.INSTANCE.setWaitAttractionSize(1);
                         }
 
+                    }, e -> {
+                        Log.d("@@@@", "RideFragment_checkStatusOfRide : SERVER ERROR " + e);
                     });
 
             //4. 예약 신청한 놀이기구 정보
@@ -103,23 +117,30 @@ public class RideFragment extends Fragment {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(item -> {
-                        if (item == null) {
-                            Log.d("@@@@@", "item is null");
+                        if (item.size() == 0) {
+                            Log.d("@@@@@", "RideFragment_checkStatusOfRide : no item included in resvAttraction");
+                            Prop.INSTANCE.setResvAttractionSize(0);
+                            Prop.INSTANCE.setReservationList(resvList);
                         } else {
+                            Prop.INSTANCE.setResvAttractionSize(item.size());
                             for (int i = 0; i < item.size(); i++) {
-                                resvList.add(item.get(i).getAttr_code());
-                                Log.d("@@@@@@", "att_order" + item.get(i).getReservation_order());
+                                selectItem = new SelectItem(
+                                        item.get(i).getAttr_code()
+                                );
+                                resvList.add(selectItem);
+                                Prop.INSTANCE.setReservationList(resvList);   //TODO : if-else 문 밖으로 뺐을때도 가능???
                             }
                         }
-
+                        showRideList();  //모든 놀이기구 정보 받아오기
                     }, e -> {
-                        Log.d("@@@@@@@@@", "error: ");
+                        Log.d("@@@@@", "RideFragment_checkStatusOfRide : SERVER ERROR " + e);
                     });
         }
     }
 
     @SuppressLint("CheckResult")
     public void showRideList() {
+
         //2. 모든 놀이기구 정보 받아오기
         GetAllRideData getAllRideData = Prop.INSTANCE.getRetrofit().create(GetAllRideData.class);
         getAllRideData.resultRepos()
@@ -127,16 +148,30 @@ public class RideFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(item -> {
                     rideSize = item.size();
+                    Prop.INSTANCE.setTotalSize(rideSize);
 
                     for (int i = 0; i < rideSize; i++) {
 
                         viewItem = new ViewItem(
-                                ContextCompat.getColor(getContext(), R.color.colorLotteLogo),
+                                ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.colorAvailableAttraction),
                                 ContextCompat.getDrawable(getContext(), R.drawable.ic_dashboard_black_24dp),
                                 item.get(i).getName(),
                                 String.valueOf(item.get(i).getWait_minute())
                         );
 
+                        if (Prop.INSTANCE.getWait_attr_code() != null && Prop.INSTANCE.getWait_attr_code() == item.get(i).getAttr_code()) {
+                            viewItem.setStatus(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.colorWaitAttraction));
+                        } else {
+                            viewItem.setStatus(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.colorAvailableAttraction));
+                        }
+
+                        if (Prop.INSTANCE.getReservationList().size() > 0) {
+                            for (int j = 0; j < Prop.INSTANCE.getReservationList().size(); j++) {
+                                if (Prop.INSTANCE.getReservationList().get(j).getRide_Code() == item.get(i).getAttr_code()) {
+                                    viewItem.setStatus(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.colorReservedAttraction));
+                                }
+                            }
+                        }
                         viewItem.setAttr_code(item.get(i).getAttr_code());
                         viewItem.setName(item.get(i).getName());
                         viewItem.setPersonnel(item.get(i).getPersonnel());
@@ -185,8 +220,6 @@ public class RideFragment extends Fragment {
                     public void onSwipeOptionClicked(int viewID, int position) {
                         switch (viewID) {
                             case R.id.first_task:
-                                //taskList.remove(position);
-                                //recyclerviewAdapter.setTaskList(taskList);
 
                                 if (Func.INSTANCE.checkRegistTicket()) {   // 티켓 등록 되어있을 떄
                                     if (Prop.INSTANCE.getWait_attr_code() != null) { //이미 대기 신청된 놀이기구가 없을 때
@@ -203,7 +236,7 @@ public class RideFragment extends Fragment {
                                 break;
                             case R.id.second_task:
                                 // Toast.makeText(getApplicationContext(),"Edit Not Available",Toast.LENGTH_SHORT).show();
-                                if(Func.INSTANCE.checkRegistTicket()){
+                                if (Func.INSTANCE.checkRegistTicket()) {
                                     /* notice test */
                                     Intent intent = new Intent(getActivity(), NoticePopup.class);
                                     intent.putExtra("type", "reservation");
@@ -212,13 +245,10 @@ public class RideFragment extends Fragment {
 
                                     //6. 예약 신청 버튼 클릭이벤트
 
-                                 }
+                                }
                                 break;
-
                             default:
                                 break;
-
-
                         }
                     }
                 });
@@ -234,10 +264,9 @@ public class RideFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(item -> {
                     if (item.getResult().equals("success")) {
-                        Log.d(TAG, "success!! : ADD WAIT ATTRACTION");
+                        Log.d(TAG, "RideFragment_addWait : success!! ADD WAIT ATTRACTION");
                         Func.INSTANCE.refreshFragment(this, this.getFragmentManager());
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getActivity(), item.getResult(), Toast.LENGTH_LONG).show();
                     }
                 }, e -> {
@@ -253,12 +282,11 @@ public class RideFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(item -> {
-                    if(item.getResult().equals("success")) {
-                        Log.d(TAG, "success!! : ADD RESERVATION ATTRACTION");
+                    if (item.getResult().equals("success")) {
+                        Log.d(TAG, "RideFragment_addReservation : success!!  ADD RESERVATION ATTRACTION");
                         Func.INSTANCE.refreshFragment(this, this.getFragmentManager());
-                    }
-                    else {
-                        Log.d(TAG, "NOT INSERTED");
+                    } else {
+                        Log.d(TAG, "RideFragment_addReservation : NOT INSERTED");
                     }
                 }, e -> {
                     Toast.makeText(getActivity(), "서버 오류 입니다.", Toast.LENGTH_LONG).show();
@@ -269,25 +297,30 @@ public class RideFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        recyclerView.refreshDrawableState();
+        //checkStatusOfRide();
         recyclerView.addOnItemTouchListener(touchListener);
+        waitCnt.setText(Prop.INSTANCE.getWaitAttractionSize() + "");
+        resvCnt.setText(Prop.INSTANCE.getResvAttractionSize() + "");
+        resvTotal.setText(Prop.INSTANCE.getTotalSize() + "");
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         int attrCode = data.getIntExtra("attrCode", -1);
-        if(attrCode != -1) {
-            if(requestCode == ADD_WAIT_CODE) {
-                if(resultCode == Activity.RESULT_OK) {  // 티켓 등록 완료
+        if (attrCode != -1) {
+            if (requestCode == ADD_WAIT_CODE) {
+                if (resultCode == Activity.RESULT_OK) {  // 티켓 등록 완료
                     addWait(attrCode);
-//                    Func.INSTANCE.refreshFragment(this, getFragmentManager());
+                    Toast.makeText(getActivity(), "대기 신청 완료", Toast.LENGTH_LONG).show();
                 }
             }
 
-            if(requestCode == ADD_RESERVATION_CODE) {
-                if(resultCode == Activity.RESULT_OK) {  // 티켓 등록 완료
+            if (requestCode == ADD_RESERVATION_CODE) {
+                if (resultCode == Activity.RESULT_OK) {  // 티켓 등록 완료
                     addReservation(attrCode);
-//                    Func.INSTANCE.refreshFragment(this, getFragmentManager());
+                    Toast.makeText(getActivity(), "예약 신청 완료", Toast.LENGTH_LONG).show();
                 }
             }
         }

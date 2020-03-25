@@ -12,6 +12,7 @@ import io.reactivex.annotations.Nullable
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*
@@ -83,8 +84,14 @@ interface WaitAttractionInfoService{
 
 // 4. (nfcUid -> 서버 -> 놀이기구 고유코드 LIST)
 interface ResvAttractionService{
-    @POST("/reservation/getReservation")
+    @POST("/reservation/getReservationAttrCode")
     fun resultRepos(@Body resvRideCodeData: Prop.ResvRideCodeData) : Single<ArrayList<Prop.ResvRideResultData>>
+}
+
+// 4-1. (nfcUid -> 서버 -> 놀이기구 정보 LIST)
+interface ResvAttractionInfoService{
+    @POST("/reservation/getReservation")
+    fun resultRepos(@Body resvRideInfoCodeData: Prop.ResvRideInfoCodeData) : Single<ArrayList<Prop.ResvRideInfoResultData>>
 }
 
 // 5. (대기신청 버튼: nfcUid, 놀이기구 코드 -> 서버)
@@ -102,7 +109,7 @@ interface AddResvCodeService{
 // 7. (대기삭제 버튼: nfcUid -> 서버)
 interface RemoveWaitCodeService{
     @POST("/user/removeWaitAttr")
-    fun resultRepos(@Body remWaitData: Prop.RemWaitData)
+    fun resultRepos(@Body remWaitData: Prop.RemWaitData) : Single<Prop.ResultData>
 }
 
 
@@ -110,13 +117,13 @@ interface RemoveWaitCodeService{
 // 8. (예약취소 버튼: nfcUid, 예약순서 -> 서버)
 interface RemvResvCodeService{
     @POST("/reservation/removeReservation")
-    fun resultRepos(@Body remResvData: Prop.RemResvData)
+    fun resultRepos(@Body remResvData: Prop.RemResvData) : Single<Prop.ResultData>
 }
 
 // 9. (예약 신청된 놀이기구 drag & dop: nfcUid, 예약놀이기구 리스트 -> 서버)
 interface  ChangeResvCodeService{
     @POST("/reservation/changeReservation")
-    fun resultRepos(@Body changeResvData: Prop.ChangeResvData)
+    fun resultRepos(@Body changeResvData: Prop.ChangeResvData) : Single<Prop.ResultData>
 }
 
 // 10. (예약 신청된 놀이기구 추천 버튼: nfcUid ->서버 ->놀이기구 정보)

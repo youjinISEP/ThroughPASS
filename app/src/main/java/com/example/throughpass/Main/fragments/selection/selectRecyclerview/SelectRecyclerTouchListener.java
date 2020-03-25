@@ -204,11 +204,8 @@ public class SelectRecyclerTouchListener implements RecyclerView.OnItemTouchList
         fgViewID = foregroundID;
         bgViewID = backgroundID;
         this.mBgClickListener = listener;
-        Log.d("@@@@@", "touch listener work before");
-
         if (act instanceof SelectRecyclerTouchListener.RecyclerTouchListenerHelper)
             ((SelectRecyclerTouchListener.RecyclerTouchListenerHelper) act).setOnActivityTouchListener(this);
-        Log.d("@@@@@", "touch listener work after");
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         act.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -573,7 +570,6 @@ public class SelectRecyclerTouchListener implements RecyclerView.OnItemTouchList
 
             // When finger is lifted off the screen (after clicking, flinging, swiping, etc..)
             case MotionEvent.ACTION_UP: {
-                Log.d("@@@@@","mouse swipe");
                 handler.removeCallbacks(mLongPressed);
                 if (mLongClickPerformed)
                     break;
@@ -719,7 +715,6 @@ public class SelectRecyclerTouchListener implements RecyclerView.OnItemTouchList
                     else if (clickable && !bgVisible && touchedPosition >= 0 && !unClickableRows.contains(touchedPosition)
                             && isIndependentViewClicked(motionEvent) && !isRViewScrolling) {
                         mRowClickListener.onRowClicked(touchedPosition);
-                        Log.d("@@@@@","an item clicked");
                     }
                     // On Click listener for independent views inside the rows
                     else if (clickable && !bgVisible && touchedPosition >= 0 && !unClickableRows.contains(touchedPosition)
@@ -732,15 +727,13 @@ public class SelectRecyclerTouchListener implements RecyclerView.OnItemTouchList
                     // On Click listener for background options
                     else if (swipeable && bgVisible && !fgPartialViewClicked) {
                         final int optionID = getOptionViewID(motionEvent);
-                        Log.d("@@@@@", optionID+"");
                         if (optionID >= 0 && touchedPosition >= 0) {
                             final int downPosition = touchedPosition;
                             closeVisibleBG(new SelectRecyclerTouchListener.OnSwipeListener() {
                                 @Override
                                 public void onSwipeOptionsClosed() {
                                     mBgClickListener.onSwipeOptionClicked(optionID, downPosition);
-                                    Log.d("@@@@@","swipe to right and click hided item");
-                                    //Define function at MainActivity
+                                   //Define function at MainActivity
                                 }
 
                                 @Override

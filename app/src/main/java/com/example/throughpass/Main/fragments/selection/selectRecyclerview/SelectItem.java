@@ -4,21 +4,20 @@ import android.graphics.drawable.Drawable;
 
 public class SelectItem {
 
-    private Drawable ride_Image;
+    private String ride_Image;
     private String ride_Name;
     private String restTime;
+    private Integer ride_Code;
 
-    public SelectItem(Drawable ride_Image, String ride_Name, String restTime) {
-        this.ride_Image = ride_Image;
-        this.ride_Name = ride_Name;
-        this.restTime = restTime;
+    public SelectItem(Integer ride_Code) {
+        this.ride_Code = ride_Code;
     }
 
-    public Drawable getRide_Image() {
+    public String getRide_Image() {
         return ride_Image;
     }
 
-    public void setRide_Image(Drawable ride_Image) {
+    public void setRide_Image(String ride_Image) {
         this.ride_Image = ride_Image;
     }
 
@@ -37,4 +36,8 @@ public class SelectItem {
     public void setRestTime(String restTime) {
         this.restTime = restTime;
     }
+
+    public Integer getRide_Code(){ return ride_Code;}
+
+    public void setRide_Code(Integer ride_Code){ this.ride_Code = ride_Code;}
 }

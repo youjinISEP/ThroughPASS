@@ -1,6 +1,7 @@
 package com.example.throughpass.obj
 
 import com.example.throughpass.Main.fragments.ride.swipeRecyclerview.ViewItem
+import com.example.throughpass.Main.fragments.selection.selectRecyclerview.SelectItem
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -11,27 +12,32 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 /*
 * 공통 변수/상수
 * */
 object Prop {
-    val serverUrl : String = "http://15.165.28.140:8000"
+    val serverUrl: String = "http://15.165.28.140:8000"
     val FCM_MSG_CODE = 112
     const val ADD_WAIT_CODE = 1110
     const val ADD_RESERVATION_CODE = 1111
     const val TICKET_POPUP_CODE = 111
     const val TAG = "GHOST"
-    var fcmTokenId : String? = null
-    val SECOND : Int = 1000
+    var fcmTokenId: String? = null
+    val SECOND: Int = 1000
 
     //TICKET 화면
-    var user_nfc : String? = null
-    var ticketCode : String? = null
-    var registDate : BigInteger? = null
-    var registDateStr : String? = null
+    var user_nfc: String? = null
+    var ticketCode: String? = null
+    var registDate: BigInteger? = null
+    var registDateStr: String? = null
 
     //ATTRACTION 화면
+    var waitAttractionSize: Int? = null
+    var resvAttractionSize: Int? = null
+    var totalSize: Int? = null
+
     /*var ride_Code : Int? = null
     var ride_Name : String? = null
     var ride_Personnel : Int? = null
@@ -45,29 +51,32 @@ object Prop {
     var waitMinute : Int? = null*/
 
     //Wait Attraction CODE
-    var wait_attr_code : Int? = null
-    var attraction : List<ViewItem>? = null
+    var wait_attr_code: Int? = null
+    var attraction: List<ViewItem>? = null
+    var reservationList: List<SelectItem>? = null
+    var reservationInfoList: List<SelectItem>? = null
 
     val client = OkHttpClient.Builder().apply {
-        readTimeout(20, TimeUnit.SECONDS)
-        writeTimeout(20, TimeUnit.SECONDS)
-        connectTimeout(20, TimeUnit.SECONDS)
+        readTimeout(5, TimeUnit.SECONDS)
+        writeTimeout(5, TimeUnit.SECONDS)
+        connectTimeout(5, TimeUnit.SECONDS)
 
     }
     // Retrofit 객체 생성
     val retrofit: Retrofit = Retrofit.Builder()
-    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-    .addConverterFactory(GsonConverterFactory.create())
-    .baseUrl(serverUrl)
-    .client(client.build())
-    .build()
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(serverUrl)
+            .client(client.build())
+            .build()
 
     // 날짜 출력 Format
-    var dateFormat : DateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREAN)
+    var dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREAN)
 
     /* 1. 티켓 등록 화면 : 티켓 번호 - > 서버 */
-    data class RegistTicketData(val ticketCode : String, val nfcUid : String, var tokenId : String)   //REQ DATA
-    data class TicketResultData(var result : String, var registDate : BigInteger)     //RES DATA
+    data class RegistTicketData(val ticketCode: String, val nfcUid: String, var tokenId: String)   //REQ DATA
+
+    data class TicketResultData(var result: String, var registDate: BigInteger)     //RES DATA
 
 
     /* 놀이기구 리스트 화면*/
@@ -86,10 +95,12 @@ object Prop {
 
     //* 3. 대기 신청중인 놀이기구
     data class WaitRideCodeData(val nfcUid: String)                             //REQ DATA
-    data class WaitRideResultData(val attr_code : Int)                          //RES DATA
+
+    data class WaitRideResultData(val attr_code: Int)                          //RES DATA
 
     //* 3-1. 대기 신청중인 놀이기구 정보
     data class WaitRideInfoCodeData(val nfcUid: String)
+
     data class WaitRideInfoResultData(val attr_code: Int,
                                       val name: String,
                                       val location: String,
@@ -97,16 +108,31 @@ object Prop {
                                       val wait_minute: Int)
 
     //* 4. 예약 신청중인 놀이기구
-    data class ResvRideCodeData(val nfcUid: String)                             //REQ DATA
-    data class ResvRideResultData(val attr_code: Int, val reservation_order: Int)                           //RES DATA
+    data class ResvRideCodeData(val nfcUid: String)
+
+    data class ResvRideResultData(val attr_code: Int,
+                                  val reservation_order: Int)
+
+    //* 4-1.  예약 신청중인 놀이기구 정보
+    data class ResvRideInfoCodeData(val nfcUid: String)                        //REQ DATA
+
+    data class ResvRideInfoResultData(val attr_code: Int,
+                                      val reservation_order: Int,
+                                      val name: String,
+                                      val location: String,
+                                      val coordinate: String,
+                                      val img_url: String,
+                                      val wait_minute: Int)                   //RES DATA
 
     //* 대기 신청 및 예약 신청 (버튼 클릭시 데이터 전송)
     // 5. 대기 신청 요청
     data class AddWaitData(val nfcUid: String, val attrCode: Int)             //REQ DATA
+
     data class AddWaitResultData(var result: String)                           //RES DATA
 
     // 6. 예약 신청 요청
     data class AddResvData(val nfcUid: String, val attrCode: Int)             //REQ DATA
+
     data class ResultData(var result: String)
 
     /* 현재상황 화면 */
@@ -117,10 +143,11 @@ object Prop {
     data class RemResvData(val nfcUid: String, val reservationOrder: Int)      //REQ DATA
 
     //* 9. 예약 신청된 놀이기구 변경
-    data class ChangeResvData(val attrCodes: Array, val nfcUid: String)
+    data class ChangeResvData(val attrCodes: ArrayList<Integer>, val nfcUid: String)
 
     //* 10. 예약 신청된 놀이기구 추천
     data class RecomResvData(val nfcUid: String)
+
     data class RecomResvResultData(val attr_code: Int,
                                    val coordinate: String,
                                    val reservation_order: Int,
@@ -128,16 +155,18 @@ object Prop {
 
 
     /* 11. NFC 태깅 진행 */
-    data class NfcTaggingData(val nfcUid : String, val attrCode : Int)
-    data class TagResultData(var result : String)
+    data class NfcTaggingData(val nfcUid: String, val attrCode: Int)
+
+    data class TagResultData(var result: String)
 
     // 티켓 사전 등록 조회
-    data class RegisteredTodayTicketData(val nfcUid : String)
-    data class RegisteredResultData(var ticket_code : String, var reg_date : BigInteger)
+    data class RegisteredTodayTicketData(val nfcUid: String)
+
+    data class RegisteredResultData(var ticket_code: String, var reg_date: BigInteger)
 
     // 공지사항 가져오기
-    data class NoticeData(val title : String, val context : String, var reg_date : BigInteger)
+    data class NoticeData(val title: String, val context: String, var reg_date: BigInteger)
 
     // 분실물 데이터 가져오기
-    data class LostsData(val classification : String, val name : String, val location : String, var get_date : BigInteger)
+    data class LostsData(val classification: String, val name: String, val location: String, var get_date: BigInteger)
 }

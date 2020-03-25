@@ -87,7 +87,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@color/colorLotteLogo" />
+            android:background="@color/colorWaitAttraction"
+            app:srcCompat="@android:color/transparent" />
 
         <ImageView
             android:id="@+id/img_rImage"

@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.throughpass.Main.SSLexception.GlideApp;
 import com.example.throughpass.R;
 
 import java.util.List;
@@ -31,8 +33,11 @@ public class SelectRecyclerViewAdapter extends RecyclerView.Adapter<SelectRecycl
     @Override
     public void onBindViewHolder(@NonNull SelectRecyclerViewAdapter.MyViewHolder holder, int position) {
         SelectItem selectItem = itemList.get(position);
-
-        holder.rideImage.setImageDrawable(selectItem.getRide_Image());
+        GlideApp.with(mContext)
+                .load(selectItem.getRide_Image())
+                .dontTransform()
+                .centerCrop()
+                .into(holder.rideImage);
         holder.rideName.setText(selectItem.getRide_Name());
         holder.restTime.setText(selectItem.getRestTime());
 
