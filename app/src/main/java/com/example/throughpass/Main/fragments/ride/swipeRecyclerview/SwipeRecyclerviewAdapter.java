@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.throughpass.Main.SSLexception.GlideApp;
 import com.example.throughpass.R;
 
 import java.util.List;
@@ -38,6 +39,11 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
         ViewItem viewItem = itemList.get(position);
 
         holder.statusColor.setBackgroundColor(viewItem.getStatus());
+        GlideApp.with(mContext)
+                .load(viewItem.getImg_url())
+                .dontTransform()
+                .centerCrop()
+                .into(holder.rideImage);
         holder.rideImage.setImageDrawable(viewItem.getRide_Image());
         holder.rideName.setText(viewItem.getRide_Name());
         holder.restTime.setText(viewItem.getRestTime());
@@ -69,3 +75,4 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
         }
     }
 }
+
