@@ -71,9 +71,6 @@ public class TicketFragment extends Fragment {
         찾아보기
         */
         setTicketInfo();
-        if(!Func.INSTANCE.checkRegistTicket()) {
-            checkTodayRegisteredTicket();
-        }
 
         /*
         공지사항 갱신
@@ -117,30 +114,6 @@ public class TicketFragment extends Fragment {
             name.setText(" - ");
             registTime.setText(" - ");
         }
-    }
-
-    // 티켓 오늘 등록했었는지 확인, 값 저장하는 함수
-    @SuppressLint("CheckResult")
-    private void checkTodayRegisteredTicket() {
-        RegisteredTodayTicketService registeredTodayTicketService = Prop.INSTANCE.getRetrofit().create(RegisteredTodayTicketService.class);
-        Prop.RegisteredTodayTicketData registeredTodayTicketData = new Prop.RegisteredTodayTicketData(Prop.INSTANCE.getUser_nfc());
-
-        //noinspection ResultOfMethodCallIgnored
-        registeredTodayTicketService.resultRepos(registeredTodayTicketData)
-                .subscribeOn(Schedulers.io())   // 데이터를 보내는 쓰레드 및 함수
-                .observeOn(AndroidSchedulers.mainThread())  // 데이터를 받아서 사용하는 쓰레드 및 함수
-                .subscribe(item -> { // 통신 결과로 받은 Object
-                            Prop.INSTANCE.setTicketCode(item.getTicket_code());
-                            Prop.INSTANCE.setRegistDate(item.getReg_date());
-
-                            Date date = new Date(Prop.INSTANCE.getRegistDate().longValue());
-                            String strDate = Func.INSTANCE.formatDateKST(date);
-                            Prop.INSTANCE.setRegistDateStr(strDate);
-                            setTicketInfo();
-                        }
-                        , e -> {
-                            Toast.makeText(getActivity(), "금일 등록한 티켓이 없습니다. 새로 등록해주세요.", Toast.LENGTH_LONG).show();
-                        });
     }
 
     // 공지사항 데이터 가져오기
@@ -241,6 +214,8 @@ public class TicketFragment extends Fragment {
     @Override
     public void onPause() {
         Log.d(TAG, "onPause");
+        lostsRefreshTimer.cancel();
+        noticeRefreshTimer.cancel();
         super.onPause();
     }
 
