@@ -47,6 +47,10 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
         holder.rideImage.setImageDrawable(viewItem.getRide_Image());
         holder.rideName.setText(viewItem.getRide_Name());
         holder.restTime.setText(viewItem.getRestTime());
+
+        holder.waitStatus.setVisibility(viewItem.getWaitStatus());
+        holder.resvStatus.setVisibility(viewItem.getResvStatus());
+
     }
 
     @Override
@@ -65,6 +69,8 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
         private ImageView rideImage;
         private TextView rideName;
         private TextView restTime;
+        private TextView waitStatus;
+        private TextView resvStatus;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +78,8 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
             rideImage = itemView.findViewById(R.id.img_rImage);
             rideName = itemView.findViewById(R.id.txt_rName); //txt_rName이 중복된다. 꼭!!!!!바꾸기!!!!!!!. layout에서
             restTime = itemView.findViewById(R.id.txt_rrestTime);
+            waitStatus = itemView.findViewById(R.id.txt_rWaitStatus);
+            resvStatus = itemView.findViewById(R.id.txt_rResvStatus);
         }
     }
 }

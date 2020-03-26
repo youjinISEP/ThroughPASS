@@ -12,9 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,39 +48,43 @@ import static com.example.throughpass.obj.Prop.ADD_WAIT_CODE;
 import static com.example.throughpass.obj.Prop.TAG;
 import static com.example.throughpass.obj.Prop.TICKET_POPUP_CODE;
 
-
 public class RideFragment extends Fragment {
+
+    private View view;
 
     private RecyclerView recyclerView;
     private SwipeRecyclerviewAdapter recyclerviewAdapter;
     private SwipeRecyclerTouchListener touchListener;
-    private View view;
-    private List<ViewItem> vList;
-    private List<SelectItem> resvList;
-    private SelectItem selectItem;
 
-    private int rideSize;
+    private List<ViewItem> vList;
+    private List<Integer> resvList;
+    private SelectItem selectItem;
     private ViewItem viewItem;
-    private TextView waitCnt, resvCnt, resvTotal;
-    private Integer waitSize, resvSize, Total;
+    private int rideSize;
+
+    TextView waitCnt, resvCnt, resvTotal;
+    Toolbar toolbar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_ride, container, false);
-        recyclerView = view.findViewById(R.id.recycler_ridelist);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
 
-        recyclerviewAdapter = new SwipeRecyclerviewAdapter(this.getContext());
-        vList = new ArrayList<>();
-        resvList = new ArrayList<>();
+        //toolbar 설정 menu
+        toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setTitle("놀이기구 현황");
+
+        //놀이기구 현황 숫자로 표현
         waitCnt = view.findViewById(R.id.txt_waitCnt);
         resvCnt = view.findViewById(R.id.txt_resvCnt);
         resvTotal = view.findViewById(R.id.txt_resvTotal);
 
-        waitSize = 0;
-        resvSize = 0;
-        Total = 0;
+        //recyclerview 표현
+        recyclerView = view.findViewById(R.id.recycler_ridelist);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        recyclerviewAdapter = new SwipeRecyclerviewAdapter(this.getContext());
+
+        vList = new ArrayList<>();
+        resvList = new ArrayList<>();
 
         checkStatusOfRide(); // 놀이기구 대기신청, 예약신청 상태 체크 -> showRideList(전체 놀이기구 리스트 보여주기)
         recyclerviewClickeventAction(); // 놀이기구 상세페이지, 대기신청, 예약신청
@@ -97,12 +103,13 @@ public class RideFragment extends Fragment {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(item -> {
-                        if (item == null) {
+                        if (item.getAttr_code() == 0) {
                             Log.d("@@@@@", "RideFragment_checkStatusOfRide : no item included in waitAttraction");
-                            Prop.INSTANCE.setWaitAttractionSize(0);
+                            waitCnt.setText(0+"");
+                            Prop.INSTANCE.setWait_attr_code(0);
                         } else {
                             Prop.INSTANCE.setWait_attr_code(item.getAttr_code());
-                            Prop.INSTANCE.setWaitAttractionSize(1);
+                            waitCnt.setText(1+"");
                         }
 
                     }, e -> {
@@ -119,18 +126,16 @@ public class RideFragment extends Fragment {
                     .subscribe(item -> {
                         if (item.size() == 0) {
                             Log.d("@@@@@", "RideFragment_checkStatusOfRide : no item included in resvAttraction");
+                            resvCnt.setText(0+"");
                             Prop.INSTANCE.setResvAttractionSize(0);
-                            Prop.INSTANCE.setReservationList(resvList);
                         } else {
                             Prop.INSTANCE.setResvAttractionSize(item.size());
+                            resvCnt.setText(item.size()+"");
                             for (int i = 0; i < item.size(); i++) {
-                                selectItem = new SelectItem(
-                                        item.get(i).getAttr_code()
-                                );
-                                resvList.add(selectItem);
-                                Prop.INSTANCE.setReservationList(resvList);   //TODO : if-else 문 밖으로 뺐을때도 가능???
+                                resvList.add(item.get(i).getAttr_code());
                             }
                         }
+                        Prop.INSTANCE.setReservationList(resvList);   //TODO : if-else 문 밖으로 뺐을때도 가능???
                         showRideList();  //모든 놀이기구 정보 받아오기
                     }, e -> {
                         Log.d("@@@@@", "RideFragment_checkStatusOfRide : SERVER ERROR " + e);
@@ -149,26 +154,26 @@ public class RideFragment extends Fragment {
                 .subscribe(item -> {
                     rideSize = item.size();
                     Prop.INSTANCE.setTotalSize(rideSize);
+                    resvTotal.setText(rideSize+"");
 
                     for (int i = 0; i < rideSize; i++) {
 
                         viewItem = new ViewItem(
-                                ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.colorAvailableAttraction),
                                 ContextCompat.getDrawable(getContext(), R.drawable.ic_dashboard_black_24dp),
                                 item.get(i).getName(),
                                 String.valueOf(item.get(i).getWait_minute())
                         );
-
+                        viewItem.setWaitStatus(4);
+                        viewItem.setResvStatus(4);
                         if (Prop.INSTANCE.getWait_attr_code() != null && Prop.INSTANCE.getWait_attr_code() == item.get(i).getAttr_code()) {
-                            viewItem.setStatus(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.colorWaitAttraction));
+                            viewItem.setWaitStatus(0);
                         } else {
-                            viewItem.setStatus(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.colorAvailableAttraction));
+                            viewItem.setWaitStatus(4);
                         }
-
                         if (Prop.INSTANCE.getReservationList().size() > 0) {
                             for (int j = 0; j < Prop.INSTANCE.getReservationList().size(); j++) {
-                                if (Prop.INSTANCE.getReservationList().get(j).getRide_Code() == item.get(i).getAttr_code()) {
-                                    viewItem.setStatus(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.colorReservedAttraction));
+                                if (Prop.INSTANCE.getReservationList().get(j) == item.get(i).getAttr_code()) {
+                                    viewItem.setResvStatus(0);
                                 }
                             }
                         }
@@ -220,23 +225,19 @@ public class RideFragment extends Fragment {
                     public void onSwipeOptionClicked(int viewID, int position) {
                         switch (viewID) {
                             case R.id.first_task:
-
-                                if (Func.INSTANCE.checkRegistTicket()) {   // 티켓 등록 되어있을 떄
-                                    if (Prop.INSTANCE.getWait_attr_code() != null) { //이미 대기 신청된 놀이기구가 없을 때
+                                    if (Prop.INSTANCE.getWait_attr_code() == 0) { //이미 대기 신청된 놀이기구가 없을 때
                                         /* notice test */
                                         Intent intent = new Intent(getActivity(), NoticePopup.class);
                                         intent.putExtra("type", "wait");
                                         intent.putExtra("attrCode", vList.get(position).getAttr_code());
                                         startActivityForResult(intent, ADD_WAIT_CODE);
 
-                                        //5. 대기 신청 버튼 클릭이벤트
-//
+                                        //5. 대기 신청 버튼 클릭이벤트//
                                     }
-                                }
+
                                 break;
                             case R.id.second_task:
                                 // Toast.makeText(getApplicationContext(),"Edit Not Available",Toast.LENGTH_SHORT).show();
-                                if (Func.INSTANCE.checkRegistTicket()) {
                                     /* notice test */
                                     Intent intent = new Intent(getActivity(), NoticePopup.class);
                                     intent.putExtra("type", "reservation");
@@ -244,8 +245,6 @@ public class RideFragment extends Fragment {
                                     startActivityForResult(intent, ADD_RESERVATION_CODE);
 
                                     //6. 예약 신청 버튼 클릭이벤트
-
-                                }
                                 break;
                             default:
                                 break;
@@ -300,9 +299,6 @@ public class RideFragment extends Fragment {
         recyclerView.refreshDrawableState();
         //checkStatusOfRide();
         recyclerView.addOnItemTouchListener(touchListener);
-        waitCnt.setText(Prop.INSTANCE.getWaitAttractionSize() + "");
-        resvCnt.setText(Prop.INSTANCE.getResvAttractionSize() + "");
-        resvTotal.setText(Prop.INSTANCE.getTotalSize() + "");
     }
 
     @Override
