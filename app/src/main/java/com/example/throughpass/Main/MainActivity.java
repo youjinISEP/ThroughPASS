@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity  {
         transaction = fragmentManager.beginTransaction();
 //        transaction.replace(R.id.nav_host_fragment, ticketFragment).commitAllowingStateLoss();
 
-        Prop.INSTANCE.setUser_nfc(Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));    // 안드로이드 ID 넣기
+//        Prop.INSTANCE.setUser_nfc(Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));    // 안드로이드 ID 넣기
 
         Log.d(TAG, Prop.INSTANCE.getUser_nfc());
         fab.setOnClickListener(new View.OnClickListener(){
