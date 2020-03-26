@@ -33,12 +33,12 @@ import static com.example.throughpass.obj.Prop.TAG;
 /**
  * 티켓 등록 시 티켓 번호를 입력하는 액티비티
  * 이해원
- * rewrite date : 2020.03.16
+ * rewrite date : 2020.03.26
  * Token의 ID까지 전송해야 함 -> 완료
- * QR코드 구현 중
+ * QR코드 구현 중 -> 완료
  */
 public class WriteTicketCodeActivity extends AppCompatActivity {
-    Button okBtn, cancelBtn, qrScanBtn;
+    Button okBtn, qrScanBtn;
     EditText edTicketCode1, edTicketCode2, edTicketCode3, edTicketCode4;
     BigInteger registDate;
     IntentIntegrator qrScan;
@@ -50,7 +50,6 @@ public class WriteTicketCodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write_ticket_code_popup);
 
         okBtn = findViewById(R.id.okBtn);
-        cancelBtn = findViewById(R.id.cancelBtn);
         qrScanBtn = findViewById(R.id.qrScanBtn);
         edTicketCode1 = findViewById(R.id.edTicketCode1);
         edTicketCode2 = findViewById(R.id.edTicketCode2);
@@ -67,14 +66,6 @@ public class WriteTicketCodeActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "코드 4자리씩 알맞게 입력해주세요.", Toast.LENGTH_LONG).show();
                 else
                     registTicket(code);
-            }
-        });
-
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED, intent);
-                finish();
             }
         });
 
@@ -157,11 +148,13 @@ public class WriteTicketCodeActivity extends AppCompatActivity {
                         Toast.makeText(this, "유효한 티켓 QR이 아닙니다.", Toast.LENGTH_LONG).show();
                     }
                     else {
-                        Toast.makeText(this, "티켓 번호를 입력했습니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "QR코드 인식 완료.", Toast.LENGTH_LONG).show();
                         edTicketCode1.setText(codes[0]);
                         edTicketCode2.setText(codes[1]);
                         edTicketCode3.setText(codes[2]);
                         edTicketCode4.setText(codes[3]);
+
+                        registTicket(code);
                     }
                 }
             }

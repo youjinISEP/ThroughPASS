@@ -61,6 +61,9 @@ public class SplashActivity extends AppCompatActivity {
 
         Prop.INSTANCE.setUser_nfc(Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));    // 안드로이드 ID 넣기
 
+        if(!Func.INSTANCE.checkRegistTicket()) {
+            checkTodayRegisteredTicket();
+        }
 
         handler = new Handler();
         handler.postDelayed(runnable, SPLASH_TIME);
@@ -86,7 +89,6 @@ public class SplashActivity extends AppCompatActivity {
                             checkTicket = true;
                         }
                         , e -> {
-
                             checkTicket = false;
                         });
     }

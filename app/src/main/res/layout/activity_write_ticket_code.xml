@@ -47,26 +47,12 @@
                         android:textSize="20dp"
                         android:gravity="center"
                         android:layout_width="0dp"
-                        android:layout_weight="0.85"
+                        android:layout_weight="1"
                         android:text="티켓 번호를 입력하세요."
                         android:layout_height="wrap_content"
-                        android:textColor="#818181"
+                        android:textColor="@color/colorBlack"
                         android:clickable="true"
                         />
-
-                    <Button
-                        android:id="@+id/qrScanBtn"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.15"
-                        android:textColor="@color/colorLotteLogo"
-                        android:text="QR"
-                        android:textStyle="bold"
-                        android:textSize="12dp"
-                        android:background="@color/colorWhite"
-                        >
-
-                    </Button>
                 </LinearLayout>
 
 
@@ -84,6 +70,7 @@
                         android:layout_weight="0.23"
                         android:maxLength="4"
                         android:singleLine="true"
+                        android:inputType="number"
                         android:nextFocusDown="@id/edTicketCode2"
                         />
 
@@ -100,6 +87,7 @@
                         android:layout_weight="0.23"
                         android:maxLength="4"
                         android:singleLine="true"
+                        android:inputType="number"
                         android:nextFocusDown="@id/edTicketCode3"
                         />
 
@@ -109,6 +97,7 @@
                         android:layout_weight="0.02"
                         android:textSize="14dp"
                         android:text="-"></TextView>
+
                     <EditText
                         android:id="@+id/edTicketCode3"
                         android:layout_width="0dp"
@@ -116,6 +105,7 @@
                         android:layout_weight="0.23"
                         android:maxLength="4"
                         android:singleLine="true"
+                        android:inputType="number"
                         android:nextFocusDown="@id/edTicketCode4"
                         />
 
@@ -133,6 +123,7 @@
                         android:maxLength="4"
                         android:singleLine="true"
                         android:imeOptions="actionDone"
+                        android:inputType="number"
                         />
                 </LinearLayout>
             </LinearLayout>
@@ -161,13 +152,13 @@
                 />
 
             <Button
-                android:id="@+id/cancelBtn"
+                android:id="@+id/qrScanBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:text="취 소"
+                android:text="QR코드 입력"
                 android:textSize="16dp"
-                android:background="#666666"
+                android:background="#333333"
                 android:textColor="#FFFFFF"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="bottom|right"
