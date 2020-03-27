@@ -82,16 +82,18 @@ public class TicketFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
+
         /*
         공지사항 갱신
          */
         getTodayAllNotice();
-        refreshPrintNotice();
+//        refreshPrintNotice();
         /*
         분실물 갱신
          */
         getTodayAllLosts();
-        refreshPrintLosts();
+//        refreshPrintLosts();
 
 
     }
@@ -125,6 +127,7 @@ public class TicketFragment extends Fragment {
                     });
         }
     }
+
 
     @SuppressLint("CheckResult")
     public void onClickCancel(View view) {
@@ -188,6 +191,9 @@ public class TicketFragment extends Fragment {
                 .subscribe(item -> { // 통신 결과로 받은 Object
                             if (item != null) {
                                 noticesList = item; // 이 방법으로 가능한지?
+
+                                refreshPrintNotice();
+
                             }
                         }
                         , e -> {
@@ -207,6 +213,7 @@ public class TicketFragment extends Fragment {
                 .subscribe(item -> { // 통신 결과로 받은 Object
                             if (item != null) {
                                 lostsList = item; // 이 방법으로 가능한지
+                                refreshPrintLosts();
                             }
                         }
                         , e -> {
@@ -223,8 +230,10 @@ public class TicketFragment extends Fragment {
             @Override
             public void run() {
 //                Log.d(Prop.INSTANCE.getTAG(), "index : " + index + " , lostList.size " + lostsList.size());
-                if (index >= lostsList.size()) {
-                    getTodayAllLosts();
+
+                if(index >= lostsList.size()) {
+//                    getTodayAllLosts();
+
                     index = 0;
                 } else {
                     Prop.LostsData data = lostsList.get(index);
@@ -245,8 +254,10 @@ public class TicketFragment extends Fragment {
 
             @Override
             public void run() {
-                if (index >= noticesList.size()) {
-                    getTodayAllNotice();
+
+                if(index >= noticesList.size()) {
+//                    getTodayAllNotice();
+
                     index = 0;
                 } else {
                     Prop.NoticeData data = noticesList.get(index);
@@ -268,6 +279,8 @@ public class TicketFragment extends Fragment {
     @Override
     public void onPause() {
         Log.d(TAG, "onPause");
+        lostsRefreshTimer.cancel();
+        noticeRefreshTimer.cancel();
         super.onPause();
     }
 
