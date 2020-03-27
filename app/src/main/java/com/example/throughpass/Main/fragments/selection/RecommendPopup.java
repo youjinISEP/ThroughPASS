@@ -34,11 +34,14 @@ public class RecommendPopup extends AppCompatActivity {
     RecomRecyclerViewAdapter adapter;
     Button cancelBtn;
     ArrayList<Prop.RecomResvResultData> recommendList;
+    ArrayList<Prop.ResvRideResultData> reservationList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommend_popup);
         recommendList = new ArrayList<Prop.RecomResvResultData>();
+        reservationList = new ArrayList<Prop.ResvRideResultData>();
 
         cancelBtn = findViewById(R.id.cancelBtn);
         recyclerView = findViewById(R.id.recomRecyclerView);
@@ -71,6 +74,7 @@ public class RecommendPopup extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(item -> {
                     if(item.size() != 0) {
+                        reservationList = item;
                         recomResvCode(item);
                     }
                     else {
@@ -147,21 +151,19 @@ public class RecommendPopup extends AppCompatActivity {
                 5. 예약 변경 API 호출
                  */
                 Prop.RecomResvResultData selectedData = list.get(position);
-                Log.d(TAG, "size : " + list.size());
-                Log.d(TAG, "data : " + selectedData.getName());
-                list.remove(position);
-                Log.d(TAG, "size : " + list.size());
-                list.add(0, selectedData);
-                Log.d(TAG, "size : " + list.size());
-                Log.d(TAG, "data : " + list.get(0).getName());
+
+                for(int i = 0; i < reservationList.size(); i++) {
+                    Prop.ResvRideResultData data = reservationList.get(i);
+                    if(data.getAttr_code() == selectedData.getAttr_code()) {
+                        reservationList.remove(i);
+                        reservationList.add(0, data);
+                        break;
+                    }
+                }
 
                 ArrayList<Integer> resvOrderList = new ArrayList<Integer>();
-                for(Prop.RecomResvResultData ele : list) {
-                    Log.d(TAG, "ele : " + ele.getName());
+                for(Prop.ResvRideResultData ele : reservationList) {
                     resvOrderList.add(ele.getAttr_code());
-                }
-                for(int ele : resvOrderList) {
-                    Log.d(TAG, "ele222 : " + ele);
                 }
 
                 changeReservation(resvOrderList);
