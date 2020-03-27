@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.throughpass.Main.MainActivity;
-import com.example.throughpass.Main.fragments.ticket.WriteTicketCodePopup;
+import com.example.throughpass.Main.WriteTicketCodeActivity;
 import com.example.throughpass.obj.Func;
 import com.example.throughpass.obj.Prop;
 import com.example.throughpass.obj.RegisteredTodayTicketService;
@@ -47,9 +47,10 @@ public class SplashActivity extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "금일 등록한 티켓이 없습니다. 새로 등록해주세요.", Toast.LENGTH_LONG).show();
-                    intent = new Intent(getApplicationContext(), WriteTicketCodePopup.class);
+                    intent = new Intent(getApplicationContext(), WriteTicketCodeActivity.class);
                     startActivity(intent);
                 }
+                finish();
             }
         };
 

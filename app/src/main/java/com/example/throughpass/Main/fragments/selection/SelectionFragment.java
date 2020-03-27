@@ -1,6 +1,8 @@
 package com.example.throughpass.Main.fragments.selection;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -9,21 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.throughpass.Main.SSLexception.GlideApp;
 import com.example.throughpass.Main.fragments.selection.selectRecyclerview.SelectItem;
 import com.example.throughpass.Main.fragments.selection.selectRecyclerview.SelectRecyclerTouchListener;
 import com.example.throughpass.Main.fragments.selection.selectRecyclerview.SelectRecyclerViewAdapter;
@@ -34,9 +33,7 @@ import com.example.throughpass.obj.Prop;
 import com.example.throughpass.obj.RemoveWaitCodeService;
 import com.example.throughpass.obj.RemvResvCodeService;
 import com.example.throughpass.obj.ResvAttractionInfoService;
-import com.example.throughpass.obj.ResvAttractionService;
 import com.example.throughpass.obj.WaitAttractionInfoService;
-import com.example.throughpass.obj.WaitAttractionService;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -44,9 +41,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.example.throughpass.obj.Prop.RECOMMEND_CODE;
 
 public class SelectionFragment extends Fragment {
 
@@ -124,6 +122,7 @@ public class SelectionFragment extends Fragment {
 
         //registFrame
         registFrame = view.findViewById(R.id.registFrame);
+        resRideRecommand = view.findViewById(R.id.btn_sRecommand);
 
         recyclerView = view.findViewById(R.id.regist_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -174,7 +173,6 @@ public class SelectionFragment extends Fragment {
                         } else {
                             rideName.setText(item.getName());
                             rideLocation.setText(item.getLocation());
-                            waitMinute = item.getWait_minute();
                             waitRideCancel.setOnClickListener(this::onClick);
                         }
                     }, e -> {
@@ -205,7 +203,10 @@ public class SelectionFragment extends Fragment {
                                     }
                             );
                 }
-
+                break;
+            case R.id.btn_sRecommand:
+                Intent intent = new Intent(getActivity(), RecommendPopup.class);
+                startActivityForResult(intent, RECOMMEND_CODE);
                 break;
         }
     }
@@ -340,6 +341,7 @@ public class SelectionFragment extends Fragment {
                         }
                         recyclerViewAdapter.setItemList(selectList);
                         recyclerView.setAdapter(recyclerViewAdapter);
+                        resRideRecommand.setOnClickListener(this::onClick);
                     }, e -> {
                         Log.d("@@@@", "SelectionFragment_showResvAttraction : SERVER ERROR ");
                     });
@@ -432,5 +434,13 @@ public class SelectionFragment extends Fragment {
                 });
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RECOMMEND_CODE) {
+            if(resultCode == Activity.RESULT_OK) {  // 추천 종료
+                Func.INSTANCE.refreshFragment(this, getFragmentManager());
+            }
+        }
+    }
 }

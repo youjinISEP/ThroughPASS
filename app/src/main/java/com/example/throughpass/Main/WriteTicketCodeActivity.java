@@ -47,7 +47,7 @@ public class WriteTicketCodeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_write_ticket_code_popup);
+        setContentView(R.layout.activity_write_ticket_code);
 
         okBtn = findViewById(R.id.okBtn);
         qrScanBtn = findViewById(R.id.qrScanBtn);
@@ -107,7 +107,8 @@ public class WriteTicketCodeActivity extends AppCompatActivity {
                         Prop.INSTANCE.setRegistDateStr(strDate);
 //                        intent.putExtra("ticketCode", code);
 //                        intent.putExtra("registDate", registDate);
-                        setResult(RESULT_OK, intent);
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
                         finish();
                     }
                     else {
@@ -162,17 +163,6 @@ public class WriteTicketCodeActivity extends AppCompatActivity {
         else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        //바깥레이어 클릭시 안닫히게
-        return event.getAction() != MotionEvent.ACTION_OUTSIDE;
-    }
-    @Override
-    public void onBackPressed() {
-        //안드로이드 백버튼 막기
-        return;
     }
 
     public void onStop() {

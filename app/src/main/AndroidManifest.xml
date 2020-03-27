@@ -27,6 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Main.fragments.selection.RecommendPopup"
+            android:theme="@style/PopupTheme" ></activity>
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,15 +45,7 @@
         <activity android:name=".Main.NFC.nfcActivity" />
         <activity android:name=".Main.WriteTicketCodeActivity" />
         <activity android:name=".Main.fragments.ride.RideDetailActivity" />
-        <activity
-            android:name=".Main.fragments.ticket.WriteTicketCodePopup"
-            android:screenOrientation="fullSensor"
-            android:stateNotNeeded="true"
-            android:theme="@style/PopupTheme"
-            tools:replace="android:screenOrientation" />
-        <activity android:name=".Main.MainActivity">
-
-        </activity>
+        <activity android:name=".Main.MainActivity"></activity>
 
         <service
             android:name=".MyFirebaseMessagingService"

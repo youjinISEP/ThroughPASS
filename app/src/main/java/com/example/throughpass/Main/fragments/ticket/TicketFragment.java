@@ -92,8 +92,8 @@ public class TicketFragment extends Fragment {
                     Toast.makeText(getActivity(), "현재 티켓이 등록되어 있습니다. \n 최대 등록 횟수 : 1회", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Intent intent = new Intent(getActivity(), WriteTicketCodePopup.class);
-                    startActivityForResult(intent, TICKET_POPUP_CODE);
+//                    Intent intent = new Intent(getActivity(), WriteTicketCodePopup.class);
+//                    startActivityForResult(intent, TICKET_POPUP_CODE);
                 }
 
             }

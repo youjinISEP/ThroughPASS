@@ -72,7 +72,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         Log.d(TAG, "알림 메세지 : $body , 그리고 제목 : $title")
 
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         var pendingIntent : PendingIntent = PendingIntent.getActivity(this, FCM_MSG_CODE, intent, PendingIntent.FLAG_ONE_SHOT)
 
