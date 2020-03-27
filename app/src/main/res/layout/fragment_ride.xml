@@ -8,31 +8,25 @@
     android:orientation="vertical">
 
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@color/colorToolbar"
-        android:gravity="center"
-        android:minHeight="?attr/actionBarSize"
-        android:textAlignment="center"
-        android:theme="?attr/actionBarTheme"
-        app:navigationIcon="@mipmap/ic_launcher">
+        android:background="@drawable/list_bar"
+        >
+
+    </ImageView>
 
         <TextView
             android:id="@+id/toolbar_title"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@android:color/transparent"
+            android:layout_gravity="left"
+            android:textSize="25dp"
+            android:layout_margin="10dp"
             android:text="놀이기구 현황"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textStyle="bold" />
-    </androidx.appcompat.widget.Toolbar>
 
 
     <LinearLayout
