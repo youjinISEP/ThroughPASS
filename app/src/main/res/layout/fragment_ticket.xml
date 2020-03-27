@@ -91,7 +91,7 @@
                     android:id="@+id/txt_waitCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="22"
+                    android:text="-"
                     android:textSize="34dp"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="casual"
-                    android:text="00"
+                    android:text="-"
                     android:textAlignment="center"
 
                     android:textColor="@color/colorLotteLogo"
