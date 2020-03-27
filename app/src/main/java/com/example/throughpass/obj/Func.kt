@@ -82,6 +82,12 @@ interface WaitAttractionInfoService{
     fun resultRepos(@Body waitRideInfoCodeData: Prop.WaitRideInfoCodeData ) : Single<Prop.WaitRideInfoResultData>
 }
 
+// 3-2. (nfcUid -> 서버 -> 놀이기구 대기 잔여시간)
+interface WaitAttractionWaitMinuteService{
+    @POST("/attr/getWaitMinuteOfWaitAttr")
+    fun resultRepos(@Body waitMinuteOfWaitAttrData: Prop.WaitMinuteOfWaitAttrData ) : Single<Prop.WaitMinuteInfoData>
+}
+
 // 4. (nfcUid -> 서버 -> 놀이기구 고유코드 LIST)
 interface ResvAttractionService{
     @POST("/reservation/getReservationAttrCode")
@@ -154,4 +160,10 @@ interface getAllNoticeService {
 interface getAllLostsService {
     @GET("/losts/getAllLosts")
     fun resultRepos() : Single<ArrayList<Prop.LostsData>>
+}
+
+// 추천
+interface GetRecomAttrCodeService {
+    @GET("/reservation/recommendReservation")
+    fun resultRepos(@Body recomResvData: Prop.RecomResvData) : Single<ArrayList<Prop.RecomResvResultData>>
 }

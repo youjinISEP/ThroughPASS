@@ -1,13 +1,21 @@
 package com.example.throughpass.Main.fragments.selection;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.DialogInterface;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -28,6 +36,8 @@ import com.example.throughpass.obj.Func;
 import com.example.throughpass.obj.Prop;
 import com.example.throughpass.obj.RemvResvCodeService;
 import com.example.throughpass.obj.ResvAttractionInfoService;
+import com.example.throughpass.obj.WaitAttractionInfoService;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +45,8 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.example.throughpass.obj.Prop.RECOMMEND_CODE;
 
 public class SelectionFragment extends Fragment {
 
@@ -79,14 +91,21 @@ public class SelectionFragment extends Fragment {
     public void onResume() {
         super.onResume();
         recyclerView.addOnItemTouchListener(touchListener);
-
-
     }
 
+   @SuppressLint("CheckResult")
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_sRecommand:
+                Intent intent = new Intent(getActivity(), RecommendPopup.class);
+                startActivityForResult(intent, RECOMMEND_CODE);
+                break;
+        }
+    }
+  
     /**
      * 예약신청 TAB
      */
-
     @SuppressLint("CheckResult")
     public void showResvAttraction() {
         //4. 예약 신청한 놀이기구 정보
@@ -115,6 +134,7 @@ public class SelectionFragment extends Fragment {
                         }
                         recyclerViewAdapter.setItemList(selectList);
                         recyclerView.setAdapter(recyclerViewAdapter);
+                        resRideRecommand.setOnClickListener(this::onClick);
                     }, e -> {
                         Log.d("@@@@", "SelectionFragment_showResvAttraction : SERVER ERROR ");
                     });
@@ -235,5 +255,13 @@ public class SelectionFragment extends Fragment {
                 });
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RECOMMEND_CODE) {
+            if(resultCode == Activity.RESULT_OK) {  // 추천 종료
+                Func.INSTANCE.refreshFragment(this, getFragmentManager());
+            }
+        }
+    }
 }

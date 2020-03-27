@@ -22,6 +22,7 @@ object Prop {
     const val ADD_WAIT_CODE = 1110
     const val ADD_RESERVATION_CODE = 1111
     const val TICKET_POPUP_CODE = 111
+    const val RECOMMEND_CODE = 110
     const val TAG = "GHOST"
     var fcmTokenId: String? = null
     val SECOND: Int = 1000
@@ -103,8 +104,11 @@ object Prop {
     data class WaitRideInfoResultData(val attr_code: Int,
                                       val name: String,
                                       val location: String,
-                                      val img_url: String,
-                                      val wait_minute: Int)
+                                      val img_url: String)
+
+    /* 3-2 대기 신청중인 놀이기구의 잔여 대기 시간 정보 */
+    data class WaitMinuteOfWaitAttrData(val nfcUid: String, val attr_code: Int)
+    data class WaitMinuteInfoData(val count: Int, val wait_minute: Int)
 
     //* 4. 예약 신청중인 놀이기구
     data class ResvRideCodeData(val nfcUid: String)
@@ -145,13 +149,12 @@ object Prop {
     data class ChangeResvData(val attrCodes: ArrayList<Integer>, val nfcUid: String)
 
     //* 10. 예약 신청된 놀이기구 추천
-    data class RecomResvData(val nfcUid: String)
+    data class RecomResvData(val attrCodes: ArrayList<ResvRideResultData>)
 
     data class RecomResvResultData(val attr_code: Int,
-                                   val coordinate: String,
+                                   val name : String,
                                    val reservation_order: Int,
-                                   val wait_minute: Int)
-
+                                   val expect_wait_minute: Int)
 
     /* 11. NFC 태깅 진행 */
     data class NfcTaggingData(val nfcUid: String, val attrCode: Int)
