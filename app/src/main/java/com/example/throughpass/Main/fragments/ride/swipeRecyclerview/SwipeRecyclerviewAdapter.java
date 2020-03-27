@@ -1,6 +1,7 @@
 package com.example.throughpass.Main.fragments.ride.swipeRecyclerview;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.load.resource.bitmap.CenterInside;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.throughpass.Main.SSLexception.GlideApp;
 import com.example.throughpass.R;
+import com.google.android.material.internal.CircularBorderDrawable;
 
 import java.util.List;
 
