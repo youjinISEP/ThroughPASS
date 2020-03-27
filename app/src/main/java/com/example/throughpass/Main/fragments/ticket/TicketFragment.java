@@ -149,8 +149,8 @@ public class TicketFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(item -> {
                     if (item != null) {
-                        waitCount.setText(item.getCount());
-                        restTime.setText(item.getWait_minute());
+                        waitCount.setText(String.valueOf(item.getCount()));
+                        restTime.setText(String.valueOf(item.getWait_minute()));
                     } else {
                         waitCount.setText("-");
                         restTime.setText("-");

@@ -66,7 +66,7 @@ public class RecomRecyclerViewAdapter extends RecyclerView.Adapter<RecomRecycler
 
         void onBind(Prop.RecomResvResultData data) {
             attrNameText.setText(data.getName());
-            respectWaitMinuteText.setText(data.getExpect_wait_minute());
+            respectWaitMinuteText.setText(String.valueOf(data.getExpect_wait_minute()) + " 분");
         }
     }
 

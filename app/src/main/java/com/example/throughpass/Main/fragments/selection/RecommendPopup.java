@@ -100,7 +100,7 @@ public class RecommendPopup extends AppCompatActivity {
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "추천 에러!", Toast.LENGTH_LONG).show();
-//                        finish();
+                        finish();
                     }
                 }, e->{
                     Log.d(TAG, "recomResvCode : " + e);
@@ -147,11 +147,17 @@ public class RecommendPopup extends AppCompatActivity {
                 5. 예약 변경 API 호출
                  */
                 Prop.RecomResvResultData selectedData = list.get(position);
+                Log.d(TAG, "size : " + list.size());
+                Log.d(TAG, "data : " + selectedData.getName());
                 list.remove(position);
+                Log.d(TAG, "size : " + list.size());
                 list.add(0, selectedData);
+                Log.d(TAG, "size : " + list.size());
+                Log.d(TAG, "data : " + list.get(0).getName());
 
                 ArrayList<Integer> resvOrderList = new ArrayList<Integer>();
                 for(Prop.RecomResvResultData ele : list) {
+                    Log.d(TAG, "ele : " + ele.getName());
                     resvOrderList.add(ele.getReservation_order());
                 }
 
@@ -175,6 +181,7 @@ public class RecommendPopup extends AppCompatActivity {
                         Log.d(TAG, "SelectionFragment_DragAndDropList : success to send attraction code list");
                         Toast.makeText(getApplicationContext(), "놀이기구 예약 1순위가 변경되었습니다.", Toast.LENGTH_LONG).show();
                         setResult(RESULT_OK);
+                        finish();
                     }
                 }, e->{
                     Log.d(TAG, "changeReservation :  SERVER ERROR : " + e);

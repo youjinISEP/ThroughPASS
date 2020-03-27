@@ -164,6 +164,6 @@ interface getAllLostsService {
 
 // 추천
 interface GetRecomAttrCodeService {
-    @GET("/reservation/recommendReservation")
+    @POST("/reservation/recommendReservation")
     fun resultRepos(@Body recomResvData: Prop.RecomResvData) : Single<ArrayList<Prop.RecomResvResultData>>
 }

@@ -73,6 +73,7 @@ public class SelectionFragment extends Fragment {
         toolbar.setTitle("현재 신청 상황");
 
         recyclerView = view.findViewById(R.id.regist_recyclerview);
+        resRideRecommand = view.findViewById(R.id.btn_sRecommand);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
 
