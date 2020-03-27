@@ -1,7 +1,4 @@
-package com.example.throughpass.Main.fragments.ticket;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.throughpass.Main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -14,6 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.throughpass.Main.fragments.ticket.QRCodeScanPopup;
 import com.example.throughpass.R;
 import com.example.throughpass.obj.Func;
 import com.example.throughpass.obj.Prop;
@@ -23,21 +24,21 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.math.BigInteger;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
 import static com.example.throughpass.obj.Prop.TAG;
 
 /**
- * 티켓 등록 시 티켓 번호를 입력하는 팝업 창
+ * 티켓 등록 시 티켓 번호를 입력하는 액티비티
  * 이해원
- * rewrite date : 2020.03.16
+ * rewrite date : 2020.03.26
  * Token의 ID까지 전송해야 함 -> 완료
- * QR코드 구현 중
+ * QR코드 구현 중 -> 완료
  */
-public class WriteTicketCodePopup extends AppCompatActivity {
-    Button okBtn, cancelBtn, qrScanBtn;
+public class WriteTicketCodeActivity extends AppCompatActivity {
+    Button okBtn, qrScanBtn;
     EditText edTicketCode1, edTicketCode2, edTicketCode3, edTicketCode4;
     BigInteger registDate;
     IntentIntegrator qrScan;
@@ -46,10 +47,9 @@ public class WriteTicketCodePopup extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_write_ticket_code_popup);
+        setContentView(R.layout.activity_write_ticket_code);
 
         okBtn = findViewById(R.id.okBtn);
-        cancelBtn = findViewById(R.id.cancelBtn);
         qrScanBtn = findViewById(R.id.qrScanBtn);
         edTicketCode1 = findViewById(R.id.edTicketCode1);
         edTicketCode2 = findViewById(R.id.edTicketCode2);
@@ -66,14 +66,6 @@ public class WriteTicketCodePopup extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "코드 4자리씩 알맞게 입력해주세요.", Toast.LENGTH_LONG).show();
                 else
                     registTicket(code);
-            }
-        });
-
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED, intent);
-                finish();
             }
         });
 
@@ -115,7 +107,8 @@ public class WriteTicketCodePopup extends AppCompatActivity {
                         Prop.INSTANCE.setRegistDateStr(strDate);
 //                        intent.putExtra("ticketCode", code);
 //                        intent.putExtra("registDate", registDate);
-                        setResult(RESULT_OK, intent);
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
                         finish();
                     }
                     else {
@@ -156,11 +149,13 @@ public class WriteTicketCodePopup extends AppCompatActivity {
                         Toast.makeText(this, "유효한 티켓 QR이 아닙니다.", Toast.LENGTH_LONG).show();
                     }
                     else {
-                        Toast.makeText(this, "티켓 번호를 입력했습니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "QR코드 인식 완료.", Toast.LENGTH_LONG).show();
                         edTicketCode1.setText(codes[0]);
                         edTicketCode2.setText(codes[1]);
                         edTicketCode3.setText(codes[2]);
                         edTicketCode4.setText(codes[3]);
+
+                        registTicket(code);
                     }
                 }
             }
@@ -168,17 +163,6 @@ public class WriteTicketCodePopup extends AppCompatActivity {
         else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        //바깥레이어 클릭시 안닫히게
-        return event.getAction() != MotionEvent.ACTION_OUTSIDE;
-    }
-    @Override
-    public void onBackPressed() {
-        //안드로이드 백버튼 막기
-        return;
     }
 
     public void onStop() {

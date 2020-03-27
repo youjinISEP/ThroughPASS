@@ -163,7 +163,7 @@ public class RideFragment extends Fragment {
                     for (int i = 0; i < rideSize; i++) {
 
                         viewItem = new ViewItem(
-                                ContextCompat.getDrawable(getContext(), R.drawable.ic_dashboard_black_24dp),
+                                ContextCompat.getDrawable(getActivity(), R.drawable.ic_dashboard_black_24dp),
                                 item.get(i).getName(),
                                 String.valueOf(item.get(i).getWait_minute())
                         );

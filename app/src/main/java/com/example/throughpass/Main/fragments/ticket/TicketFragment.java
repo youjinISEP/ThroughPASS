@@ -26,6 +26,7 @@ import com.example.throughpass.obj.Prop;
 import com.example.throughpass.obj.RegisteredTodayTicketService;
 import com.example.throughpass.obj.RemoveWaitCodeService;
 import com.example.throughpass.obj.WaitAttractionInfoService;
+import com.example.throughpass.obj.WaitAttractionWaitMinuteService;
 import com.example.throughpass.obj.getAllLostsService;
 import com.example.throughpass.obj.getAllNoticeService;
 
@@ -50,10 +51,12 @@ public class TicketFragment extends Fragment {
     Timer noticeRefreshTimer;
     Timer lostsRefreshTimer;
 
-    TextView ticketStatus, rideName, rideLocation, restTime, worldNotice, worldLosts;
+    TextView ticketStatus, rideName, rideLocation, restTime, worldNotice, worldLosts, waitCount;
     Button cancelRide;
     ProgressBar mainProgressbar;
     Fragment fragment;
+
+    int waitAttrCode = 0;   // Default
 
     @Nullable
     @Override
@@ -65,8 +68,9 @@ public class TicketFragment extends Fragment {
         worldNotice = view.findViewById(R.id.txt_tWorldNotice);
         worldLosts = view.findViewById(R.id.txt_tWorldLosts);
 
-        restTime = view.findViewById(R.id.txt_tResttime);
+        restTime = view.findViewById(R.id.txt_restTime);
         mainProgressbar = view.findViewById(R.id.mainprogressbar);
+        waitCount = view.findViewById(R.id.txt_waitCount);
 
         rideName = view.findViewById(R.id.txt_tRideName);
         rideLocation = view.findViewById(R.id.txt_tRideLoc);
@@ -82,16 +86,18 @@ public class TicketFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
+
         /*
         공지사항 갱신
          */
         getTodayAllNotice();
-        refreshPrintNotice();
+//        refreshPrintNotice();
         /*
         분실물 갱신
          */
         getTodayAllLosts();
-        refreshPrintLosts();
+//        refreshPrintLosts();
 
 
     }
@@ -99,7 +105,6 @@ public class TicketFragment extends Fragment {
     //대기 신청 현황 데이터 가져오기
     @SuppressLint("CheckResult")
     public void checkStatusOfRide() {
-
         if (Prop.INSTANCE.getUser_nfc() != null) {
             //3. 대기 신청한 놀이기구 정보
             WaitAttractionInfoService waitAttractionInfoService = Prop.INSTANCE.getRetrofit().create(WaitAttractionInfoService.class);
@@ -110,20 +115,50 @@ public class TicketFragment extends Fragment {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(item -> {
                         if (item.getAttr_code() == 0) {
-                            Log.d("@@@@@", "TicketFragment_checkStatusOfRide : no item included in waitAttraction");
+                            Log.d(TAG, "일로오냐");
                             // rideName.setText("대기신청된 놀이기구가 없습니다.");
                             // rideLocation.setText("놀이기구를 대기 신청해주세요.");
                             //  waitMinute = 0;
                         } else {
+                            waitAttrCode = item.getAttr_code();
                             rideName.setText(item.getName());
                             rideLocation.setText(item.getLocation());
                            // waitMinute = item.getWait_minute();
                             cancelRide.setOnClickListener(this::onClickCancel);
+
+                            getWaitMinuteOfWaitAttr(waitAttrCode);
                         }
                     }, e -> {
-                        Log.d("@@@@", "TicketFragment " + e);
+                        Log.d(TAG, "checkStatusOfRide " + e);
                     });
         }
+    }
+
+//    WaitAttractionWaitMinuteService{
+//        @POST("/attr/getWaitMinuteOfWaitAttr")
+//        fun resultRepos(@Body waitMinuteOfWaitAttrData: Prop.WaitMinuteOfWaitAttrData ) : Single<Prop.WaitMinuteInfoData>
+//    }
+    // 잔여 대기 시간, 몇 번째인지 가져오기
+    @SuppressLint("CheckResult")
+    public void getWaitMinuteOfWaitAttr(int attrCode) {
+        WaitAttractionWaitMinuteService waitAttractionWaitMinuteService = Prop.INSTANCE.getRetrofit().create(WaitAttractionWaitMinuteService.class);
+        Prop.WaitMinuteOfWaitAttrData waitMinuteOfWaitAttrData = new Prop.WaitMinuteOfWaitAttrData(Prop.INSTANCE.getUser_nfc(), attrCode);
+
+        waitAttractionWaitMinuteService.resultRepos(waitMinuteOfWaitAttrData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(item -> {
+                    if (item != null) {
+                        waitCount.setText(String.valueOf(item.getCount()));
+                        restTime.setText(String.valueOf(item.getWait_minute()));
+                    } else {
+                        waitCount.setText("-");
+                        restTime.setText("-");
+                    }
+                }, e -> {
+                    Log.d(TAG, "getWaitMinuteOfWaitAttr " + e);
+                });
+
     }
 
     @SuppressLint("CheckResult")
@@ -188,6 +223,9 @@ public class TicketFragment extends Fragment {
                 .subscribe(item -> { // 통신 결과로 받은 Object
                             if (item != null) {
                                 noticesList = item; // 이 방법으로 가능한지?
+
+                                refreshPrintNotice();
+
                             }
                         }
                         , e -> {
@@ -207,6 +245,7 @@ public class TicketFragment extends Fragment {
                 .subscribe(item -> { // 통신 결과로 받은 Object
                             if (item != null) {
                                 lostsList = item; // 이 방법으로 가능한지
+                                refreshPrintLosts();
                             }
                         }
                         , e -> {
@@ -223,8 +262,10 @@ public class TicketFragment extends Fragment {
             @Override
             public void run() {
 //                Log.d(Prop.INSTANCE.getTAG(), "index : " + index + " , lostList.size " + lostsList.size());
-                if (index >= lostsList.size()) {
-                    getTodayAllLosts();
+
+                if(index >= lostsList.size()) {
+//                    getTodayAllLosts();
+
                     index = 0;
                 } else {
                     Prop.LostsData data = lostsList.get(index);
@@ -235,7 +276,7 @@ public class TicketFragment extends Fragment {
         };
 
         lostsRefreshTimer = new Timer();
-        lostsRefreshTimer.schedule(lostsRefreshTimerTask, 0, 2 * Prop.INSTANCE.getSECOND());
+        lostsRefreshTimer.schedule(lostsRefreshTimerTask, 0, 3 * Prop.INSTANCE.getSECOND());
     }
 
     // 분실물 갱신하는 타이머 포함된 함수
@@ -245,8 +286,10 @@ public class TicketFragment extends Fragment {
 
             @Override
             public void run() {
-                if (index >= noticesList.size()) {
-                    getTodayAllNotice();
+
+                if(index >= noticesList.size()) {
+//                    getTodayAllNotice();
+
                     index = 0;
                 } else {
                     Prop.NoticeData data = noticesList.get(index);
@@ -268,6 +311,8 @@ public class TicketFragment extends Fragment {
     @Override
     public void onPause() {
         Log.d(TAG, "onPause");
+        lostsRefreshTimer.cancel();
+        noticeRefreshTimer.cancel();
         super.onPause();
     }
 
@@ -276,79 +321,4 @@ public class TicketFragment extends Fragment {
         Log.d(TAG, "onStop");
         super.onStop();
     }
-
-
 }
-
-
-/*
-$ 이전 코드 백업
-
-  // 티켓 등록 버튼 클릭 이벤트
-/*        registBtn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(Func.INSTANCE.checkRegistTicket()) {
-                    Toast.makeText(getActivity(), "현재 티켓이 등록되어 있습니다. \n 최대 등록 횟수 : 1회", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Intent intent = new Intent(getActivity(), WriteTicketCodePopup.class);
-                    startActivityForResult(intent, TICKET_POPUP_CODE);
-                }
-
-            }
-        });
-    }*/
-/*
-    // 티켓 정보 바 변경
-    private void setTicketInfo() {
-        if(Func.INSTANCE.checkRegistTicket()) {  // 티켓 정보가 등록되어있다면
-            ticketStatus.setBackgroundResource(R.color.colorTrueTicketInfoBox);
-            ticketStatus.setText(R.string.trueTicketInfoBoxTxt);
-            name.setText(Prop.INSTANCE.getTicketCode());
-            registTime.setText(Prop.INSTANCE.getRegistDateStr());
-        }
-        else {  // 티켓 정보가 등록되어있지 않다면
-            ticketStatus.setBackgroundResource(R.color.colorFalseTicketInfoBox);
-            ticketStatus.setText(R.string.falseTicketInfoBoxTxt);
-//            name.setText(" - ");
-  //          registTime.setText(" - ");
-        }
-    }
-*/
-// 티켓 오늘 등록했었는지 확인, 값 저장하는 함수
- /*   @SuppressLint("CheckResult")
-    private void checkTodayRegisteredTicket() {
-        RegisteredTodayTicketService registeredTodayTicketService = Prop.INSTANCE.getRetrofit().create(RegisteredTodayTicketService.class);
-        Prop.RegisteredTodayTicketData registeredTodayTicketData = new Prop.RegisteredTodayTicketData(Prop.INSTANCE.getUser_nfc());
-
-        //noinspection ResultOfMethodCallIgnored
-        registeredTodayTicketService.resultRepos(registeredTodayTicketData)
-                .subscribeOn(Schedulers.io())   // 데이터를 보내는 쓰레드 및 함수
-                .observeOn(AndroidSchedulers.mainThread())  // 데이터를 받아서 사용하는 쓰레드 및 함수
-                .subscribe(item -> { // 통신 결과로 받은 Object
-                            Prop.INSTANCE.setTicketCode(item.getTicket_code());
-                            Prop.INSTANCE.setRegistDate(item.getReg_date());
-
-                            Date date = new Date(Prop.INSTANCE.getRegistDate().longValue());
-                            String strDate = Func.INSTANCE.formatDateKST(date);
-                            Prop.INSTANCE.setRegistDateStr(strDate);
-                            //setTicketInfo();
-                        }
-                        , e -> {
-                            Toast.makeText(getActivity(), "기존 티켓 등록 찾기 오류가 발생했습니다. \n 잠시후 다시 시도해주세요.", Toast.LENGTH_LONG).show();
-                        });
-    }
-
-     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == TICKET_POPUP_CODE) {
-            if(resultCode == Activity.RESULT_OK) {  // 티켓 등록 완료
-                Toast.makeText(getActivity(), "ticket : " + Prop.INSTANCE.getTicketCode() + " \n " + Prop.INSTANCE.getRegistDateStr(), Toast.LENGTH_LONG).show();
-                Func.INSTANCE.refreshFragment(this, getFragmentManager());
-            }
-        }
-    }
- */
