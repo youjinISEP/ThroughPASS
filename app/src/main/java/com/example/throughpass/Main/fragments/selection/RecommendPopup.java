@@ -158,7 +158,10 @@ public class RecommendPopup extends AppCompatActivity {
                 ArrayList<Integer> resvOrderList = new ArrayList<Integer>();
                 for(Prop.RecomResvResultData ele : list) {
                     Log.d(TAG, "ele : " + ele.getName());
-                    resvOrderList.add(ele.getReservation_order());
+                    resvOrderList.add(ele.getAttr_code());
+                }
+                for(int ele : resvOrderList) {
+                    Log.d(TAG, "ele222 : " + ele);
                 }
 
                 changeReservation(resvOrderList);
