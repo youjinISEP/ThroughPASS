@@ -29,7 +29,8 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Main.fragments.selection.RecommendPopup"
             android:theme="@style/PopupTheme" ></activity>
-        <activity android:name=".SplashActivity">
+        <activity android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

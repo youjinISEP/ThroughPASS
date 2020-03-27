@@ -26,6 +26,7 @@ import com.example.throughpass.obj.Prop;
 import com.example.throughpass.obj.RegisteredTodayTicketService;
 import com.example.throughpass.obj.RemoveWaitCodeService;
 import com.example.throughpass.obj.WaitAttractionInfoService;
+import com.example.throughpass.obj.WaitAttractionWaitMinuteService;
 import com.example.throughpass.obj.getAllLostsService;
 import com.example.throughpass.obj.getAllNoticeService;
 
@@ -50,10 +51,12 @@ public class TicketFragment extends Fragment {
     Timer noticeRefreshTimer;
     Timer lostsRefreshTimer;
 
-    TextView ticketStatus, rideName, rideLocation, restTime, worldNotice, worldLosts;
+    TextView ticketStatus, rideName, rideLocation, restTime, worldNotice, worldLosts, waitCount;
     Button cancelRide;
     ProgressBar mainProgressbar;
     Fragment fragment;
+
+    int waitAttrCode = 0;   // Default
 
     @Nullable
     @Override
@@ -65,8 +68,9 @@ public class TicketFragment extends Fragment {
         worldNotice = view.findViewById(R.id.txt_tWorldNotice);
         worldLosts = view.findViewById(R.id.txt_tWorldLosts);
 
-        restTime = view.findViewById(R.id.txt_tResttime);
+        restTime = view.findViewById(R.id.txt_restTime);
         mainProgressbar = view.findViewById(R.id.mainprogressbar);
+        waitCount = view.findViewById(R.id.txt_waitCount);
 
         rideName = view.findViewById(R.id.txt_tRideName);
         rideLocation = view.findViewById(R.id.txt_tRideLoc);
@@ -101,7 +105,6 @@ public class TicketFragment extends Fragment {
     //대기 신청 현황 데이터 가져오기
     @SuppressLint("CheckResult")
     public void checkStatusOfRide() {
-
         if (Prop.INSTANCE.getUser_nfc() != null) {
             //3. 대기 신청한 놀이기구 정보
             WaitAttractionInfoService waitAttractionInfoService = Prop.INSTANCE.getRetrofit().create(WaitAttractionInfoService.class);
@@ -117,17 +120,46 @@ public class TicketFragment extends Fragment {
                             // rideLocation.setText("놀이기구를 대기 신청해주세요.");
                             //  waitMinute = 0;
                         } else {
+                            waitAttrCode = item.getAttr_code();
                             rideName.setText(item.getName());
                             rideLocation.setText(item.getLocation());
                            // waitMinute = item.getWait_minute();
                             cancelRide.setOnClickListener(this::onClickCancel);
+
+                            getWaitMinuteOfWaitAttr(waitAttrCode);
                         }
                     }, e -> {
-                        Log.d("@@@@", "TicketFragment " + e);
+                        Log.d(TAG, "checkStatusOfRide " + e);
                     });
         }
     }
 
+//    WaitAttractionWaitMinuteService{
+//        @POST("/attr/getWaitMinuteOfWaitAttr")
+//        fun resultRepos(@Body waitMinuteOfWaitAttrData: Prop.WaitMinuteOfWaitAttrData ) : Single<Prop.WaitMinuteInfoData>
+//    }
+    // 잔여 대기 시간, 몇 번째인지 가져오기
+    @SuppressLint("CheckResult")
+    public void getWaitMinuteOfWaitAttr(int attrCode) {
+        WaitAttractionWaitMinuteService waitAttractionWaitMinuteService = Prop.INSTANCE.getRetrofit().create(WaitAttractionWaitMinuteService.class);
+        Prop.WaitMinuteOfWaitAttrData waitMinuteOfWaitAttrData = new Prop.WaitMinuteOfWaitAttrData(Prop.INSTANCE.getUser_nfc(), attrCode);
+
+        waitAttractionWaitMinuteService.resultRepos(waitMinuteOfWaitAttrData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(item -> {
+                    if (item != null) {
+                        waitCount.setText(item.getCount());
+                        restTime.setText(item.getWait_minute());
+                    } else {
+                        waitCount.setText("-");
+                        restTime.setText("-");
+                    }
+                }, e -> {
+                    Log.d(TAG, "getWaitMinuteOfWaitAttr " + e);
+                });
+
+    }
 
     @SuppressLint("CheckResult")
     public void onClickCancel(View view) {

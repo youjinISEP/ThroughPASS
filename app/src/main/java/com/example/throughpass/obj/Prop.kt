@@ -164,7 +164,7 @@ object Prop {
     // 티켓 사전 등록 조회
     data class RegisteredTodayTicketData(val nfcUid: String)
 
-    data class RegisteredResultData(var ticket_code: String, var reg_date: BigInteger)
+    data class RegisteredResultData(val result : String, var ticket_code: String, var reg_date: BigInteger)
 
     // 공지사항 가져오기
     data class NoticeData(val title: String, val context: String, var reg_date: BigInteger)
