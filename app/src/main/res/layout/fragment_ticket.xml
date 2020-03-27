@@ -29,10 +29,24 @@
         android:textColor="@android:color/black"
         android:textSize="15dp" />
 
+    <TextView
+        android:id="@+id/txt_tWorldLosts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:layout_marginTop="10dp"
+        android:background="#4DF8BBD0"
+        android:gravity="center"
+        android:text="미아, 분실물 공지사항"
+        android:textColor="@android:color/black"
+        android:textSize="15dp" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_gravity="center"
         android:layout_weight="15">
+
 
         <ProgressBar
             android:id="@+id/mainprogressbar"
@@ -41,24 +55,103 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/txt_tResttime"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="casual"
-            android:text="00 : 00 : 00"
-            android:textAlignment="center"
-            android:textSize="27sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mainprogressbar" />
+            app:layout_constraintBottom_toBottomOf="@+id/mainprogressbar"
+            app:layout_constraintTop_toTopOf="@+id/mainprogressbar"
+            app:layout_constraintLeft_toLeftOf="@+id/mainprogressbar"
+            app:layout_constraintRight_toRightOf="@+id/mainprogressbar"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/countLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="1"
+
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.45"
+                    android:layout_height="wrap_content"
+                    android:text="현재 대기 "
+                    android:gravity="right"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/txt_waitCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="22"
+                    android:textSize="34dp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.45"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text=" 명 남음"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/txt_restTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="casual"
+                    android:text="00"
+                    android:textAlignment="center"
+
+                    android:textColor="@color/colorLotteLogo"
+                    android:textSize="55dp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="@+id/mainprogressbar"
+                    app:layout_constraintRight_toRightOf="@+id/mainprogressbar"
+                    app:layout_constraintTop_toBottomOf="@+id/countLayout" />
+
+                <TextView
+                    android:id="@+id/resttimeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="casual"
+                    android:text=" 분"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textSize="22dp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="@+id/mainprogressbar"
+                    app:layout_constraintRight_toRightOf="@+id/mainprogressbar"
+                    app:layout_constraintTop_toBottomOf="@+id/countLayout" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -117,15 +210,6 @@
             android:textColor="@android:color/transparent" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txt_tWorldLosts"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:background="#4DF8BBD0"
-        android:gravity="center"
-        android:text="미아, 분실물 공지사항"
-        android:textColor="@android:color/black"
-        android:textSize="15dp" />
+
 
 </LinearLayout>
