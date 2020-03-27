@@ -32,6 +32,7 @@ import java.util.Date;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+// 메인아님
 public class MainActivity extends AppCompatActivity  {
     private boolean backKeyPressedTwice = false;
     private FloatingActionButton fab;
