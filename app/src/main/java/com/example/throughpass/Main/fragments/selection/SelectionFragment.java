@@ -70,7 +70,7 @@ public class SelectionFragment extends Fragment {
 
         //toolbar 설정 menu
         toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setTitle("현재 신청 상황");
+       // toolbar.setTitle("현재 신청 상황");
 
         recyclerView = view.findViewById(R.id.regist_recyclerview);
         resRideRecommand = view.findViewById(R.id.btn_sRecommand);
@@ -178,7 +178,6 @@ public class SelectionFragment extends Fragment {
 
                 return false;
             }
-
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {

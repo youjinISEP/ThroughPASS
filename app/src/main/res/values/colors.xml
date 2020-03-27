@@ -11,5 +11,6 @@
     <color name="colorWaitAttraction">#FF5050</color>
     <color name="colorReservedAttraction">#FF9933</color>
     <color name="colorAvailableAttraction">#00CC00</color>
-
+    <color name="colorToolbar">#EC145B</color>
+    <color name="colorBorder">#F8BBD0</color>
 </resources>
