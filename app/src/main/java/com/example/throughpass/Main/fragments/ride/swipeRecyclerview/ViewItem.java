@@ -20,11 +20,29 @@ public class ViewItem {
     private String info;
     private int wait_minute;
 
-    public ViewItem(int status, Drawable ride_Image, String ride_Name, String restTime){
-        this.status = status;
+    private int waitStatus;
+    private int resvStatus;
+
+    public ViewItem(Drawable ride_Image, String ride_Name, String restTime){
         this.ride_Image = ride_Image;
         this.ride_Name = ride_Name;
         this.restTime = restTime;
+    }
+
+    public int getWaitStatus() {
+        return waitStatus;
+    }
+
+    public void setWaitStatus(int waitStatus) {
+        this.waitStatus = waitStatus;
+    }
+
+    public int getResvStatus(){
+        return resvStatus;
+    }
+
+    public void setResvStatus(int resvStatus) {
+        this.resvStatus = resvStatus;
     }
 
     public int getStatus() {

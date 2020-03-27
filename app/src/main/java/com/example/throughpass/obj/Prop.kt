@@ -7,7 +7,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.math.BigInteger
-import java.sql.Array
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,7 +53,7 @@ object Prop {
     //Wait Attraction CODE
     var wait_attr_code: Int? = null
     var attraction: List<ViewItem>? = null
-    var reservationList: List<SelectItem>? = null
+    var reservationList: List<Int>? = null
     var reservationInfoList: List<SelectItem>? = null
 
     val client = OkHttpClient.Builder().apply {
