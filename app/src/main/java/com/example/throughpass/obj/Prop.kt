@@ -107,7 +107,7 @@ object Prop {
                                       val img_url: String)
 
     /* 3-2 대기 신청중인 놀이기구의 잔여 대기 시간 정보 */
-    data class WaitMinuteOfWaitAttrData(val nfcUid: String, val attr_code: Int)
+    data class WaitMinuteOfWaitAttrData(val nfcUid: String, val attrCode: Int)
     data class WaitMinuteInfoData(val count: Int, val wait_minute: Int)
 
     //* 4. 예약 신청중인 놀이기구

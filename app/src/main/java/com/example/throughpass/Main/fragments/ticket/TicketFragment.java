@@ -115,7 +115,7 @@ public class TicketFragment extends Fragment {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(item -> {
                         if (item.getAttr_code() == 0) {
-                            Log.d("@@@@@", "TicketFragment_checkStatusOfRide : no item included in waitAttraction");
+                            Log.d(TAG, "일로오냐");
                             // rideName.setText("대기신청된 놀이기구가 없습니다.");
                             // rideLocation.setText("놀이기구를 대기 신청해주세요.");
                             //  waitMinute = 0;
