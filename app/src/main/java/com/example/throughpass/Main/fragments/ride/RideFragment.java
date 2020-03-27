@@ -12,10 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,7 +71,8 @@ public class RideFragment extends Fragment {
 
         //toolbar 설정 menu
         toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setTitle("놀이기구 현황");
+      //  toolbar.setTitle("놀이기구 현황");
+
 
         //놀이기구 현황 숫자로 표현
         waitCnt = view.findViewById(R.id.txt_waitCnt);
@@ -80,8 +81,11 @@ public class RideFragment extends Fragment {
 
         //recyclerview 표현
         recyclerView = view.findViewById(R.id.recycler_ridelist);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerviewAdapter = new SwipeRecyclerviewAdapter(this.getContext());
+        recyclerView.setItemViewCacheSize(50);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         vList = new ArrayList<>();
         resvList = new ArrayList<>();
@@ -299,6 +303,14 @@ public class RideFragment extends Fragment {
         recyclerView.refreshDrawableState();
         //checkStatusOfRide();
         recyclerView.addOnItemTouchListener(touchListener);
+    }
+
+
+
+    public void onStart(){
+        super.onStart();
+        recyclerView.setAdapter(recyclerviewAdapter);
+        recyclerviewAdapter.setItemList(vList);
     }
 
     @Override

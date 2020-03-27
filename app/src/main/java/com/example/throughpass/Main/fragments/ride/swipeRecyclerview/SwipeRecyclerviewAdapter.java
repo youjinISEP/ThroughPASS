@@ -20,7 +20,7 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
     private Context mContext;
     private List<ViewItem> itemList;
 
-    public SwipeRecyclerviewAdapter(Context context){
+    public SwipeRecyclerviewAdapter(Context context) {
         mContext = context;
 
     }
@@ -38,10 +38,9 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
     public void onBindViewHolder(@NonNull SwipeRecyclerviewAdapter.MyViewHolder holder, int position) {
         ViewItem viewItem = itemList.get(position);
 
-        holder.statusColor.setBackgroundColor(viewItem.getStatus());
+       // holder.statusColor.setBackgroundColor(viewItem.getStatus());
         GlideApp.with(mContext)
                 .load(viewItem.getImg_url())
-                .dontTransform()
                 .centerCrop()
                 .into(holder.rideImage);
         holder.rideImage.setImageDrawable(viewItem.getRide_Image());
@@ -55,10 +54,10 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
 
     @Override
     public int getItemCount() {
-       return itemList.size();
+        return itemList.size();
     }
 
-    public void setItemList(List<ViewItem> itemList){
+    public void setItemList(List<ViewItem> itemList) {
         this.itemList = itemList;
         notifyDataSetChanged();
     }
@@ -74,7 +73,7 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            statusColor = itemView.findViewById(R.id.img_rcolorStatus);
+           // statusColor = itemView.findViewById(R.id.img_rcolorStatus);
             rideImage = itemView.findViewById(R.id.img_rImage);
             rideName = itemView.findViewById(R.id.txt_rName); //txt_rName이 중복된다. 꼭!!!!!바꾸기!!!!!!!. layout에서
             restTime = itemView.findViewById(R.id.txt_rrestTime);
