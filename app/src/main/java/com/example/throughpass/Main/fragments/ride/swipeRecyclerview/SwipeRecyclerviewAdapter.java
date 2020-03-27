@@ -1,6 +1,7 @@
 package com.example.throughpass.Main.fragments.ride.swipeRecyclerview;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.load.resource.bitmap.CenterInside;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.throughpass.Main.SSLexception.GlideApp;
 import com.example.throughpass.R;
+import com.google.android.material.internal.CircularBorderDrawable;
 
 import java.util.List;
 
@@ -20,7 +24,7 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
     private Context mContext;
     private List<ViewItem> itemList;
 
-    public SwipeRecyclerviewAdapter(Context context){
+    public SwipeRecyclerviewAdapter(Context context) {
         mContext = context;
 
     }
@@ -38,10 +42,9 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
     public void onBindViewHolder(@NonNull SwipeRecyclerviewAdapter.MyViewHolder holder, int position) {
         ViewItem viewItem = itemList.get(position);
 
-        holder.statusColor.setBackgroundColor(viewItem.getStatus());
+       // holder.statusColor.setBackgroundColor(viewItem.getStatus());
         GlideApp.with(mContext)
                 .load(viewItem.getImg_url())
-                .dontTransform()
                 .centerCrop()
                 .into(holder.rideImage);
         holder.rideImage.setImageDrawable(viewItem.getRide_Image());
@@ -55,10 +58,10 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
 
     @Override
     public int getItemCount() {
-       return itemList.size();
+        return itemList.size();
     }
 
-    public void setItemList(List<ViewItem> itemList){
+    public void setItemList(List<ViewItem> itemList) {
         this.itemList = itemList;
         notifyDataSetChanged();
     }
@@ -74,7 +77,7 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            statusColor = itemView.findViewById(R.id.img_rcolorStatus);
+           // statusColor = itemView.findViewById(R.id.img_rcolorStatus);
             rideImage = itemView.findViewById(R.id.img_rImage);
             rideName = itemView.findViewById(R.id.txt_rName); //txt_rName이 중복된다. 꼭!!!!!바꾸기!!!!!!!. layout에서
             restTime = itemView.findViewById(R.id.txt_rrestTime);
