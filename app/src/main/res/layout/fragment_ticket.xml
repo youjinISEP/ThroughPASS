@@ -1,182 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light">
+    android:background="@android:color/background_light"
+    android:orientation="vertical"
+    android:weightSum="29">
 
     <TextView
         android:id="@+id/txt_tStatus"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginEnd="184dp"
+        android:layout_weight="0"
         android:gravity="center"
         android:textColor="@android:color/background_light"
-        android:textSize="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/layout_mainLogo"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="15dp" />
 
     <TextView
         android:id="@+id/txt_tWorldNotice"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="32dp"
-        android:background="#FFCDD2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="#4DF8BBD0"
         android:gravity="center"
         android:text="롯데월드 공지사항"
         android:textColor="@android:color/black"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/txt_tWorldInfo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_mainLogo" />
+        android:textSize="15dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15">
+
+        <ProgressBar
+            android:id="@+id/mainprogressbar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/txt_tResttime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="casual"
+            android:text="00 : 00 : 00"
+            android:textAlignment="center"
+            android:textSize="27sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/mainprogressbar" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/txt_tRideName"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="bottom|center"
+        android:text="대기 신청된 놀이기구가 없습니다."
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_tRideLoc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="놀이기구 대기신청을 진행해 주세요."
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:textColor="@android:color/transparent" />
+
+        <Button
+            android:id="@+id/btn_tCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:fontFamily="@font/wellfleet"
+            android:text="대기 신청 취소"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:textColor="@android:color/transparent" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txt_tWorldLosts"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="10dp"
-        android:background="#FFCDD2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:background="#4DF8BBD0"
         android:gravity="center"
         android:text="미아, 분실물 공지사항"
         android:textColor="@android:color/black"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/layout_ticketInfo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_tWorldNotice" />
+        android:textSize="15dp" />
 
-    <ImageButton
-        android:id="@+id/btn_tRegist"
-        android:layout_width="145dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="25dp"
-        android:background="@android:color/transparent"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toBottomOf="@+id/layout_ticketInfo"
-        app:layout_constraintBottom_toTopOf="@+id/txt_tRegistTicketInfo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_add_circle_outline_24px" />
-
-    <TextView
-        android:id="@+id/txt_tRegistTicketInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:text="티켓 등록"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintTop_toBottomOf="@+id/btn_tRegist"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        >
-    </TextView>
-
-    <LinearLayout
-        android:id="@+id/layout_mainLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_tStatus">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorBlack"
-            android:text="World"
-            android:textSize="46sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Magic - Line"
-            android:textColor="@color/colorLotteLogo"
-            android:textSize="60sp"
-            android:textStyle="bold|italic" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_ticketInfo"
-        android:layout_width="399dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/btn_tRegist"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_tWorldLosts"
-        >
-
-        <ImageView
-            android:id="@+id/img_rImage"
-            android:layout_marginLeft="10dp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            tools:srcCompat="@drawable/ticket" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:layout_marginLeft="20dp"
-            android:orientation="vertical">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="left"
-                android:layout_weight="1"
-                android:gravity="left|center">
-
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="티켓 번호 : "
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txt_rName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorLotteLogo"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="left|center">
-
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="등록 일자 : "
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txt_rRegistTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-            </TableRow>
-        </LinearLayout>
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

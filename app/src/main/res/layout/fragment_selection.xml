@@ -13,172 +13,57 @@
         android:background="@android:color/background_light"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toTopOf="@+id/tabLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" >
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_sStandby"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="대기신청" />
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_sRegist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="예약신청" />
-
-    </com.google.android.material.tabs.TabLayout>
-
-
-    <FrameLayout
-        android:id="@+id/waitFrame"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="visible"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/const_sStandby"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible">
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="놀이기구 항목을 자유자재로 움직일 수 있습니다."
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/regist_recyclerview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/txt_sWaitRide"
-                android:layout_width="203dp"
-                android:layout_height="187dp"
-                android:layout_marginTop="80dp"
-                android:gravity="center"
-                android:text="00:00:00"
-                android:textAlignment="center"
-                android:textSize="36sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_notifications_black_24dp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/regist_recyclerview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_sRecommand"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.444"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6">
 
-            <LinearLayout
-                android:layout_width="385dp"
-                android:layout_height="107dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/btn_sCancelWait"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.615"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/progressBar"
-                app:layout_constraintVertical_bias="0.097">
+        </androidx.recyclerview.widget.RecyclerView>
 
-                <TextView
-                    android:id="@+id/txt_sWaitRideName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="자이로스핀"
-                    android:textAlignment="center"
-                    android:textSize="30sp" />
+        <Button
+            android:id="@+id/btn_sRecommand"
+            android:layout_width="257dp"
+            android:layout_height="51dp"
+            android:text="추천하기"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/regist_recyclerview" />
 
-                <TextView
-                    android:id="@+id/txt_sWaitRideLocat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="위치 : 매직아일랜드 옆"
-                    android:textAlignment="center" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btn_sCancelWait"
-                android:layout_width="379dp"
-                android:layout_height="54dp"
-                android:layout_marginTop="184dp"
-                android:text="대기신청 취소"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_sWaitRide" />
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="427dp"
-                android:layout_height="322dp"
-                app:layout_constraintBottom_toTopOf="@+id/btn_sCancelWait"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.082" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/registFrame"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="놀이기구 항목을 자유자재로 움직일 수 있습니다."
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/regist_recyclerview"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/regist_recyclerview"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/btn_sRecommand"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.444"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <Button
-                android:id="@+id/btn_sRecommand"
-                android:layout_width="257dp"
-                android:layout_height="51dp"
-                android:text="추천하기"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/regist_recyclerview" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
