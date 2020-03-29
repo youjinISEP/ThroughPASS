@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +58,8 @@ public class TicketFragment extends Fragment {
     Fragment fragment;
 
     int waitAttrCode = 0;   // Default
-
+    int pStatus = 0;
+    private Handler handler = new Handler();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -70,6 +72,32 @@ public class TicketFragment extends Fragment {
 
         restTime = view.findViewById(R.id.txt_restTime);
         mainProgressbar = view.findViewById(R.id.mainprogressbar);
+        mainProgressbar.setProgress(0);
+        mainProgressbar.setSecondaryProgress(100);
+        mainProgressbar.setMax(100);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(pStatus < 100){
+                    pStatus += 10;
+
+                    handler.post(new Runnable(){
+
+                        @Override
+                        public void run() {
+                            mainProgressbar.setProgress(pStatus);
+                        }
+                    });
+                    try{
+                        Thread.sleep(8);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
         waitCount = view.findViewById(R.id.txt_waitCount);
 
         rideName = view.findViewById(R.id.txt_tRideName);
@@ -85,7 +113,6 @@ public class TicketFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
 
 
         /*
@@ -125,6 +152,7 @@ public class TicketFragment extends Fragment {
                             rideLocation.setText(item.getLocation());
                            // waitMinute = item.getWait_minute();
                             cancelRide.setOnClickListener(this::onClickCancel);
+                            startProgressbar();
 
                             getWaitMinuteOfWaitAttr(waitAttrCode);
                         }
@@ -132,6 +160,10 @@ public class TicketFragment extends Fragment {
                         Log.d(TAG, "checkStatusOfRide " + e);
                     });
         }
+    }
+
+    public void startProgressbar(){
+
     }
 
 //    WaitAttractionWaitMinuteService{

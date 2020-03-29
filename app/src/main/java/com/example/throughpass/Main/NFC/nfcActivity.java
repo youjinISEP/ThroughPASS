@@ -39,7 +39,7 @@ public class nfcActivity extends AppCompatActivity {
 
         nfcTime = findViewById(R.id.txt_nfcTime);
         nfcToolbar = findViewById(R.id.toolbar);
-        nfcToolbar.setTitle("NFC 태그 활성화");
+     //  nfcToolbar.setTitle("NFC 태그 활성화");
 
         // timer 사용해서 매 초마다 활성화 시키기
         countDownTimer = new CountDownTimer(TIME * 1000, 1000) {

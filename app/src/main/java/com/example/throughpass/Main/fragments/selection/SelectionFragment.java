@@ -152,7 +152,7 @@ public class SelectionFragment extends Fragment {
                 int position_target = target.getAdapterPosition();
 
                 Collections.swap(selectList, position_dragged, position_target);
-                Prop.INSTANCE.setReservationInfoList(selectList);
+                //Prop.INSTANCE.setReservationInfoList(selectList);
                 recyclerViewAdapter.notifyItemMoved(position_dragged, position_target);
 
                 Prop.INSTANCE.setReservationInfoList(selectList);
@@ -169,8 +169,8 @@ public class SelectionFragment extends Fragment {
                         .subscribe(item -> {
                             if (item.getResult().equals("success")) {
                                 Log.d("@@@@", "SelectionFragment_DragAndDropList : success to send attraction code list");
-                                assert getFragmentManager() != null;
-                                Func.INSTANCE.refreshFragment(fragment , getFragmentManager());
+                                ///assert getFragmentManager() != null;
+                                ///Func.INSTANCE.refreshFragment(fragment , getFragmentManager());
                             }
                         }, e -> {
                             Log.d("@@@@", "SelectionFragment_DragAndDropList :  SERVER ERROR");
