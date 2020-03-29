@@ -1,6 +1,7 @@
 package com.example.throughpass
 
-import android.R
+import com.example.throughpass.R
+
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
@@ -80,7 +81,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val defaultSoundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.mipmap.sym_def_app_icon)
+                .setSmallIcon(R.drawable.noti)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)
