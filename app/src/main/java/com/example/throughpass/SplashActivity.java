@@ -25,7 +25,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import static com.example.throughpass.obj.Prop.TAG;
 
-
+/**
+ * 스플래시 화면
+ */
 public class SplashActivity extends AppCompatActivity {
 
     @Override
