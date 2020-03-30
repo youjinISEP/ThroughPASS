@@ -8,6 +8,14 @@
     android:orientation="vertical"
     android:weightSum="29">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_bar"
+        >
+    </ImageView>
+
+
     <TextView
         android:id="@+id/txt_tStatus"
         android:layout_width="match_parent"
@@ -119,12 +127,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="casual"
                     android:text="-"
                     android:textAlignment="center"
 
                     android:textColor="@color/colorLotteLogo"
-                    android:textSize="55dp"
+                    android:textSize="57dp"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="@+id/mainprogressbar"
                     app:layout_constraintRight_toRightOf="@+id/mainprogressbar"
