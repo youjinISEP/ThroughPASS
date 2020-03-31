@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:background="#4DF8BBD0"
+        android:background="@color/colorGray"
         android:gravity="center"
         android:text="롯데월드 공지사항"
         android:textColor="@android:color/black"
@@ -43,7 +43,7 @@
         android:layout_height="0dp"
         android:layout_weight="3"
         android:layout_marginTop="10dp"
-        android:background="#4DF8BBD0"
+        android:background="@color/colorGray"
         android:gravity="center"
         android:text="미아, 분실물 공지사항"
         android:textColor="@android:color/black"
@@ -89,7 +89,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="0.45"
                     android:layout_height="wrap_content"
-                    android:text="현재 대기 "
+                    android:text="탑승까지 "
                     android:gravity="right"
                     android:textSize="16dp"
                     android:textStyle="bold"
@@ -167,54 +167,66 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:gravity="bottom|center"
-        android:text="대기 신청된 놀이기구가 없습니다."
+        android:text="탑승 신청한 놀이기구가 없습니다."
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txt_tRideLoc"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="놀이기구 대기신청을 진행해 주세요."
         android:textAlignment="center"
         android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_weight="3"
+        android:layout_marginTop="15dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:weightSum="6">
+        android:weightSum="1">
 
-        <TextView
-            android:id="@+id/textView8"
+        <View
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:textColor="@android:color/transparent" />
+            android:layout_height="wrap_content"
+            android:layout_weight="0.03"></View>
 
         <Button
             android:id="@+id/btn_tCancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="0.45"
             android:fontFamily="@font/wellfleet"
-            android:text="대기 신청 취소"
-            android:textAlignment="center"
-            android:textSize="20sp" />
+            android:text="탑승 신청 취소"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="#ff5f5f"
+            android:textColor="@color/colorWhite"
+            android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/textView10"
+        <View
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:textColor="@android:color/transparent" />
+            android:layout_height="wrap_content"
+            android:layout_weight="0.03"></View>
+
+        <Button
+            android:id="@+id/btn_nfc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.45"
+            android:fontFamily="@font/wellfleet"
+            android:background="#56d35d"
+            android:text="탑승"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="15sp" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.03"></View>
     </LinearLayout>
 
 

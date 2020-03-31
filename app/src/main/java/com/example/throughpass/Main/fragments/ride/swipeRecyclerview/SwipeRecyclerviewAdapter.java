@@ -2,6 +2,7 @@ package com.example.throughpass.Main.fragments.ride.swipeRecyclerview;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,11 +50,21 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
                 .into(holder.rideImage);
         holder.rideImage.setImageDrawable(viewItem.getRide_Image());
         holder.rideName.setText(viewItem.getRide_Name());
-        holder.restTime.setText(viewItem.getRestTime());
+        holder.restTime.setText(viewItem.getRestTime() + " 분");
+        if(!TextUtils.isEmpty(viewItem.getStart_time()) && !TextUtils.isEmpty(viewItem.getEnd_time())) {
+            holder.runtime.setText("입장 가능 시간 : " + (viewItem.getStart_time() + " ~ " + viewItem.getEnd_time()));
+        }
 
-        holder.waitStatus.setVisibility(viewItem.getWaitStatus());
-        holder.resvStatus.setVisibility(viewItem.getResvStatus());
+        holder.waitStatus.setVisibility(View.VISIBLE);
+        holder.resvStatus.setVisibility(View.VISIBLE);
 
+        if(viewItem.getWaitStatus() == 4) { // 신청 X
+            holder.waitStatus.setVisibility(View.GONE);
+        }
+
+        if(viewItem.getResvStatus() == 4) { // 신청 X
+            holder.resvStatus.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -74,6 +85,7 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
         private TextView restTime;
         private TextView waitStatus;
         private TextView resvStatus;
+        private TextView runtime;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,6 +95,7 @@ public class SwipeRecyclerviewAdapter extends RecyclerView.Adapter<SwipeRecycler
             restTime = itemView.findViewById(R.id.txt_rrestTime);
             waitStatus = itemView.findViewById(R.id.txt_rWaitStatus);
             resvStatus = itemView.findViewById(R.id.txt_rResvStatus);
+            runtime = itemView.findViewById(R.id.txt_runtime);
         }
     }
 }

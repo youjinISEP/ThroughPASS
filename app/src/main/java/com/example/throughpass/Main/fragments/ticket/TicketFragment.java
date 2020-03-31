@@ -21,6 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.throughpass.Main.MainActivity;
+import com.example.throughpass.Main.NFC.nfcActivity;
 import com.example.throughpass.R;
 import com.example.throughpass.obj.Func;
 import com.example.throughpass.obj.Prop;
@@ -39,6 +41,9 @@ import java.util.TimerTask;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.example.throughpass.obj.Prop.ADD_RESERVATION_CODE;
+import static com.example.throughpass.obj.Prop.ADD_WAIT_CODE;
+import static com.example.throughpass.obj.Prop.NFC_TAGGING;
 import static com.example.throughpass.obj.Prop.TICKET_POPUP_CODE;
 import static com.example.throughpass.obj.Prop.TAG;
 
@@ -53,7 +58,7 @@ public class TicketFragment extends Fragment {
     Timer lostsRefreshTimer;
 
     TextView ticketStatus, rideName, rideLocation, restTime, worldNotice, worldLosts, waitCount;
-    Button cancelRide;
+    Button cancelRide, nfcTagging;
     ProgressBar mainProgressbar;
     Fragment fragment;
 
@@ -69,6 +74,7 @@ public class TicketFragment extends Fragment {
         ticketStatus = view.findViewById(R.id.txt_tStatus);
         worldNotice = view.findViewById(R.id.txt_tWorldNotice);
         worldLosts = view.findViewById(R.id.txt_tWorldLosts);
+
 
         restTime = view.findViewById(R.id.txt_restTime);
         mainProgressbar = view.findViewById(R.id.mainprogressbar);
@@ -103,6 +109,8 @@ public class TicketFragment extends Fragment {
         rideName = view.findViewById(R.id.txt_tRideName);
         rideLocation = view.findViewById(R.id.txt_tRideLoc);
         cancelRide = view.findViewById(R.id.btn_tCancel);
+        nfcTagging = view.findViewById(R.id.btn_nfc);
+        nfcTagging.setOnClickListener(this::onClick);
 
         fragment = this;
 
@@ -151,7 +159,7 @@ public class TicketFragment extends Fragment {
                             rideName.setText(item.getName());
                             rideLocation.setText(item.getLocation());
                            // waitMinute = item.getWait_minute();
-                            cancelRide.setOnClickListener(this::onClickCancel);
+                            cancelRide.setOnClickListener(this::onClick);
                             startProgressbar();
 
                             getWaitMinuteOfWaitAttr(waitAttrCode);
@@ -194,13 +202,13 @@ public class TicketFragment extends Fragment {
     }
 
     @SuppressLint("CheckResult")
-    public void onClickCancel(View view) {
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_tCancel:
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("대기 신청")
-                        .setMessage("대기 신청 취소하시겠습니까?");
+                builder.setTitle("탑승 신청 취소")
+                        .setMessage("탑승 신청을 취소하시겠습니까?");
 
                 builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
                     @Override
@@ -214,7 +222,7 @@ public class TicketFragment extends Fragment {
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(item -> {
                                                 if (item.getResult().equals("success")) {
-                                                    Log.d("@@@@", "TicketFragment_onClick : success to delete Waited Attraction");
+                                                    Toast.makeText(getActivity(), "탑승 신청을 취소했습니다.", Toast.LENGTH_LONG).show();
                                                     assert getParentFragment() != null;
                                                     Func.INSTANCE.refreshFragment(fragment , getFragmentManager());
                                                 }
@@ -239,6 +247,16 @@ public class TicketFragment extends Fragment {
 
 
                // Func.INSTANCE.refreshFragment(this , getFragmentManager());
+                break;
+            case R.id.btn_nfc:
+                if(Func.INSTANCE.checkRegistTicket()) {
+                    Intent intent = new Intent(getActivity(), nfcActivity.class);
+                    //intent.putExtra("select",rideName);
+                    startActivityForResult(intent, NFC_TAGGING);
+                }
+                else {
+                    Toast.makeText(getActivity(), "탑승을 위해서는 먼저 티켓 등록이 필요합니다.", Toast.LENGTH_LONG).show();
+                }
                 break;
         }
     }
@@ -332,6 +350,16 @@ public class TicketFragment extends Fragment {
         };
         noticeRefreshTimer = new Timer();
         noticeRefreshTimer.schedule(noticeRefreshTimerTask, 0, 5 * Prop.INSTANCE.getSECOND());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NFC_TAGGING) {
+            if (resultCode == Activity.RESULT_OK) {  // 티켓 등록 완료
+                Func.INSTANCE.refreshFragment(fragment , getFragmentManager());
+            }
+        }
     }
 
     @Override

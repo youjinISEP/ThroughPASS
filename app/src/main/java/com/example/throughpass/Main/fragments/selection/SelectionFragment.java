@@ -69,7 +69,6 @@ public class SelectionFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_selection, container, false);
 
         //toolbar 설정 menu
-        toolbar = view.findViewById(R.id.toolbar);
        // toolbar.setTitle("현재 신청 상황");
 
         recyclerView = view.findViewById(R.id.regist_recyclerview);
@@ -169,6 +168,7 @@ public class SelectionFragment extends Fragment {
                         .subscribe(item -> {
                             if (item.getResult().equals("success")) {
                                 Log.d("@@@@", "SelectionFragment_DragAndDropList : success to send attraction code list");
+                                Toast.makeText(getActivity(), "예약 순서를 변경했습니다.", Toast.LENGTH_LONG).show();
                                 ///assert getFragmentManager() != null;
                                 ///Func.INSTANCE.refreshFragment(fragment , getFragmentManager());
                             }
@@ -209,8 +209,8 @@ public class SelectionFragment extends Fragment {
                             case R.id.delete_task:
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                builder.setTitle("대기 신청")
-                                        .setMessage("대기 신청 취소하시겠습니까?");
+                                builder.setTitle("예약 신청 취소")
+                                        .setMessage("예약 신청 취소하시겠습니까?");
 
                                 builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
                                     @SuppressLint("CheckResult")
@@ -223,7 +223,7 @@ public class SelectionFragment extends Fragment {
                                                 .observeOn(AndroidSchedulers.mainThread())
                                                 .subscribe(item -> {
                                                     if (item.getResult().equals("success")) {
-
+                                                        Toast.makeText(getActivity(), "해당 놀이기구 예약이 취소되었습니다.", Toast.LENGTH_LONG).show();
                                                         assert getFragmentManager() != null;
                                                         Func.INSTANCE.refreshFragment(fragment , getFragmentManager());
                                                         Log.d("@@@@", "SelectionFragment_registItemClickListener : success to delete reserved Attraction");
@@ -260,6 +260,7 @@ public class SelectionFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RECOMMEND_CODE) {
             if(resultCode == Activity.RESULT_OK) {  // 추천 종료
+                Toast.makeText(getActivity(), "선택하신 놀이기구를 예약 1순위로 변경했습니다.", Toast.LENGTH_LONG).show();
                 Func.INSTANCE.refreshFragment(this, getFragmentManager());
             }
         }

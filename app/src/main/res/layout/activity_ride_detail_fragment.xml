@@ -9,26 +9,193 @@
     tools:context=".Main.fragments.ride.RideDetailActivity">
 
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorToolbar"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:titleTextColor="@color/colorWhite" />
+        android:background="@drawable/list_bar"
+        >
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/txt_attrName"
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="25dp"
+        android:layout_marginTop="20dp"
+        android:text="놀이기구 현황"
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/img_rDetail"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10"
-        tools:srcCompat="@tools:sample/avatars[2]" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
 
-    <TextView
-        android:id="@+id/txt_rInfo"
+
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5" />
+        android:layout_height="3dp"
+        android:background="@color/colorLotteLogo"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        >
+
+        <TextView
+            android:id="@+id/txt_attrTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textSize="25dp"
+            android:textColor="@color/colorBlack"
+            android:layout_weight="0.65"></TextView>
+
+        <TextView
+            android:id="@+id/txt_attrDetailTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="30dp"
+            android:paddingLeft="10dp"
+            android:text="asgasg"
+            android:layout_gravity="left"
+            android:textSize="17dp"
+            android:layout_weight="0.65"></TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="탑승 제한 키 : "
+                android:textSize="18dp"
+                android:layout_weight="0.35"></TextView>
+
+            <TextView
+                android:id="@+id/txt_personHeight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                android:layout_weight="0.65"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:weightSum="1"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="탑승 제한 연령 : "
+                android:textSize="18dp"
+                android:layout_weight="0.35"></TextView>
+
+            <TextView
+                android:id="@+id/txt_personAge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                android:layout_weight="0.65"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:weightSum="1"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="탑승 가능 인원 : "
+                android:textSize="18dp"
+                android:layout_weight="0.35"></TextView>
+
+            <TextView
+                android:id="@+id/txt_personnel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                android:layout_weight="0.65"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:weightSum="1"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="운영 시간 : "
+                android:textSize="18dp"
+                android:layout_weight="0.35"></TextView>
+
+            <TextView
+                android:id="@+id/txt_possibleRunTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                android:layout_weight="0.65"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:weightSum="1"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="놀이기구 위치 : "
+                android:textSize="18dp"
+                android:layout_weight="0.35"></TextView>
+
+            <TextView
+                android:id="@+id/txt_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                android:layout_weight="0.65"></TextView>
+
+        </LinearLayout>
+    </LinearLayout>
+
 
 </LinearLayout>

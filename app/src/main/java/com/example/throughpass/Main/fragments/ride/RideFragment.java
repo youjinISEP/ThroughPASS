@@ -70,7 +70,6 @@ public class RideFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_ride, container, false);
 
         //toolbar 설정 menu
-        toolbar = view.findViewById(R.id.toolbar);
       //  toolbar.setTitle("놀이기구 현황");
 
 
@@ -208,10 +207,14 @@ public class RideFragment extends Fragment {
                     @Override
                     public void onRowClicked(int position) {
                         Intent intent = new Intent(view.getContext(), RideDetailActivity.class);
-                        intent.putExtra("name", vList.get(position).getRide_Name());
-                        intent.putExtra("img", vList.get(position).getImg_url());
-                        Log.d(TAG, "this : " + vList.get(position).getImg_url());
-                        intent.putExtra("info", vList.get(position).getInfo());
+                        ViewItem data = vList.get(position);
+                        intent.putExtra("name", data.getRide_Name());
+                        intent.putExtra("img", data.getImg_url());
+                        intent.putExtra("startTime", data.getStart_time());
+                        intent.putExtra("location", data.getLocation());
+                        intent.putExtra("endTime", data.getEnd_time());
+                        intent.putExtra("personnel", data.getPersonnel());
+                        intent.putExtra("info", data.getInfo());
 
                         // 놀이기구 이미지, 상세 설명 보내기
                         view.getContext().startActivity(intent);
@@ -268,6 +271,7 @@ public class RideFragment extends Fragment {
                 .subscribe(item -> {
                     if (item.getResult().equals("success")) {
                         Log.d(TAG, "RideFragment_addWait : success!! ADD WAIT ATTRACTION");
+                        Toast.makeText(getActivity(), "해당 놀이기구 탑승을 신청했습니다.", Toast.LENGTH_LONG).show();
                         Func.INSTANCE.refreshFragment(this, this.getFragmentManager());
                     } else {
                         Toast.makeText(getActivity(), item.getResult(), Toast.LENGTH_LONG).show();
@@ -287,6 +291,7 @@ public class RideFragment extends Fragment {
                 .subscribe(item -> {
                     if (item.getResult().equals("success")) {
                         Log.d(TAG, "RideFragment_addReservation : success!!  ADD RESERVATION ATTRACTION");
+
                         Func.INSTANCE.refreshFragment(this, this.getFragmentManager());
                     } else {
                         Log.d(TAG, "RideFragment_addReservation : NOT INSERTED");
@@ -321,14 +326,14 @@ public class RideFragment extends Fragment {
             if (requestCode == ADD_WAIT_CODE) {
                 if (resultCode == Activity.RESULT_OK) {  // 티켓 등록 완료
                     addWait(attrCode);
-                    Toast.makeText(getActivity(), "대기 신청 완료", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "해당 놀이기구 탑승을 신청했습니다.", Toast.LENGTH_LONG).show();
                 }
             }
 
             if (requestCode == ADD_RESERVATION_CODE) {
                 if (resultCode == Activity.RESULT_OK) {  // 티켓 등록 완료
                     addReservation(attrCode);
-                    Toast.makeText(getActivity(), "예약 신청 완료", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "예약이 추가되었습니다.", Toast.LENGTH_LONG).show();
                 }
             }
         }

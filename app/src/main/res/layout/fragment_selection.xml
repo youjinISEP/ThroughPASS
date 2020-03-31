@@ -21,13 +21,19 @@
         style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:layout_gravity="center"
         android:textSize="22dp"
         android:layout_margin="10dp"
         android:text="놀이기구 탑승 예약 현황"
         android:textColor="@android:color/black"
         android:textStyle="bold" />
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorLotteLogo"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        ></View>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -44,14 +50,14 @@
             android:gravity="center"
             android:text="놀이기구 항목을 자유자재로 움직일 수 있습니다."
             android:textAlignment="center"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/regist_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
+            android:layout_margin="10dp"
             android:layout_weight="23">
 
         </androidx.recyclerview.widget.RecyclerView>
@@ -78,6 +84,8 @@
                 android:layout_weight="3"
                 android:text="추천하기"
                 android:textAlignment="center"
+                android:background="@color/colorLotteLogo"
+                android:textColor="@color/colorWhite"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 

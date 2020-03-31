@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity  {
     private SelectionFragment selectionFragment = new SelectionFragment();
     private FragmentTransaction transaction;
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity  {
 
         navView = findViewById(R.id.nav_view);
         fab =  findViewById(R.id.floatingActionButton);
-
+        fab.setVisibility(View.GONE);
         navView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
         transaction = fragmentManager.beginTransaction();
@@ -59,19 +60,19 @@ public class MainActivity extends AppCompatActivity  {
 //        Prop.INSTANCE.setUser_nfc(Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));    // 안드로이드 ID 넣기
 
         Log.d(TAG, Prop.INSTANCE.getUser_nfc());
-        fab.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if(Func.INSTANCE.checkRegistTicket()) {
-                    Intent intent = new Intent(MainActivity.this, nfcActivity.class);
-                    //intent.putExtra("select",rideName);
-                    startActivity(intent);
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "탑승을 위해서는 먼저 티켓 등록이 필요합니다.", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                if(Func.INSTANCE.checkRegistTicket()) {
+//                    Intent intent = new Intent(MainActivity.this, nfcActivity.class);
+//                    //intent.putExtra("select",rideName);
+//                    startActivity(intent);
+//                }
+//                else {
+//                    Toast.makeText(getApplicationContext(), "탑승을 위해서는 먼저 티켓 등록이 필요합니다.", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
     }
 
     //BottomNavigation Bar Control

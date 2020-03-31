@@ -13,16 +13,18 @@ import android.widget.TextView;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.throughpass.Main.SSLexception.GlideApp;
 import com.example.throughpass.R;
+import static com.example.throughpass.obj.Prop.TAG;
 
 public class RideDetailActivity extends AppCompatActivity {
 
     //TODO : image URL load 직접 선언 이외에는 로드 불가 에러처리하기
 
-    private Toolbar toolbar;
-    public String selectedRide, imageURL, information;
+    public String name, imageURL, possibleRunTimeStr, locationStr, information;
+    public int personnelCount;
     public Intent intent;
     ImageView rideImage;
-    TextView rideInfo;
+    TextView attrName, attrTitle, attrDetailTitle, personHeight, personAge, location, possibleRunTime, personnel;
+//    TextView rideInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,23 +32,35 @@ public class RideDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ride_detail_fragment);
 
         intent = getIntent();
-        toolbar = findViewById(R.id.toolbar);
+        if(intent == null) {
+            Log.d(TAG, "상세정보 필요한 데이터 NULL");
+            finish();
+        }
+        attrName = findViewById(R.id.txt_attrName);
         rideImage = findViewById(R.id.img_rDetail);
-        rideInfo = findViewById(R.id.txt_rInfo);
+        attrTitle = findViewById(R.id.txt_attrTitle);
+        attrDetailTitle = findViewById(R.id.txt_attrDetailTitle);
+        personHeight = findViewById(R.id.txt_personHeight);
+        personAge = findViewById(R.id.txt_personAge);
+        location = findViewById(R.id.txt_location);
+        possibleRunTime = findViewById(R.id.txt_possibleRunTime);
+        personnel = findViewById(R.id.txt_personnel);
 
-        selectedRide = intent.getExtras().getString("name");
+
+        name = intent.getExtras().getString("name");
         imageURL = intent.getExtras().getString("img");
         information = intent.getExtras().getString("info");
+        locationStr = intent.getExtras().getString("location");
+        possibleRunTimeStr = intent.getExtras().getString("startTime") + " ~ " + intent.getExtras().getString("endTime");
+        personnelCount = intent.getIntExtra("personnel", -1);
 
-        //toolbar 세팅
-        toolbar.setTitle(selectedRide);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        // DB와 통일
+        String[] splitInfo = information.split(",");
+        String height = splitInfo[0];
+        String age = splitInfo[1];
+        String title = splitInfo[2];
+        String detailTitle = splitInfo[3];
+
        // String a = "http://adventure.lotteworld.com/image/2018/7/201807251058185011_1350.jpg";
         GlideApp.with(this)
                 .load(imageURL)
@@ -55,7 +69,14 @@ public class RideDetailActivity extends AppCompatActivity {
                 .centerCrop()
                 .into(this.rideImage);
 
-        rideInfo.setText(information);
+        attrName.setText(name);
+        attrTitle.setText(title);
+        attrDetailTitle.setText(detailTitle);
+        personHeight.setText(height);
+        personAge.setText(age);
+        location.setText(locationStr);
+        possibleRunTime.setText(possibleRunTimeStr);
+        personnel.setText(String.valueOf(personnelCount) + " 명");
 
     }
 }

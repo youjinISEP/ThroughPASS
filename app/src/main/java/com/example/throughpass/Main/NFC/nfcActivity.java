@@ -3,6 +3,7 @@ package com.example.throughpass.Main.NFC;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -38,7 +39,6 @@ public class nfcActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nfc);
 
         nfcTime = findViewById(R.id.txt_nfcTime);
-        nfcToolbar = findViewById(R.id.toolbar);
      //  nfcToolbar.setTitle("NFC 태그 활성화");
 
         // timer 사용해서 매 초마다 활성화 시키기
@@ -70,6 +70,7 @@ public class nfcActivity extends AppCompatActivity {
         }, 5 * Prop.INSTANCE.getSECOND());
     }
 
+    @SuppressLint("CheckResult")
     private void nfcTagging() {
         NfcTaggingService nfcTaggingService = Prop.INSTANCE.getRetrofit().create(NfcTaggingService.class);
         Prop.NfcTaggingData taggingData = new Prop.NfcTaggingData(Prop.INSTANCE.getUser_nfc(), 3);
@@ -86,6 +87,7 @@ public class nfcActivity extends AppCompatActivity {
                             else {
                                 Toast.makeText(getApplicationContext(), item.getResult(), Toast.LENGTH_LONG).show();
                             }
+                            setResult(RESULT_OK);
                             finish();
                         }
                         , e -> {
