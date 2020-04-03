@@ -21,7 +21,7 @@ object Prop {
     val FCM_MSG_CODE = 112
     const val ADD_WAIT_CODE = 1110
     const val ADD_RESERVATION_CODE = 1111
-
+    const val TUTORIAL_CODE = 11
     const val NFC_TAGGING = 1112
     const val TICKET_POPUP_CODE = 111
     const val RECOMMEND_CODE = 110

@@ -8,4 +8,9 @@
     <string name="trueTicketInfoBoxTxt">현재 티켓을 사용중입니다.</string>
     <string name="defaultNotiChannelID" translatable="true">기본 노티 채널 ID 입니다.</string>
     <string name="defaultNotifiChannelName" translatable="true">기본 노티 채널 이름입니다.</string>
+
+    <!-- 튜토리얼 -->
+    <string name="next">다음</string>
+    <string name="skip">건너뛰기</string>
+    <string name="start">시작</string>
 </resources>

@@ -5,6 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorBlack">#000000</color>
     <color name="colorGray">#f7f6fb</color>
+    <color name="colorDarkGray">#666666</color>
     <color name="colorBlue">#C62049EC</color>
     <color name="colorLotteLogo">#DA291C</color>
     <color name="colorWhite">#FFFFFF</color>
